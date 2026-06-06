@@ -1,0 +1,129 @@
+{
+  "" : {
+    "diagnostics" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/FloatingClockOverlay-primary.dia",
+    "emit-module-dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/FloatingClockOverlay-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/FloatingClockOverlay-primary-emit-module.dia",
+    "pch" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/FloatingClockOverlay-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/FloatingClockOverlay-primary.swiftdeps"
+  },
+  "/Users/yousa/Desktop/FloatingClockOverlay/FloatingClockOverlay/AppDelegate.swift" : {
+    "const-values" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/AppDelegate.swiftconstvalues",
+    "dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/AppDelegate.d",
+    "diagnostics" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/AppDelegate.dia",
+    "index-unit-output-path" : "/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/AppDelegate.o",
+    "llvm-bc" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/AppDelegate.bc",
+    "object" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/AppDelegate.o",
+    "swift-dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/AppDelegate.swiftdeps",
+    "swiftmodule" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/AppDelegate~partial.swiftmodule"
+  },
+  "/Users/yousa/Desktop/FloatingClockOverlay/FloatingClockOverlay/ClockSettings.swift" : {
+    "const-values" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockSettings.swiftconstvalues",
+    "dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockSettings.d",
+    "diagnostics" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockSettings.dia",
+    "index-unit-output-path" : "/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockSettings.o",
+    "llvm-bc" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockSettings.bc",
+    "object" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockSettings.o",
+    "swift-dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockSettings.swiftdeps",
+    "swiftmodule" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockSettings~partial.swiftmodule"
+  },
+  "/Users/yousa/Desktop/FloatingClockOverlay/FloatingClockOverlay/ClockView.swift" : {
+    "const-values" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockView.swiftconstvalues",
+    "dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockView.d",
+    "diagnostics" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockView.dia",
+    "index-unit-output-path" : "/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockView.o",
+    "llvm-bc" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockView.bc",
+    "object" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockView.o",
+    "swift-dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockView.swiftdeps",
+    "swiftmodule" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockView~partial.swiftmodule"
+  },
+  "/Users/yousa/Desktop/FloatingClockOverlay/FloatingClockOverlay/ClockWindowController.swift" : {
+    "const-values" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockWindowController.swiftconstvalues",
+    "dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockWindowController.d",
+    "diagnostics" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockWindowController.dia",
+    "index-unit-output-path" : "/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockWindowController.o",
+    "llvm-bc" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockWindowController.bc",
+    "object" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockWindowController.o",
+    "swift-dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockWindowController.swiftdeps",
+    "swiftmodule" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/ClockWindowController~partial.swiftmodule"
+  },
+  "/Users/yousa/Desktop/FloatingClockOverlay/FloatingClockOverlay/OverlayMode.swift" : {
+    "const-values" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/OverlayMode.swiftconstvalues",
+    "dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/OverlayMode.d",
+    "diagnostics" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/OverlayMode.dia",
+    "index-unit-output-path" : "/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/OverlayMode.o",
+    "llvm-bc" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/OverlayMode.bc",
+    "object" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/OverlayMode.o",
+    "swift-dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/OverlayMode.swiftdeps",
+    "swiftmodule" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/OverlayMode~partial.swiftmodule"
+  },
+  "/Users/yousa/Desktop/FloatingClockOverlay/FloatingClockOverlay/SettingsView.swift" : {
+    "const-values" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/SettingsView.swiftconstvalues",
+    "dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/SettingsView.d",
+    "diagnostics" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/SettingsView.dia",
+    "index-unit-output-path" : "/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/SettingsView.o",
+    "llvm-bc" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/SettingsView.bc",
+    "object" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/SettingsView.o",
+    "swift-dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/SettingsView.swiftdeps",
+    "swiftmodule" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/SettingsView~partial.swiftmodule"
+  },
+  "/Users/yousa/Desktop/FloatingClockOverlay/FloatingClockOverlay/SettingsWindowController.swift" : {
+    "const-values" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/SettingsWindowController.swiftconstvalues",
+    "dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/SettingsWindowController.d",
+    "diagnostics" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/SettingsWindowController.dia",
+    "index-unit-output-path" : "/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/SettingsWindowController.o",
+    "llvm-bc" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/SettingsWindowController.bc",
+    "object" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/SettingsWindowController.o",
+    "swift-dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/SettingsWindowController.swiftdeps",
+    "swiftmodule" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/SettingsWindowController~partial.swiftmodule"
+  },
+  "/Users/yousa/Desktop/FloatingClockOverlay/FloatingClockOverlay/Theme.swift" : {
+    "const-values" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/Theme.swiftconstvalues",
+    "dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/Theme.d",
+    "diagnostics" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/Theme.dia",
+    "index-unit-output-path" : "/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/Theme.o",
+    "llvm-bc" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/Theme.bc",
+    "object" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/Theme.o",
+    "swift-dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/Theme.swiftdeps",
+    "swiftmodule" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/Theme~partial.swiftmodule"
+  },
+  "/Users/yousa/Desktop/FloatingClockOverlay/FloatingClockOverlay/TimeController.swift" : {
+    "const-values" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/TimeController.swiftconstvalues",
+    "dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/TimeController.d",
+    "diagnostics" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/TimeController.dia",
+    "index-unit-output-path" : "/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/TimeController.o",
+    "llvm-bc" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/TimeController.bc",
+    "object" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/TimeController.o",
+    "swift-dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/TimeController.swiftdeps",
+    "swiftmodule" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/TimeController~partial.swiftmodule"
+  },
+  "/Users/yousa/Desktop/FloatingClockOverlay/FloatingClockOverlay/TimerStopwatchControlsView.swift" : {
+    "const-values" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/TimerStopwatchControlsView.swiftconstvalues",
+    "dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/TimerStopwatchControlsView.d",
+    "diagnostics" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/TimerStopwatchControlsView.dia",
+    "index-unit-output-path" : "/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/TimerStopwatchControlsView.o",
+    "llvm-bc" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/TimerStopwatchControlsView.bc",
+    "object" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/TimerStopwatchControlsView.o",
+    "swift-dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/TimerStopwatchControlsView.swiftdeps",
+    "swiftmodule" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/TimerStopwatchControlsView~partial.swiftmodule"
+  },
+  "/Users/yousa/Desktop/FloatingClockOverlay/FloatingClockOverlay/main.swift" : {
+    "const-values" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/main.swiftconstvalues",
+    "dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/main.d",
+    "diagnostics" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/main.dia",
+    "index-unit-output-path" : "/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/main.o",
+    "llvm-bc" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/main.bc",
+    "object" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/main.o",
+    "swift-dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/main.swiftdeps",
+    "swiftmodule" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/main~partial.swiftmodule"
+  },
+  "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/yousa/Desktop/FloatingClockOverlay/build/Build/Intermediates.noindex/FloatingClockOverlay.build/Debug/FloatingClockOverlay.build/Objects-normal/arm64/GeneratedAssetSymbols~partial.swiftmodule"
+  }
+}
