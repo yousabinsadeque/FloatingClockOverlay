@@ -248,6 +248,23 @@ struct SettingsView: View {
 
                 SettingsDivider()
 
+                ToggleRow(icon: "eye.trianglebadge.exclamationmark", label: "Adaptive Color",
+                          value: $s.adaptiveColor,
+                          hint: "Auto-adjust text color to match background")
+                SettingsDivider()
+                ToggleRow(icon: "arrow.triangle.2.circlepath", label: "Burn-in Prevention",
+                          value: $s.burnInPrevention,
+                          hint: "Slowly drifts the clock to protect your display")
+
+                if s.burnInPrevention {
+                    SettingsDivider()
+                    SliderRow(icon: "clock.arrow.2.circlepath", label: "Drift Interval",
+                              value: $s.burnInInterval, range: 30...600,
+                              display: { "\(Int($0))s" })
+                }
+
+                SettingsDivider()
+
                 // Reset
                 HStack {
                     Button {

@@ -7,6 +7,8 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
     private let s = ClockSettings.shared
     private var cancellables = Set<AnyCancellable>()
     private var savedFrameBeforeFullscreen: NSRect?
+    private var burnInTimer: Timer?
+    private var burnInDirection: Int = 1  // alternates drift direction
 
     init() {
         let window = NSWindow(
@@ -54,6 +56,7 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
         }
 
         if s.isVisible { window.orderFrontRegardless() }
+        setupBurnInPrevention()
     }
 
     private func restorePosition() {
@@ -227,6 +230,62 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
         }
 
         window.setFrameOrigin(origin)
+        savePosition()
+    }
+
+    // MARK: - Burn-in Prevention
+
+    private func setupBurnInPrevention() {
+        s.$burnInPrevention
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] enabled in
+                if enabled {
+                    self?.startBurnInTimer()
+                } else {
+                    self?.burnInTimer?.invalidate()
+                    self?.burnInTimer = nil
+                }
+            }
+            .store(in: &cancellables)
+
+        s.$burnInInterval
+            .dropFirst()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self = self, self.s.burnInPrevention else { return }
+                self.startBurnInTimer()
+            }
+            .store(in: &cancellables)
+    }
+
+    private func startBurnInTimer() {
+        burnInTimer?.invalidate()
+        let interval = max(30, s.burnInInterval)
+        burnInTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
+            self?.driftPosition()
+        }
+    }
+
+    private func driftPosition() {
+        guard let window = window, !s.isFullScreen, let screen = NSScreen.main else { return }
+        let drift: CGFloat = 4
+        burnInDirection *= -1
+        let dx = CGFloat(burnInDirection) * drift
+        let dy = CGFloat(burnInDirection) * drift
+
+        var origin = window.frame.origin
+        origin.x += dx
+        origin.y += dy
+
+        let vf = screen.visibleFrame
+        origin.x = min(max(origin.x, vf.minX), vf.maxX - window.frame.width)
+        origin.y = min(max(origin.y, vf.minY), vf.maxY - window.frame.height)
+
+        NSAnimationContext.runAnimationGroup { ctx in
+            ctx.duration = 1.5
+            ctx.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            window.animator().setFrameOrigin(origin)
+        }
         savePosition()
     }
 

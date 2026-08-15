@@ -6,9 +6,11 @@ struct ClockView: View {
 
     @State private var clockTime = Date()
     @State private var flashOn   = true
+    @State private var sampledBrightness: CGFloat = 0.0
 
     private let clockTimer = Timer.publish(every: 1.0,  on: .main, in: .common).autoconnect()
     private let flashTimer = Timer.publish(every: 0.45, on: .main, in: .common).autoconnect()
+    private let colorSampleTimer = Timer.publish(every: 2.0, on: .main, in: .common).autoconnect()
 
     var body: some View {
         Group {
@@ -27,6 +29,10 @@ struct ClockView: View {
             }
         }
         .onReceive(clockTimer) { clockTime = $0 }
+        .onReceive(colorSampleTimer) { _ in
+            guard s.adaptiveColor else { return }
+            sampledBrightness = ScreenSampler.averageBrightnessUnderClock()
+        }
         .onReceive(flashTimer) { _ in
             if s.overlayMode == .timer && tc.timerState == .finished {
                 flashOn.toggle()
@@ -179,7 +185,22 @@ struct ClockView: View {
         if s.overlayMode == .timer && tc.timerState == .finished {
             return flashOn ? .red : style.textColor
         }
+        if s.adaptiveColor {
+            return adaptiveTextColor
+        }
         return style.textColor
+    }
+
+    private var adaptiveTextColor: Color {
+        // Light background → dark text, dark background → light text
+        // Mid-range → teal for visibility on both
+        if sampledBrightness > 0.65 {
+            return Color(white: 0.15)
+        } else if sampledBrightness > 0.35 {
+            return Color(red: 0.2, green: 0.7, blue: 0.7) // teal
+        } else {
+            return Color(white: 0.92)
+        }
     }
 
     private func glowOrShadow(_ style: ThemeStyle, opacity: Double) -> Color {

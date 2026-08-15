@@ -58,6 +58,11 @@ final class ClockSettings: ObservableObject {
     @Published var isFullScreen:    Bool
     @Published var clockAlignment:  ClockAlignment
 
+    // MARK: - Adaptive & Burn-in Prevention
+    @Published var adaptiveColor:   Bool
+    @Published var burnInPrevention: Bool
+    @Published var burnInInterval:  Double   // seconds between drift moves
+
     // MARK: - Position
     @Published var windowX:         Double
     @Published var windowY:         Double
@@ -107,6 +112,9 @@ final class ClockSettings: ObservableObject {
         customHeight      = dbl("customHeight",      default: 70.0)
         isFullScreen      = bool("isFullScreen",     default: false)
         clockAlignment    = ClockAlignment(rawValue: str("clockAlignment") ?? "") ?? .topRight
+        adaptiveColor     = bool("adaptiveColor",    default: false)
+        burnInPrevention  = bool("burnInPrevention", default: false)
+        burnInInterval    = dbl("burnInInterval",    default: 120.0)
         windowX           = dbl("windowX",           default: -1)
         windowY           = dbl("windowY",           default: -1)
 
@@ -151,6 +159,9 @@ final class ClockSettings: ObservableObject {
         $customHeight     .dropFirst().sink { d.set($0, forKey: "customHeight")     }.store(in: &cancellables)
         $isFullScreen     .dropFirst().sink { d.set($0, forKey: "isFullScreen")     }.store(in: &cancellables)
         $clockAlignment   .dropFirst().sink { d.set($0.rawValue, forKey: "clockAlignment")      }.store(in: &cancellables)
+        $adaptiveColor    .dropFirst().sink { d.set($0, forKey: "adaptiveColor")    }.store(in: &cancellables)
+        $burnInPrevention .dropFirst().sink { d.set($0, forKey: "burnInPrevention") }.store(in: &cancellables)
+        $burnInInterval   .dropFirst().sink { d.set($0, forKey: "burnInInterval")   }.store(in: &cancellables)
         $windowX          .dropFirst().sink { d.set($0, forKey: "windowX")          }.store(in: &cancellables)
         $windowY          .dropFirst().sink { d.set($0, forKey: "windowY")          }.store(in: &cancellables)
     }

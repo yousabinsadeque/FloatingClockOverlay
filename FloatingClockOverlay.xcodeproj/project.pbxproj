@@ -11,7 +11,8 @@
 		AA000000000000000000021A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000011A /* AppDelegate.swift */; };
 		AA000000000000000000022A /* ClockWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000012A /* ClockWindowController.swift */; };
 		AA000000000000000000023A /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000013A /* ClockView.swift */; };
-		AA000000000000000000024A /* ClockSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000016A /* ClockSettings.swift */; };
+
+		618B252B52524D73A39996E9 /* ScreenSampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0987939BFD5C4DC4930A7118 /* ScreenSampler.swift */; };		AA000000000000000000024A /* ClockSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000016A /* ClockSettings.swift */; };
 		AA000000000000000000025A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000017A /* SettingsView.swift */; };
 		AA000000000000000000026A /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000018A /* SettingsWindowController.swift */; };
 		AA0000000000000000000B0A /* OverlayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000C0A /* OverlayMode.swift */; };
@@ -27,7 +28,8 @@
 		AA000000000000000000011A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AA000000000000000000012A /* ClockWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockWindowController.swift; sourceTree = "<group>"; };
 		AA000000000000000000013A /* ClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockView.swift; sourceTree = "<group>"; };
-		AA000000000000000000016A /* ClockSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockSettings.swift; sourceTree = "<group>"; };
+
+		0987939BFD5C4DC4930A7118 /* ScreenSampler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSampler.swift; sourceTree = "<group>"; };		AA000000000000000000016A /* ClockSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockSettings.swift; sourceTree = "<group>"; };
 		AA000000000000000000017A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		AA000000000000000000018A /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
 		AA000000000000000000014A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 				AA000000000000000000011A /* AppDelegate.swift */,
 				AA000000000000000000012A /* ClockWindowController.swift */,
 				AA000000000000000000013A /* ClockView.swift */,
+				0987939BFD5C4DC4930A7118 /* ScreenSampler.swift */,
 				AA000000000000000000016A /* ClockSettings.swift */,
 				AA000000000000000000017A /* SettingsView.swift */,
 				AA000000000000000000018A /* SettingsWindowController.swift */,
@@ -161,6 +164,7 @@
 				AA000000000000000000021A /* AppDelegate.swift in Sources */,
 				AA000000000000000000022A /* ClockWindowController.swift in Sources */,
 				AA000000000000000000023A /* ClockView.swift in Sources */,
+				618B252B52524D73A39996E9 /* ScreenSampler.swift in Sources */,
 				AA000000000000000000024A /* ClockSettings.swift in Sources */,
 				AA000000000000000000025A /* SettingsView.swift in Sources */,
 				AA000000000000000000026A /* SettingsWindowController.swift in Sources */,
