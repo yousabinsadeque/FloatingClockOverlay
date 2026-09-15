@@ -28,6 +28,9 @@ struct ClockView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
+        .onTapGesture(count: 2) {
+            NotificationCenter.default.post(name: .openSettings, object: nil)
+        }
         .onReceive(clockTimer) { clockTime = $0 }
         .onReceive(colorSampleTimer) { _ in
             guard s.adaptiveColor else { return }
@@ -192,14 +195,10 @@ struct ClockView: View {
     }
 
     private var adaptiveTextColor: Color {
-        // Light background → dark text, dark background → light text
-        // Mid-range → teal for visibility on both
-        if sampledBrightness > 0.65 {
-            return Color(white: 0.15)
-        } else if sampledBrightness > 0.35 {
-            return Color(red: 0.2, green: 0.7, blue: 0.7) // teal
+        if sampledBrightness > 0.5 {
+            return .black
         } else {
-            return Color(white: 0.92)
+            return .white
         }
     }
 

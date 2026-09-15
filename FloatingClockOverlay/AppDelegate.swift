@@ -40,6 +40,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             self, selector: #selector(quitApp),
             name: .quitApp, object: nil
         )
+
+        // Double-click on overlay opens Settings.
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(openSettings),
+            name: .openSettings, object: nil
+        )
     }
 
     func applicationWillTerminate(_ notification: Notification) {
