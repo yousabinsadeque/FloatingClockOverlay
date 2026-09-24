@@ -27,39 +27,42 @@
         html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Helvetica Neue', sans-serif;
             background: var(--bg);
             color: var(--text);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         /* ── NAV ─────────────────────────────────────────────── */
         nav {
             position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            background: rgba(10,10,10,0.8);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            background: rgba(10,10,10,0.72);
+            backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
             border-bottom: 1px solid var(--border);
         }
         .nav-inner {
             max-width: 1080px; margin: 0 auto;
-            padding: 14px 24px;
+            padding: 0 24px;
+            height: 44px;
             display: flex; align-items: center; justify-content: space-between;
         }
         .nav-brand {
-            display: flex; align-items: center; gap: 10px;
-            font-weight: 600; font-size: 15px; text-decoration: none; color: var(--text);
+            display: flex; align-items: center; gap: 8px;
+            font-weight: 600; font-size: 13px; letter-spacing: -0.01em;
+            text-decoration: none; color: var(--text);
         }
         .nav-icon {
-            width: 28px; height: 28px; border-radius: 7px;
+            width: 22px; height: 22px; border-radius: 6px;
             background: linear-gradient(135deg, #1a1a2e, #16213e);
             display: flex; align-items: center; justify-content: center;
-            font-size: 16px;
+            font-size: 13px;
         }
-        .nav-links { display: flex; gap: 28px; }
+        .nav-links { display: flex; gap: 32px; }
         .nav-links a {
-            color: var(--text2); text-decoration: none; font-size: 14px;
-            font-weight: 400; transition: color 0.2s;
+            color: var(--text2); text-decoration: none; font-size: 12px;
+            font-weight: 400; letter-spacing: 0.01em; transition: color 0.2s;
         }
         .nav-links a:hover { color: var(--text); }
 
@@ -73,12 +76,66 @@
         }
         .hero::before {
             content: '';
-            position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+            position: absolute; top: -200px; left: 50%;
+            transform: translateX(-50%) translate3d(var(--px, 0px), var(--py, 0px), 0);
             width: 800px; height: 800px; border-radius: 50%;
             background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
             pointer-events: none;
+            transition: transform 0.2s ease-out;
         }
-        .hero-content { position: relative; max-width: 700px; }
+        .hero::after {
+            content: '';
+            position: absolute; bottom: -260px; right: 8%;
+            transform: translate3d(calc(var(--px, 0px) * -1.6), calc(var(--py, 0px) * -1.6), 0);
+            width: 500px; height: 500px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(48,209,88,0.1) 0%, transparent 70%);
+            pointer-events: none;
+            transition: transform 0.2s ease-out;
+        }
+        .flow-layer {
+            position: absolute; inset: -30%; z-index: 0;
+            pointer-events: none;
+            background: conic-gradient(from 0deg at 50% 50%,
+                rgba(75,184,255,0.14), rgba(191,90,242,0.10),
+                rgba(48,209,88,0.12), rgba(75,184,255,0.14));
+            filter: blur(90px);
+            opacity: 0.55;
+        }
+        .cta .flow-layer { opacity: 0.35; filter: blur(100px); }
+        @media (prefers-reduced-motion: no-preference) {
+            .flow-layer { animation: flowRotate 24s linear infinite; }
+        }
+        @keyframes flowRotate {
+            0%   { transform: rotate(0deg) scale(1); }
+            50%  { transform: rotate(180deg) scale(1.18); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+        .particles {
+            position: absolute; inset: 0; overflow: hidden;
+            pointer-events: none; z-index: 1;
+        }
+        .particles span {
+            position: absolute; bottom: -20px;
+            width: var(--size, 5px); height: var(--size, 5px);
+            border-radius: 50%;
+            background: var(--pcolor, var(--accent));
+            opacity: 0;
+            filter: blur(0.5px);
+            box-shadow: 0 0 8px currentColor;
+        }
+        @media (prefers-reduced-motion: no-preference) {
+            .particles span {
+                animation: drift var(--dur, 14s) ease-in infinite;
+                animation-delay: var(--delay, 0s);
+            }
+        }
+        @keyframes drift {
+            0%   { transform: translate3d(0, 0, 0); opacity: 0; }
+            10%  { opacity: 0.55; }
+            85%  { opacity: 0.35; }
+            100% { transform: translate3d(var(--drift-x, 30px), -520px, 0); opacity: 0; }
+        }
+        .hero-content { position: relative; z-index: 2; max-width: 700px; }
         .hero-badge {
             display: inline-flex; align-items: center; gap: 8px;
             background: var(--surface2); border: 1px solid var(--border);
@@ -90,22 +147,34 @@
             background: var(--accent2);
         }
         h1 {
-            font-size: clamp(40px, 7vw, 72px);
-            font-weight: 700; letter-spacing: -0.03em;
+            font-size: clamp(44px, 8vw, 88px);
+            font-weight: 600; letter-spacing: -0.04em;
             line-height: 1.05; margin-bottom: 20px;
         }
-        h1 span { color: var(--accent); }
+        h1 span {
+            background: linear-gradient(90deg, #4bb8ff, #64d2ff 35%, #bf5af2 70%, #4bb8ff);
+            background-size: 300% 100%;
+            -webkit-background-clip: text; background-clip: text;
+            color: transparent;
+        }
+        @media (prefers-reduced-motion: no-preference) {
+            h1 span { animation: gradientFlow 8s ease-in-out infinite; }
+        }
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
         .hero-sub {
-            font-size: 18px; color: var(--text2);
-            max-width: 500px; margin: 0 auto 40px;
-            line-height: 1.7;
+            font-size: 21px; font-weight: 400; color: var(--text2);
+            max-width: 480px; margin: 0 auto 40px;
+            line-height: 1.5; letter-spacing: -0.01em;
         }
         .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 
         .btn {
             display: inline-flex; align-items: center; gap: 8px;
-            padding: 14px 28px; border-radius: 12px;
-            font-size: 15px; font-weight: 600;
+            padding: 13px 26px; border-radius: 980px;
+            font-size: 15px; font-weight: 500; letter-spacing: -0.01em;
             text-decoration: none; transition: all 0.2s;
             border: none; cursor: pointer;
         }
@@ -115,12 +184,13 @@
         .btn-primary:hover {
             background: #6cc8ff;
             box-shadow: 0 0 30px rgba(75,184,255,0.3);
+            transform: scale(1.02);
         }
         .btn-secondary {
             background: var(--surface2); color: var(--text);
             border: 1px solid var(--border);
         }
-        .btn-secondary:hover { background: #252528; }
+        .btn-secondary:hover { background: #252528; transform: scale(1.02); }
         .btn svg { width: 18px; height: 18px; }
 
         .hero-meta {
@@ -132,6 +202,19 @@
         .preview {
             max-width: 1080px; margin: -20px auto 0; padding: 0 24px;
             position: relative; z-index: 2;
+            perspective: 1400px;
+        }
+        .preview-float {
+            transform-style: preserve-3d;
+        }
+        @media (prefers-reduced-motion: no-preference) {
+            .preview-float {
+                animation: floatBob 6s ease-in-out infinite;
+            }
+        }
+        @keyframes floatBob {
+            0%, 100% { transform: translateY(0) rotateZ(0deg); }
+            50% { transform: translateY(-14px) rotateZ(0.35deg); }
         }
         .preview-window {
             background: var(--surface);
@@ -139,7 +222,25 @@
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(0deg) rotateY(0deg);
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s;
+            will-change: transform;
         }
+        .preview-window.tilting { transition: transform 0.08s linear; }
+        .preview-window:hover {
+            box-shadow: 0 50px 100px rgba(0,0,0,0.6), 0 0 60px var(--glow);
+        }
+        .preview-glare {
+            position: absolute; inset: 0; z-index: 3;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.16), transparent 45%);
+            mix-blend-mode: overlay;
+        }
+        .preview-window:hover .preview-glare { opacity: 1; }
         .preview-titlebar {
             padding: 14px 18px;
             display: flex; align-items: center; gap: 8px;
@@ -164,8 +265,9 @@
             font-weight: 300;
             letter-spacing: 2px;
             color: #fff;
-            text-shadow: 0 0 40px rgba(255,255,255,0.15);
             position: relative;
+            transform: translateZ(50px);
+            transform-style: preserve-3d;
         }
         .clock-demo::before {
             content: '';
@@ -174,8 +276,67 @@
             background: rgba(255,255,255,0.04);
             border: 1px solid rgba(255,255,255,0.08);
             backdrop-filter: blur(10px);
+            transform: translateZ(-20px);
+            transition: background 0.4s, border-color 0.4s, box-shadow 0.4s, backdrop-filter 0.4s;
         }
-        .clock-demo span { position: relative; z-index: 1; }
+        .clock-demo span {
+            position: relative; z-index: 1;
+            text-shadow:
+                0 1px 0 rgba(255,255,255,0.5),
+                0 2px 0 rgba(220,220,230,0.3),
+                0 3px 2px rgba(0,0,0,0.2),
+                0 8px 16px rgba(0,0,0,0.35),
+                0 0 40px rgba(255,255,255,0.15),
+                0 0 70px var(--glow);
+            transition: color 0.4s, text-shadow 0.4s, font-weight 0.4s;
+        }
+
+        /* Theme demo variants, toggled via clicking a theme chip */
+        .preview-window[data-theme="glass"] .clock-demo::before {
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(22px);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), 0 8px 32px rgba(0,0,0,0.3);
+        }
+        .preview-window[data-theme="dark"] .clock-demo::before {
+            background: rgba(0,0,0,0.55);
+            border: 1px solid rgba(255,255,255,0.06);
+            backdrop-filter: blur(4px);
+        }
+        .preview-window[data-theme="dark"] .clock-demo span { text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
+        .preview-window[data-theme="light"] .clock-demo::before {
+            background: rgba(255,255,255,0.94);
+            border: 1px solid rgba(0,0,0,0.08);
+            backdrop-filter: blur(10px);
+        }
+        .preview-window[data-theme="light"] .clock-demo span {
+            color: #111114;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+        }
+        .preview-window[data-theme="neon"] .clock-demo::before {
+            background: rgba(10,0,22,0.45);
+            border: 1px solid rgba(255,0,200,0.45);
+            box-shadow: 0 0 30px rgba(255,0,200,0.35), 0 0 65px rgba(0,234,255,0.18);
+        }
+        .preview-window[data-theme="neon"] .clock-demo span {
+            color: #fff;
+            text-shadow: 0 0 10px #ff2fd0, 0 0 24px #ff2fd0, 0 0 42px #00eaff, 0 0 76px #00eaff;
+        }
+        .preview-window[data-theme="minimal"] .clock-demo::before {
+            background: transparent; border-color: transparent; backdrop-filter: none; box-shadow: none;
+        }
+        .preview-window[data-theme="minimal"] .clock-demo span {
+            font-weight: 200; text-shadow: none; color: rgba(255,255,255,0.85);
+        }
+        .preview-window[data-theme="custom"] .clock-demo::before {
+            background: linear-gradient(135deg, rgba(191,90,242,0.18), rgba(75,184,255,0.18));
+            border: 1px solid rgba(191,90,242,0.4);
+        }
+        .preview-window[data-theme="custom"] .clock-demo span {
+            background: linear-gradient(90deg, #bf5af2, #4bb8ff);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            text-shadow: none;
+        }
 
         /* ── FEATURES ────────────────────────────────────────── */
         .features {
@@ -188,27 +349,46 @@
             margin-bottom: 12px;
         }
         .section-title {
-            font-size: clamp(28px, 4vw, 40px);
-            font-weight: 700; letter-spacing: -0.02em;
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 600; letter-spacing: -0.03em;
+            line-height: 1.1;
             margin-bottom: 60px;
         }
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
+            perspective: 1000px;
         }
         .feature-card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 28px;
-            transition: border-color 0.3s;
+            transition: border-color 0.3s, transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s;
+            transform-style: preserve-3d;
+            will-change: transform;
         }
-        .feature-card:hover { border-color: rgba(255,255,255,0.15); }
+        .feature-card.tilting { transition: transform 0.08s linear; }
+        .feature-card:hover {
+            border-color: rgba(255,255,255,0.15);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
         .feature-icon {
             width: 40px; height: 40px; border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
             font-size: 20px; margin-bottom: 16px;
+            transform: translateZ(24px);
+        }
+        @media (prefers-reduced-motion: no-preference) {
+            .feature-icon {
+                animation: iconFloat 3.6s ease-in-out infinite;
+                animation-delay: var(--icon-delay, 0s);
+            }
+        }
+        @keyframes iconFloat {
+            0%, 100% { transform: translateZ(24px) translateY(0); }
+            50% { transform: translateZ(24px) translateY(-6px); }
         }
         .feature-card h3 {
             font-size: 16px; font-weight: 600; margin-bottom: 8px;
@@ -238,7 +418,13 @@
             border: 1px solid var(--border);
             background: var(--surface);
             color: var(--text2);
+            cursor: pointer; user-select: none;
+            transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
         }
+        .theme-chip:hover:not(.active) {
+            border-color: rgba(255,255,255,0.3); color: var(--text);
+        }
+        .theme-chip:active { transform: scale(0.96); }
         .theme-chip.active {
             background: var(--accent); color: #000;
             border-color: var(--accent);
@@ -280,6 +466,7 @@
             text-align: center;
             padding: 100px 24px 120px;
             position: relative;
+            overflow: hidden;
         }
         .cta::before {
             content: '';
@@ -289,8 +476,8 @@
             pointer-events: none;
         }
         .cta h2 {
-            font-size: clamp(28px, 4vw, 44px);
-            font-weight: 700; letter-spacing: -0.02em;
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 600; letter-spacing: -0.03em;
             margin-bottom: 16px; position: relative;
         }
         .cta p {
@@ -298,6 +485,7 @@
             margin-bottom: 36px; position: relative;
         }
         .cta .btn { position: relative; }
+        .cta-content { position: relative; z-index: 2; }
 
         /* ── FOOTER ──────────────────────────────────────────── */
         footer {
@@ -321,6 +509,31 @@
         .footer-legal a:hover { text-decoration: underline; }
         .footer-copy {
             margin-top: 20px; font-size: 12px; color: var(--text3);
+        }
+
+        /* ── SCROLL REVEAL ───────────────────────────────────── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(48px);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.is-visible { opacity: 1; transform: translateY(0); }
+        .features-grid .reveal:nth-child(1) { transition-delay: 0s; }
+        .features-grid .reveal:nth-child(2) { transition-delay: 0.06s; }
+        .features-grid .reveal:nth-child(3) { transition-delay: 0.12s; }
+        .features-grid .reveal:nth-child(4) { transition-delay: 0.18s; }
+        .features-grid .reveal:nth-child(5) { transition-delay: 0.24s; }
+        .features-grid .reveal:nth-child(6) { transition-delay: 0.3s; }
+        .features-grid .reveal:nth-child(7) { transition-delay: 0.36s; }
+        .features-grid .reveal:nth-child(8) { transition-delay: 0.42s; }
+        .features-grid .reveal:nth-child(9) { transition-delay: 0.48s; }
+        .install-steps .reveal:nth-child(1) { transition-delay: 0s; }
+        .install-steps .reveal:nth-child(2) { transition-delay: 0.08s; }
+        .install-steps .reveal:nth-child(3) { transition-delay: 0.16s; }
+        .install-steps .reveal:nth-child(4) { transition-delay: 0.24s; }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; transition: none; }
         }
 
         /* ── RESPONSIVE ──────────────────────────────────────── */
@@ -354,6 +567,17 @@
 
 <!-- HERO -->
 <section class="hero">
+    <div class="flow-layer"></div>
+    <div class="particles">
+        <span style="left:8%;  --size:6px; --pcolor:#4bb8ff; --dur:13s; --delay:0s;   --drift-x:20px;"></span>
+        <span style="left:18%; --size:4px; --pcolor:#30d158; --dur:16s; --delay:2.5s; --drift-x:-24px;"></span>
+        <span style="left:30%; --size:5px; --pcolor:#bf5af2; --dur:11s; --delay:5s;   --drift-x:16px;"></span>
+        <span style="left:47%; --size:3px; --pcolor:#4bb8ff; --dur:15s; --delay:1s;   --drift-x:-14px;"></span>
+        <span style="left:60%; --size:6px; --pcolor:#64d2ff; --dur:12s; --delay:4s;   --drift-x:22px;"></span>
+        <span style="left:72%; --size:4px; --pcolor:#30d158; --dur:17s; --delay:6.5s; --drift-x:-18px;"></span>
+        <span style="left:84%; --size:5px; --pcolor:#4bb8ff; --dur:14s; --delay:3s;   --drift-x:26px;"></span>
+        <span style="left:93%; --size:3px; --pcolor:#bf5af2; --dur:12.5s; --delay:7s; --drift-x:-20px;"></span>
+    </div>
     <div class="hero-content">
         <div class="hero-badge">
             <div class="hero-badge-dot"></div>
@@ -376,8 +600,8 @@
         </div>
         <div class="hero-meta">
             <span>macOS 12+</span>
-            <span>Native Swift app</span>
-            <span>~4 MB</span>
+            <span>Universal Binary (Apple Silicon + Intel)</span>
+            <span>Native Swift</span>
             <span>No Electron</span>
         </div>
     </div>
@@ -385,15 +609,20 @@
 
 <!-- PREVIEW -->
 <section class="preview">
-    <div class="preview-window">
-        <div class="preview-titlebar">
-            <div class="preview-dot r"></div>
-            <div class="preview-dot y"></div>
-            <div class="preview-dot g"></div>
-        </div>
-        <div class="preview-body">
-            <div class="clock-demo">
-                <span id="live-clock">12:00:00</span>
+    <div class="reveal">
+        <div class="preview-float">
+            <div class="preview-window">
+                <div class="preview-titlebar">
+                    <div class="preview-dot r"></div>
+                    <div class="preview-dot y"></div>
+                    <div class="preview-dot g"></div>
+                </div>
+                <div class="preview-body">
+                    <div class="clock-demo">
+                        <span id="live-clock">12:00:00</span>
+                    </div>
+                </div>
+                <div class="preview-glare"></div>
             </div>
         </div>
     </div>
@@ -401,78 +630,93 @@
 
 <!-- FEATURES -->
 <section class="features" id="features">
-    <div class="section-label">Features</div>
-    <h2 class="section-title">Everything you need. Nothing you don't.</h2>
+    <div class="section-label reveal">Features</div>
+    <h2 class="section-title reveal">Everything you need. Nothing you don't.</h2>
     <div class="features-grid">
-        <div class="feature-card">
-            <div class="feature-icon fi-1">&#9711;</div>
+        <div class="feature-card reveal">
+            <div class="feature-icon fi-1" style="--icon-delay:0s;">&#9711;</div>
             <h3>Always on Top</h3>
             <p>Stays above every window, every app, every Space. Even above full-screen apps.</p>
         </div>
-        <div class="feature-card">
-            <div class="feature-icon fi-2">&#128433;</div>
+        <div class="feature-card reveal">
+            <div class="feature-icon fi-2" style="--icon-delay:0.4s;">&#128433;</div>
             <h3>Click-Through</h3>
             <p>Clicks pass right through to the app behind it. Toggle with a global shortcut.</p>
         </div>
-        <div class="feature-card">
-            <div class="feature-icon fi-3">&#127912;</div>
+        <div class="feature-card reveal">
+            <div class="feature-icon fi-3" style="--icon-delay:0.8s;">&#127912;</div>
             <h3>7 Themes</h3>
             <p>Transparent, Glass (iOS 26 liquid glass), Dark, Light, Neon, Minimal, and fully Custom.</p>
         </div>
-        <div class="feature-card">
-            <div class="feature-icon fi-4">&#9201;</div>
+        <div class="feature-card reveal">
+            <div class="feature-icon fi-4" style="--icon-delay:1.2s;">&#9201;</div>
             <h3>Timer &amp; Stopwatch</h3>
             <p>Built-in countdown timer with notifications and a stopwatch with lap tracking.</p>
         </div>
-        <div class="feature-card">
-            <div class="feature-icon fi-5">&#128295;</div>
+        <div class="feature-card reveal">
+            <div class="feature-icon fi-5" style="--icon-delay:1.6s;">&#128250;</div>
+            <h3>DVD Bounce Mode</h3>
+            <p>Clock bounces around the screen like a DVD screensaver. Smooth display-synced animation across all monitors.</p>
+        </div>
+        <div class="feature-card reveal">
+            <div class="feature-icon fi-6" style="--icon-delay:2s;">&#127752;</div>
+            <h3>Adaptive Color</h3>
+            <p>Auto-adjusts text color based on your wallpaper brightness. Always readable, always beautiful.</p>
+        </div>
+        <div class="feature-card reveal">
+            <div class="feature-icon fi-1" style="--icon-delay:2.4s;">&#128295;</div>
             <h3>Fully Customizable</h3>
             <p>Font family, weight, size, spacing, colors, corner radius, opacity, and more.</p>
         </div>
-        <div class="feature-card">
-            <div class="feature-icon fi-6">&#9776;</div>
+        <div class="feature-card reveal">
+            <div class="feature-icon fi-2" style="--icon-delay:2.8s;">&#128424;</div>
+            <h3>Multi-Monitor</h3>
+            <p>Drag and bounce across all connected displays. Remembers its position after restart.</p>
+        </div>
+        <div class="feature-card reveal">
+            <div class="feature-icon fi-4" style="--icon-delay:3.2s;">&#9776;</div>
             <h3>Menu Bar App</h3>
-            <p>Lives in your menu bar. Runs quietly even when the settings window is closed.</p>
+            <p>Lives in your menu bar. Double-click the clock to open settings. Runs quietly in the background.</p>
         </div>
     </div>
 </section>
 
 <!-- THEMES -->
 <section class="themes" id="themes">
-    <div class="section-label">Themes</div>
-    <h2 class="section-title">Pick a look that fits your desktop.</h2>
-    <div class="themes-row">
-        <div class="theme-chip active">Transparent</div>
-        <div class="theme-chip">Glass (iOS 26)</div>
-        <div class="theme-chip">Dark</div>
-        <div class="theme-chip">Light</div>
-        <div class="theme-chip">Neon</div>
-        <div class="theme-chip">Minimal</div>
-        <div class="theme-chip">Custom</div>
+    <div class="section-label reveal">Themes</div>
+    <h2 class="section-title reveal">Pick a look that fits your desktop.</h2>
+    <div class="themes-row reveal">
+        <div class="theme-chip active" data-theme="transparent">Transparent</div>
+        <div class="theme-chip" data-theme="glass">Glass (iOS 26)</div>
+        <div class="theme-chip" data-theme="dark">Dark</div>
+        <div class="theme-chip" data-theme="light">Light</div>
+        <div class="theme-chip" data-theme="neon">Neon</div>
+        <div class="theme-chip" data-theme="minimal">Minimal</div>
+        <div class="theme-chip" data-theme="custom">Custom</div>
     </div>
 </section>
 
 <!-- INSTALL -->
 <section class="install" id="install">
-    <div class="section-label">Installation</div>
-    <h2 class="section-title">Up and running in 30 seconds.</h2>
+    <div class="section-label reveal">Installation</div>
+    <h2 class="section-title reveal">Up and running in 30 seconds.</h2>
     <div class="install-steps">
-        <div class="install-step">
+        <div class="install-step reveal">
             <div class="step-num">1</div>
             <h3>Download the DMG</h3>
             <p>Click the download button to get FloatingClockOverlay.dmg.</p>
         </div>
-        <div class="install-step">
+        <div class="install-step reveal">
             <div class="step-num">2</div>
             <h3>Open the DMG</h3>
             <p>Double-click the downloaded file. A window will open showing the app.</p>
         </div>
-        <div class="install-step">
+        <div class="install-step reveal">
             <div class="step-num">3</div>
             <h3>Drag to Applications</h3>
             <p>Drag FloatingClockOverlay into the Applications folder shortcut.</p>
         </div>
-        <div class="install-step">
+        <div class="install-step reveal">
             <div class="step-num">4</div>
             <h3>Launch</h3>
             <p>Open from Applications or Launchpad. The clock appears and stays on top.</p>
@@ -485,12 +729,15 @@
 
 <!-- DOWNLOAD CTA -->
 <section class="cta" id="download">
-    <h2>Ready to try it?</h2>
-    <p>Free for personal and educational use. No account needed.</p>
-    <a href="https://github.com/yousabinsadeque/FloatingClockOverlay/releases/latest/download/FloatingClockOverlay.dmg" class="btn btn-primary" download>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Download FloatingClockOverlay.dmg
-    </a>
+    <div class="flow-layer"></div>
+    <div class="cta-content reveal">
+        <h2>Ready to try it?</h2>
+        <p>Free for personal and educational use. No account needed.</p>
+        <a href="https://github.com/yousabinsadeque/FloatingClockOverlay/releases/latest/download/FloatingClockOverlay.dmg" class="btn btn-primary" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download FloatingClockOverlay.dmg
+        </a>
+    </div>
 </section>
 
 <!-- FOOTER -->
@@ -522,6 +769,89 @@
     }
     updateClock();
     setInterval(updateClock, 1000);
+
+    // 3D tilt + parallax effects (skipped for reduced-motion users)
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduceMotion) {
+        function attachTilt(el, maxDeg) {
+            let raf = null;
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const px = (e.clientX - rect.left) / rect.width;
+                const py = (e.clientY - rect.top) / rect.height;
+                const rotateY = (px - 0.5) * maxDeg * 2;
+                const rotateX = (0.5 - py) * maxDeg * 2;
+                if (raf) cancelAnimationFrame(raf);
+                raf = requestAnimationFrame(() => {
+                    el.classList.add('tilting');
+                    el.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                    el.style.setProperty('--mx', (px * 100) + '%');
+                    el.style.setProperty('--my', (py * 100) + '%');
+                });
+            });
+            el.addEventListener('mouseleave', () => {
+                if (raf) cancelAnimationFrame(raf);
+                el.classList.remove('tilting');
+                el.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            });
+        }
+
+        const previewWindow = document.querySelector('.preview-window');
+        if (previewWindow) attachTilt(previewWindow, 6);
+
+        document.querySelectorAll('.feature-card').forEach((card) => attachTilt(card, 5));
+
+        // Hero background parallax, following cursor across the whole hero section
+        const hero = document.querySelector('.hero');
+        if (hero) {
+            hero.addEventListener('mousemove', (e) => {
+                const rect = hero.getBoundingClientRect();
+                const px = (e.clientX - rect.left) / rect.width - 0.5;
+                const py = (e.clientY - rect.top) / rect.height - 0.5;
+                hero.style.setProperty('--px', (px * 40) + 'px');
+                hero.style.setProperty('--py', (py * 40) + 'px');
+            });
+            hero.addEventListener('mouseleave', () => {
+                hero.style.setProperty('--px', '0px');
+                hero.style.setProperty('--py', '0px');
+            });
+        }
+    }
+
+    // Scroll-triggered reveal (fade + rise into view)
+    const revealEls = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window && revealEls.length) {
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+        revealEls.forEach((el) => revealObserver.observe(el));
+        // Safety net: never let a section stay permanently invisible
+        // (e.g. an odd viewport size, or a scroll-restore that the observer misses).
+        setTimeout(() => {
+            revealEls.forEach((el) => el.classList.add('is-visible'));
+        }, 2500);
+    } else {
+        revealEls.forEach((el) => el.classList.add('is-visible'));
+    }
+
+    // Theme chips: click to preview that theme on the demo clock above
+    const themeChips = document.querySelectorAll('.theme-chip');
+    const previewWindowEl = document.querySelector('.preview-window');
+    if (themeChips.length && previewWindowEl) {
+        themeChips.forEach((chip) => {
+            chip.addEventListener('click', () => {
+                themeChips.forEach((c) => c.classList.remove('active'));
+                chip.classList.add('active');
+                previewWindowEl.setAttribute('data-theme', chip.dataset.theme || 'transparent');
+                previewWindowEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        });
+    }
 </script>
 
 </body>
