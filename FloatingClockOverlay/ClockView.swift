@@ -28,9 +28,6 @@ struct ClockView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .onTapGesture(count: 2) {
-            NotificationCenter.default.post(name: .openSettings, object: nil)
-        }
         .onReceive(clockTimer) { clockTime = $0 }
         .onReceive(colorSampleTimer) { _ in
             guard s.adaptiveColor else { return }

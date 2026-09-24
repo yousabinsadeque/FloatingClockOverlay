@@ -264,6 +264,18 @@ struct SettingsView: View {
                 }
 
                 SettingsDivider()
+                ToggleRow(icon: "tv", label: "DVD Bounce",
+                          value: $s.dvdBounce,
+                          hint: "Clock floats around the screen bouncing off edges")
+
+                if s.dvdBounce {
+                    SettingsDivider()
+                    SliderRow(icon: "hare", label: "Bounce Speed",
+                              value: $s.dvdBounceSpeed, range: 0.5...5.0,
+                              display: { String(format: "%.1f", $0) })
+                }
+
+                SettingsDivider()
 
                 // Reset
                 HStack {

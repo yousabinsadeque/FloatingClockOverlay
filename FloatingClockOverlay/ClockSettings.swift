@@ -62,6 +62,8 @@ final class ClockSettings: ObservableObject {
     @Published var adaptiveColor:   Bool
     @Published var burnInPrevention: Bool
     @Published var burnInInterval:  Double   // seconds between drift moves
+    @Published var dvdBounce:       Bool
+    @Published var dvdBounceSpeed:  Double   // points per tick
 
     // MARK: - Position
     @Published var windowX:         Double
@@ -115,6 +117,8 @@ final class ClockSettings: ObservableObject {
         adaptiveColor     = bool("adaptiveColor",    default: false)
         burnInPrevention  = bool("burnInPrevention", default: false)
         burnInInterval    = dbl("burnInInterval",    default: 120.0)
+        dvdBounce         = bool("dvdBounce",         default: false)
+        dvdBounceSpeed    = dbl("dvdBounceSpeed",    default: 1.5)
         windowX           = dbl("windowX",           default: -1)
         windowY           = dbl("windowY",           default: -1)
 
@@ -162,6 +166,8 @@ final class ClockSettings: ObservableObject {
         $adaptiveColor    .dropFirst().sink { d.set($0, forKey: "adaptiveColor")    }.store(in: &cancellables)
         $burnInPrevention .dropFirst().sink { d.set($0, forKey: "burnInPrevention") }.store(in: &cancellables)
         $burnInInterval   .dropFirst().sink { d.set($0, forKey: "burnInInterval")   }.store(in: &cancellables)
+        $dvdBounce        .dropFirst().sink { d.set($0, forKey: "dvdBounce")        }.store(in: &cancellables)
+        $dvdBounceSpeed   .dropFirst().sink { d.set($0, forKey: "dvdBounceSpeed")   }.store(in: &cancellables)
         $windowX          .dropFirst().sink { d.set($0, forKey: "windowX")          }.store(in: &cancellables)
         $windowY          .dropFirst().sink { d.set($0, forKey: "windowY")          }.store(in: &cancellables)
     }

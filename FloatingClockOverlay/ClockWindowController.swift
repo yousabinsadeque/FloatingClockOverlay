@@ -9,6 +9,11 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
     private var savedFrameBeforeFullscreen: NSRect?
     private var burnInTimer: Timer?
     private var burnInDirection: Int = 1  // alternates drift direction
+    private var dvdDisplayLink: CVDisplayLink?
+    private var dvdVelocity: CGPoint = CGPoint(x: 0.8, y: 0.5)
+    private var dvdPosition: CGPoint = .zero
+    private var dvdLastTimestamp: TimeInterval = 0
+    private var doubleClickMonitor: Any?
 
     init() {
         let window = NSWindow(
@@ -57,6 +62,8 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
 
         if s.isVisible { window.orderFrontRegardless() }
         setupBurnInPrevention()
+        setupDVDBounce()
+        setupDoubleClickToOpenSettings()
     }
 
     private func restorePosition() {
@@ -287,6 +294,114 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
             window.animator().setFrameOrigin(origin)
         }
         savePosition()
+    }
+
+    // MARK: - Double-Click to Open Settings
+
+    private func setupDoubleClickToOpenSettings() {
+        doubleClickMonitor = NSEvent.addLocalMonitorForEvents(matching: .leftMouseUp) { [weak self] event in
+            guard let self = self, event.clickCount == 2,
+                  let window = self.window, event.window == window else { return event }
+            NotificationCenter.default.post(name: .openSettings, object: nil)
+            return event
+        }
+    }
+
+    // MARK: - DVD Bounce
+
+    private func setupDVDBounce() {
+        s.$dvdBounce
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] enabled in
+                if enabled {
+                    self?.startDVDBounce()
+                } else {
+                    self?.stopDVDBounce()
+                }
+            }
+            .store(in: &cancellables)
+
+        s.$dvdBounceSpeed
+            .dropFirst()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] speed in
+                guard let self = self, self.s.dvdBounce else { return }
+                let len = sqrt(self.dvdVelocity.x * self.dvdVelocity.x + self.dvdVelocity.y * self.dvdVelocity.y)
+                if len > 0 {
+                    self.dvdVelocity.x = self.dvdVelocity.x / len * speed
+                    self.dvdVelocity.y = self.dvdVelocity.y / len * speed
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    private func startDVDBounce() {
+        stopDVDBounce()
+        guard let window = window else { return }
+        dvdPosition = CGPoint(x: window.frame.origin.x, y: window.frame.origin.y)
+        let speed = s.dvdBounceSpeed
+        let angle = Double.random(in: 0.3...1.2)
+        dvdVelocity = CGPoint(x: speed * cos(angle), y: speed * sin(angle))
+        dvdLastTimestamp = CACurrentMediaTime()
+
+        var link: CVDisplayLink?
+        CVDisplayLinkCreateWithActiveCGDisplays(&link)
+        guard let displayLink = link else { return }
+
+        let callback: CVDisplayLinkOutputCallback = { _, inNow, _, _, _, userInfo -> CVReturn in
+            let controller = Unmanaged<ClockWindowController>.fromOpaque(userInfo!).takeUnretainedValue()
+            let now = Double(inNow.pointee.videoTime) / Double(inNow.pointee.videoTimeScale)
+            DispatchQueue.main.async { controller.dvdTick(timestamp: now) }
+            return kCVReturnSuccess
+        }
+
+        let pointer = Unmanaged.passUnretained(self).toOpaque()
+        CVDisplayLinkSetOutputCallback(displayLink, callback, pointer)
+        CVDisplayLinkStart(displayLink)
+        dvdDisplayLink = displayLink
+    }
+
+    private func stopDVDBounce() {
+        if let link = dvdDisplayLink {
+            CVDisplayLinkStop(link)
+            dvdDisplayLink = nil
+        }
+    }
+
+    private func dvdTick(timestamp: TimeInterval) {
+        guard let window = window, !s.isFullScreen, let screen = NSScreen.main else { return }
+        let dt: CGFloat
+        if dvdLastTimestamp > 0 && timestamp > dvdLastTimestamp {
+            dt = min(CGFloat(timestamp - dvdLastTimestamp), 0.05) * 60.0
+        } else {
+            dt = 1.0
+        }
+        dvdLastTimestamp = timestamp
+
+        let vf = screen.visibleFrame
+        let w = window.frame.width
+        let h = window.frame.height
+
+        dvdPosition.x += dvdVelocity.x * dt
+        dvdPosition.y += dvdVelocity.y * dt
+
+        if dvdPosition.x <= vf.minX {
+            dvdPosition.x = vf.minX
+            dvdVelocity.x = abs(dvdVelocity.x)
+        } else if dvdPosition.x + w >= vf.maxX {
+            dvdPosition.x = vf.maxX - w
+            dvdVelocity.x = -abs(dvdVelocity.x)
+        }
+
+        if dvdPosition.y <= vf.minY {
+            dvdPosition.y = vf.minY
+            dvdVelocity.y = abs(dvdVelocity.y)
+        } else if dvdPosition.y + h >= vf.maxY {
+            dvdPosition.y = vf.maxY - h
+            dvdVelocity.y = -abs(dvdVelocity.y)
+        }
+
+        window.setFrameOrigin(dvdPosition)
     }
 
     // MARK: - Persistence
