@@ -118,7 +118,7 @@ final class ClockSettings: ObservableObject {
         burnInPrevention  = bool("burnInPrevention", default: false)
         burnInInterval    = dbl("burnInInterval",    default: 120.0)
         dvdBounce         = bool("dvdBounce",         default: false)
-        dvdBounceSpeed    = dbl("dvdBounceSpeed",    default: 1.5)
+        dvdBounceSpeed    = dbl("dvdBounceSpeed",    default: 0.7)
         windowX           = dbl("windowX",           default: -1)
         windowY           = dbl("windowY",           default: -1)
 

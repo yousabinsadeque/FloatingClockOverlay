@@ -10,22 +10,21 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
     private var burnInTimer: Timer?
     private var burnInDirection: Int = 1  // alternates drift direction
     private var dvdDisplayLink: CVDisplayLink?
-    private var dvdVelocity: CGPoint = CGPoint(x: 0.8, y: 0.5)
+    private var dvdVelocity: CGPoint = CGPoint(x: 0.4, y: 0.3)
     private var dvdPosition: CGPoint = .zero
     private var dvdLastTimestamp: TimeInterval = 0
-    private var doubleClickMonitor: Any?
 
     init() {
-        let window = NSWindow(
+        let window = ClockWindow(
             contentRect: .zero,
-            styleMask: [.borderless, .resizable],   // always resizable
+            styleMask: [.borderless, .resizable],
             backing: .buffered,
             defer: false
         )
         super.init(window: window)
         configureWindow()
         setupObservers()
-        setupAlwaysOnTop()     // ← keeps clock above every app on every switch
+        setupAlwaysOnTop()
     }
 
     required init?(coder: NSCoder) { fatalError() }
@@ -63,7 +62,6 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
         if s.isVisible { window.orderFrontRegardless() }
         setupBurnInPrevention()
         setupDVDBounce()
-        setupDoubleClickToOpenSettings()
     }
 
     private func restorePosition() {
@@ -296,17 +294,6 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
         savePosition()
     }
 
-    // MARK: - Double-Click to Open Settings
-
-    private func setupDoubleClickToOpenSettings() {
-        doubleClickMonitor = NSEvent.addLocalMonitorForEvents(matching: .leftMouseUp) { [weak self] event in
-            guard let self = self, event.clickCount == 2,
-                  let window = self.window, event.window == window else { return event }
-            NotificationCenter.default.post(name: .openSettings, object: nil)
-            return event
-        }
-    }
-
     // MARK: - DVD Bounce
 
     private func setupDVDBounce() {
@@ -369,7 +356,7 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
     }
 
     private func dvdTick(timestamp: TimeInterval) {
-        guard let window = window, !s.isFullScreen, let screen = NSScreen.main else { return }
+        guard let window = window, !s.isFullScreen else { return }
         let dt: CGFloat
         if dvdLastTimestamp > 0 && timestamp > dvdLastTimestamp {
             dt = min(CGFloat(timestamp - dvdLastTimestamp), 0.05) * 60.0
@@ -378,7 +365,12 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
         }
         dvdLastTimestamp = timestamp
 
-        let vf = screen.visibleFrame
+        // Use the combined visible frame of all screens
+        var vf = NSScreen.screens.first?.visibleFrame ?? .zero
+        for screen in NSScreen.screens.dropFirst() {
+            vf = vf.union(screen.visibleFrame)
+        }
+
         let w = window.frame.width
         let h = window.frame.height
 
@@ -425,5 +417,25 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
 
     func windowDidMove(_ notification: Notification) {
         savePosition()
+    }
+}
+
+// MARK: - Custom Window (easier dragging)
+
+class ClockWindow: NSWindow {
+    override func mouseDown(with event: NSEvent) {
+        if event.clickCount == 2 {
+            NotificationCenter.default.post(name: .openSettings, object: nil)
+            return
+        }
+        let loc = event.locationInWindow
+        let edge: CGFloat = 4
+        let nearEdge = loc.x < edge || loc.x > frame.width - edge ||
+                       loc.y < edge || loc.y > frame.height - edge
+        if nearEdge {
+            super.mouseDown(with: event)
+        } else {
+            performDrag(with: event)
+        }
     }
 }

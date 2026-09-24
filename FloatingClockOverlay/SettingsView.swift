@@ -314,6 +314,31 @@ struct SettingsView: View {
                         .font(.caption).fixedSize(horizontal: false, vertical: true)
                 }
                 Divider().padding(.vertical, 2)
+                HStack(spacing: 12) {
+                    Button {
+                        if let url = URL(string: "https://github.com/yousabinsadeque/FloatingClockOverlay/issues") {
+                            NSWorkspace.shared.open(url)
+                        }
+                    } label: {
+                        Label("Feedback", systemImage: "envelope")
+                            .font(.caption)
+                    }
+                    .buttonStyle(.plain)
+                    .foregroundStyle(.secondary)
+
+                    Button {
+                        if let url = URL(string: "https://github.com/yousabinsadeque/FloatingClockOverlay") {
+                            NSWorkspace.shared.open(url)
+                        }
+                    } label: {
+                        Label("GitHub", systemImage: "link")
+                            .font(.caption)
+                    }
+                    .buttonStyle(.plain)
+                    .foregroundStyle(.secondary)
+
+                    Spacer()
+                }
                 HStack {
                     Text("Copyright © 2026 Yousa Bin Sadeque. All rights reserved.")
                         .font(.caption).foregroundStyle(.secondary)
