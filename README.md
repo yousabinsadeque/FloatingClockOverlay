@@ -1,5 +1,10 @@
 # Floating Clock Overlay
 
+[![Downloads](https://img.shields.io/github/downloads/yousabinsadeque/FloatingClockOverlay/total?style=flat-square&color=blue&label=Downloads)](https://github.com/yousabinsadeque/FloatingClockOverlay/releases)
+[![Latest Release](https://img.shields.io/github/v/release/yousabinsadeque/FloatingClockOverlay?style=flat-square&label=Latest)](https://github.com/yousabinsadeque/FloatingClockOverlay/releases/latest)
+[![macOS](https://img.shields.io/badge/macOS-12%2B-brightgreen?style=flat-square)](https://github.com/yousabinsadeque/FloatingClockOverlay)
+[![License](https://img.shields.io/badge/License-Source--Available-orange?style=flat-square)](LICENSE)
+
 A polished, transparent always-on-top clock overlay for macOS — built with Swift, SwiftUI, and AppKit.
 
 **Created by Yousa Bin Sadeque**
@@ -20,6 +25,12 @@ A polished, transparent always-on-top clock overlay for macOS — built with Swi
 - **4 size presets:** Small, Medium, Large, Extra Large + free resize
 - **Timer** and **Stopwatch** modes with lap support
 - macOS notification when countdown timer finishes
+- **Adaptive Color** — auto-adjusts text color based on background brightness
+- **Burn-in Prevention** — slowly drifts the clock to protect your display
+- **DVD Bounce Mode** — clock floats around the screen bouncing off edges
+- **Multi-monitor support** — bounces and drags across all connected displays
+- **Double-click to open Settings** — no need to find the menu bar icon
+- **Position memory** — clock remembers its location after restart
 - **Settings window** — every option live-updates the overlay
 - **Menu bar icon** with full quick-access controls (Theme / Size / Mode submenus)
 - Global keyboard shortcut **⌘ ⌥ C** to toggle click-through
@@ -30,7 +41,7 @@ A polished, transparent always-on-top clock overlay for macOS — built with Swi
 
 ## Installation for Normal Users
 
-1. Download **FloatingClockOverlay.dmg**.
+1. Download **[FloatingClockOverlay.dmg](https://github.com/yousabinsadeque/FloatingClockOverlay/releases/latest)**.
 2. Open the DMG file.
 3. Drag **FloatingClockOverlay.app** into the **Applications** folder.
 4. Open **FloatingClockOverlay** from Applications or Launchpad.
