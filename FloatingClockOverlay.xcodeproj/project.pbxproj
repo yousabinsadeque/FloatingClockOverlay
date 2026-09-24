@@ -20,6 +20,8 @@
 		AA0000000000000000000B2A /* TimerStopwatchControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000C2A /* TimerStopwatchControlsView.swift */; };
 		AA0000000000000000000B3A /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000C3A /* UserNotifications.framework */; };
 		AA0000000000000000000D0A /* Theme.swift in Sources */            = {isa = PBXBuildFile; fileRef = AA0000000000000000000E0A /* Theme.swift */; };
+		BB0000000000000000000001 /* AnimatedThemeBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000000002 /* AnimatedThemeBackground.swift */; };
+		BB0000000000000000000003 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000000004 /* WeatherService.swift */; };
 		AA0000000000000000000D1A /* Assets.xcassets in Resources */      = {isa = PBXBuildFile; fileRef = AA0000000000000000000E1A /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +40,8 @@
 		AA0000000000000000000C2A /* TimerStopwatchControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerStopwatchControlsView.swift; sourceTree = "<group>"; };
 		AA0000000000000000000C3A /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		AA0000000000000000000E0A /* Theme.swift */      = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift;      path = Theme.swift;      sourceTree = "<group>"; };
+		BB0000000000000000000002 /* AnimatedThemeBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedThemeBackground.swift; sourceTree = "<group>"; };
+		BB0000000000000000000004 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
 		AA0000000000000000000E1A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog;   path = Assets.xcassets;  sourceTree = "<group>"; };
 		AA000000000000000000015A /* FloatingClockOverlay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FloatingClockOverlay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -74,6 +78,8 @@
 				AA000000000000000000017A /* SettingsView.swift */,
 				AA000000000000000000018A /* SettingsWindowController.swift */,
 				AA0000000000000000000E0A /* Theme.swift */,
+				BB0000000000000000000002 /* AnimatedThemeBackground.swift */,
+				BB0000000000000000000004 /* WeatherService.swift */,
 				AA0000000000000000000E1A /* Assets.xcassets */,
 				AA0000000000000000000C0A /* OverlayMode.swift */,
 				AA0000000000000000000C1A /* TimeController.swift */,
@@ -172,6 +178,8 @@
 				AA0000000000000000000B1A /* TimeController.swift in Sources */,
 				AA0000000000000000000B2A /* TimerStopwatchControlsView.swift in Sources */,
 				AA0000000000000000000D0A /* Theme.swift in Sources */,
+				BB0000000000000000000001 /* AnimatedThemeBackground.swift in Sources */,
+				BB0000000000000000000003 /* WeatherService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

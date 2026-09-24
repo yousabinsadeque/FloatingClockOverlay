@@ -102,7 +102,24 @@ struct SettingsView: View {
 
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 10) {
-                            ForEach(ClockTheme.allCases) { theme in
+                            ForEach(ClockTheme.allCases.filter { !$0.isPopCulture }) { theme in
+                                ThemeCard(theme: theme, selected: s.selectedTheme == theme)
+                                    .onTapGesture { s.selectedTheme = theme }
+                            }
+                        }
+                        .padding(.horizontal, 12)
+                    }
+
+                    HStack(spacing: 8) {
+                        Image(systemName: "sparkles").frame(width: 20).foregroundStyle(.secondary)
+                        Text("Pop Culture").font(.callout)
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.top, 6)
+
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 10) {
+                            ForEach(ClockTheme.allCases.filter { $0.isPopCulture }) { theme in
                                 ThemeCard(theme: theme, selected: s.selectedTheme == theme)
                                     .onTapGesture { s.selectedTheme = theme }
                             }
@@ -110,6 +127,41 @@ struct SettingsView: View {
                         .padding(.horizontal, 12)
                     }
                     .padding(.bottom, 10)
+
+                    if s.selectedTheme == .f1 {
+                        HStack(spacing: 8) {
+                            Image(systemName: "flag.checkered").frame(width: 20).foregroundStyle(.secondary)
+                            Text("F1 Team").font(.callout)
+                        }
+                        .padding(.horizontal, 12)
+
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 8) {
+                                ForEach(F1Team.allCases) { team in
+                                    VStack(spacing: 4) {
+                                        RoundedRectangle(cornerRadius: 6)
+                                            .fill(team.carColor)
+                                            .frame(width: 44, height: 28)
+                                            .overlay(
+                                                Text(team.number)
+                                                    .font(.system(size: 11, weight: .heavy))
+                                                    .foregroundColor(.white)
+                                            )
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 6)
+                                                    .strokeBorder(s.f1Team == team ? Color.white : Color.clear, lineWidth: 2)
+                                            )
+                                        Text(team.label)
+                                            .font(.system(size: 8, weight: .medium))
+                                            .foregroundStyle(s.f1Team == team ? .primary : .secondary)
+                                    }
+                                    .onTapGesture { s.f1Team = team }
+                                }
+                            }
+                            .padding(.horizontal, 12)
+                        }
+                        .padding(.bottom, 10)
+                    }
                 }
 
                 Divider()
@@ -409,6 +461,9 @@ struct ThemeCard: View {
 
     @ViewBuilder private var preview: some View {
         switch theme {
+        case .weather:
+            LinearGradient(colors: [Color(hex: "1a2a4a"), Color(hex: "0d1520")],
+                           startPoint: .top, endPoint: .bottom)
         case .transparent:
             ZStack {
                 checkerboard
@@ -431,19 +486,51 @@ struct ThemeCard: View {
         case .custom:
             LinearGradient(colors: [.blue.opacity(0.3), .purple.opacity(0.3)],
                            startPoint: .topLeading, endPoint: .bottomTrailing)
+        case .toyStory:
+            Color(hex: "1E1031").opacity(0.9)
+        case .f1:
+            Color(hex: "1A1C20").opacity(0.9)
+        case .naruto:
+            Color(hex: "0D1117").opacity(0.9)
+        case .weatheringYou:
+            Color(hex: "161F2E").opacity(0.9)
+        case .yourName:
+            Color(hex: "161224").opacity(0.9)
+        case .frozen:
+            Color(hex: "09142B").opacity(0.9)
+        case .onePiece:
+            Color(hex: "0A192F").opacity(0.9)
         }
     }
 
     private var previewTextColor: Color {
         switch theme {
-        case .light:       return Color(white: 0.1)
-        case .neon:        return .cyan
-        case .transparent, .glass, .dark, .minimal, .custom: return .white
+        case .weather:        return .white
+        case .light:          return Color(white: 0.1)
+        case .neon:           return .cyan
+        case .toyStory:       return Color(hex: "FFD659")
+        case .f1:             return Color(hex: "FFCC00")
+        case .naruto:         return Color(hex: "F7F7F7")
+        case .weatheringYou:  return Color(hex: "FFEA8C")
+        case .yourName:       return Color(hex: "E0F7FA")
+        case .frozen:         return .white
+        case .onePiece:       return Color(hex: "FDE047")
+        default:              return .white
         }
     }
 
     private var neonColor: Color? {
-        theme == .neon ? .cyan : nil
+        switch theme {
+        case .neon:           return .cyan
+        case .toyStory:       return Color(hex: "5CF115")
+        case .f1:             return Color(hex: "FF3333")
+        case .naruto:         return Color(hex: "53A6FD")
+        case .weatheringYou:  return Color(hex: "FFB732")
+        case .yourName:       return Color(hex: "00E5FF")
+        case .frozen:         return Color(hex: "81D4FA")
+        case .onePiece:       return Color(hex: "FBBF24")
+        default:              return nil
+        }
     }
 
     private var checkerboard: some View {

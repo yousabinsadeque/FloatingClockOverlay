@@ -17,6 +17,7 @@ final class ClockSettings: ObservableObject {
 
     // MARK: - Theme
     @Published var selectedTheme:   ClockTheme
+    @Published var f1Team:          F1Team
     @Published var accentColorR:    Double   // accent / neon glow color
     @Published var accentColorG:    Double
     @Published var accentColorB:    Double
@@ -84,6 +85,7 @@ final class ClockSettings: ObservableObject {
         launchAtLogin     = bool("launchAtLogin",     default: false)
         overlayMode       = OverlayMode(rawValue: str("overlayMode") ?? "") ?? .clock
         selectedTheme     = ClockTheme(rawValue: str("selectedTheme") ?? "") ?? .transparent
+        f1Team            = F1Team(rawValue: str("f1Team") ?? "") ?? .ferrari
         accentColorR      = dbl("accentColorR",      default: 0.30)
         accentColorG      = dbl("accentColorG",      default: 0.80)
         accentColorB      = dbl("accentColorB",      default: 1.00)
@@ -133,6 +135,7 @@ final class ClockSettings: ObservableObject {
         $launchAtLogin    .dropFirst().sink { d.set($0, forKey: "launchAtLogin")     }.store(in: &cancellables)
         $overlayMode      .dropFirst().sink { d.set($0.rawValue, forKey: "overlayMode")        }.store(in: &cancellables)
         $selectedTheme    .dropFirst().sink { d.set($0.rawValue, forKey: "selectedTheme")      }.store(in: &cancellables)
+        $f1Team           .dropFirst().sink { d.set($0.rawValue, forKey: "f1Team")             }.store(in: &cancellables)
         $accentColorR     .dropFirst().sink { d.set($0, forKey: "accentColorR")     }.store(in: &cancellables)
         $accentColorG     .dropFirst().sink { d.set($0, forKey: "accentColorG")     }.store(in: &cancellables)
         $accentColorB     .dropFirst().sink { d.set($0, forKey: "accentColorB")     }.store(in: &cancellables)

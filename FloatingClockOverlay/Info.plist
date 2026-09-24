@@ -33,5 +33,7 @@
     <string>NSApplication</string>
     <key>NSUserNotificationAlertStyle</key>
     <string>alert</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Used by the Weather theme to show live weather conditions and temperature for your location.</string>
 </dict>
 </plist>

@@ -62,8 +62,16 @@ struct ClockView: View {
 
     @ViewBuilder
     private func backgroundLayer(_ style: ThemeStyle) -> some View {
-        if style.useGlass {
-            // iOS 26 liquid glass: blur + glare + rim + hairline border
+        if s.selectedTheme == .weather {
+            AnimatedThemeBackground(theme: .weather)
+        } else if s.selectedTheme.isPopCulture {
+            ZStack {
+                RoundedRectangle(cornerRadius: style.cornerRadius)
+                    .fill(style.bgColor.opacity(style.bgOpacity))
+                AnimatedThemeBackground(theme: s.selectedTheme)
+                    .clipShape(RoundedRectangle(cornerRadius: style.cornerRadius, style: .continuous))
+            }
+        } else if style.useGlass {
             iOSGlassCard(cornerRadius: style.cornerRadius)
         } else if style.bgOpacity > 0 {
             RoundedRectangle(cornerRadius: style.cornerRadius)
@@ -82,7 +90,7 @@ struct ClockView: View {
                 .tracking(s.letterSpacing)
                 .foregroundColor(activeTextColor(style))
                 .multilineTextAlignment(.center)
-                .minimumScaleFactor(0.4)   // shrink gracefully in tiny windows
+                .minimumScaleFactor(0.4)
                 .lineLimit(1)
                 .shadow(
                     color:  glowOrShadow(style, opacity: flashOn ? 0.9 : 0.4),
@@ -94,6 +102,10 @@ struct ClockView: View {
                     radius: style.useNeonGlow ? 22 : 8,
                     x: 0, y: style.useNeonGlow ? 0 : 4
                 )
+
+            if s.selectedTheme == .weather {
+                WeatherTemperatureLabel()
+            }
 
             if s.overlayMode != .clock {
                 Text(modeBadge)
@@ -221,6 +233,23 @@ struct ClockView: View {
             case .paused:  return "STOPWATCH ⏸"
             case .idle:    return "STOPWATCH"
             }
+        }
+    }
+}
+
+// MARK: - Weather Temperature Label
+
+struct WeatherTemperatureLabel: View {
+    @ObservedObject private var ws = WeatherService.shared
+
+    var body: some View {
+        if ws.isLoaded {
+            let p = ws.palette
+            Text("\(p.emoji) \(ws.temperature)°")
+                .font(.system(size: 14, weight: .medium, design: .rounded))
+                .foregroundStyle(p.text.opacity(0.8))
+                .shadow(color: p.glow.opacity(0.4), radius: 4)
+                .shadow(color: .black.opacity(0.5), radius: 2, y: 1)
         }
     }
 }

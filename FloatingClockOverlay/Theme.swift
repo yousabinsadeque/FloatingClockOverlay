@@ -4,35 +4,149 @@ import AppKit
 // MARK: - Clock Theme
 
 enum ClockTheme: String, CaseIterable, Identifiable {
-    case transparent = "transparent"
-    case glass       = "glass"
-    case dark        = "dark"
-    case light       = "light"
-    case neon        = "neon"
-    case minimal     = "minimal"
-    case custom      = "custom"
+    case transparent    = "transparent"
+    case glass          = "glass"
+    case dark           = "dark"
+    case light          = "light"
+    case neon           = "neon"
+    case minimal        = "minimal"
+    case custom         = "custom"
+    // Special
+    case weather        = "weather"
+    // Pop culture
+    case toyStory       = "toyStory"
+    case f1             = "f1"
+    case naruto         = "naruto"
+    case weatheringYou  = "weatheringYou"
+    case yourName       = "yourName"
+    case frozen         = "frozen"
+    case onePiece       = "onePiece"
 
     var id: String { rawValue }
     var label: String {
         switch self {
-        case .transparent: return "Transparent"
-        case .glass:       return "Glass"
-        case .dark:        return "Dark"
-        case .light:       return "Light"
-        case .neon:        return "Neon"
-        case .minimal:     return "Minimal"
-        case .custom:      return "Custom"
+        case .weather:       return "Weather"
+        case .transparent:   return "Transparent"
+        case .glass:         return "Glass"
+        case .dark:          return "Dark"
+        case .light:         return "Light"
+        case .neon:          return "Neon"
+        case .minimal:       return "Minimal"
+        case .custom:        return "Custom"
+        case .toyStory:      return "Toy Story"
+        case .f1:            return "F1"
+        case .naruto:        return "Naruto"
+        case .weatheringYou: return "Weathering"
+        case .yourName:      return "Your Name"
+        case .frozen:        return "Frozen"
+        case .onePiece:      return "One Piece"
         }
     }
     var icon: String {
         switch self {
-        case .transparent: return "circle.dashed"
-        case .glass:       return "circle.hexagongrid"
-        case .dark:        return "moon.fill"
-        case .light:       return "sun.max.fill"
-        case .neon:        return "bolt.fill"
-        case .minimal:     return "minus.circle"
-        case .custom:      return "slider.horizontal.3"
+        case .weather:       return "cloud.sun.fill"
+        case .transparent:   return "circle.dashed"
+        case .glass:         return "circle.hexagongrid"
+        case .dark:          return "moon.fill"
+        case .light:         return "sun.max.fill"
+        case .neon:          return "bolt.fill"
+        case .minimal:       return "minus.circle"
+        case .custom:        return "slider.horizontal.3"
+        case .toyStory:      return "star.fill"
+        case .f1:            return "flag.checkered"
+        case .naruto:        return "flame.fill"
+        case .weatheringYou: return "cloud.rain.fill"
+        case .yourName:      return "sparkles"
+        case .frozen:        return "snowflake"
+        case .onePiece:      return "leaf.fill"
+        }
+    }
+
+    var isPopCulture: Bool {
+        switch self {
+        case .toyStory, .f1, .naruto, .weatheringYou, .yourName, .frozen, .onePiece:
+            return true
+        default:
+            return false
+        }
+    }
+
+    var isAnimated: Bool { isPopCulture || self == .weather }
+}
+
+// MARK: - F1 Team
+
+enum F1Team: String, CaseIterable, Identifiable {
+    case redBull     = "redBull"
+    case ferrari     = "ferrari"
+    case mercedes    = "mercedes"
+    case mcLaren     = "mcLaren"
+    case astonMartin = "astonMartin"
+    case alpine      = "alpine"
+    case williams    = "williams"
+    case rb          = "rb"
+    case cadillac    = "cadillac"
+    case stake       = "stake"
+
+    var id: String { rawValue }
+
+    var label: String {
+        switch self {
+        case .redBull:     return "Red Bull"
+        case .ferrari:     return "Ferrari"
+        case .mercedes:    return "Mercedes"
+        case .mcLaren:     return "McLaren"
+        case .astonMartin: return "Aston Martin"
+        case .alpine:      return "Alpine"
+        case .williams:    return "Williams"
+        case .rb:          return "RB"
+        case .cadillac:    return "Cadillac"
+        case .stake:       return "Stake"
+        }
+    }
+
+    var carColor: Color {
+        switch self {
+        case .redBull:     return Color(hex: "1B2A4A")
+        case .ferrari:     return Color(hex: "E8002D")
+        case .mercedes:    return Color(hex: "27F4D2")
+        case .mcLaren:     return Color(hex: "FF8000")
+        case .astonMartin: return Color(hex: "229971")
+        case .alpine:      return Color(hex: "FF87BC")
+        case .williams:    return Color(hex: "64C4FF")
+        case .rb:          return Color(hex: "6692FF")
+        case .cadillac:    return Color(hex: "1E1E1E")
+        case .stake:       return Color(hex: "00E701")
+        }
+    }
+
+    var accentColor: Color {
+        switch self {
+        case .redBull:     return Color(hex: "FFD700")
+        case .ferrari:     return Color(hex: "FFCC00")
+        case .mercedes:    return Color(hex: "00A19C")
+        case .mcLaren:     return Color(hex: "FFD700")
+        case .astonMartin: return Color(hex: "CEDC00")
+        case .alpine:      return Color(hex: "0093CC")
+        case .williams:    return Color(hex: "FFFFFF")
+        case .rb:          return Color(hex: "FF3333")
+        case .cadillac:    return Color(hex: "C0A44D")
+        case .stake:       return Color(hex: "00E701")
+        }
+    }
+
+    var number: String {
+        switch self {
+        case .redBull:     return "1"
+        case .ferrari:     return "16"
+        case .mercedes:    return "44"
+        case .mcLaren:     return "4"
+        case .astonMartin: return "14"
+        case .alpine:      return "10"
+        case .williams:    return "23"
+        case .rb:          return "22"
+        case .cadillac:    return "2"
+        case .stake:       return "27"
         }
     }
 }
@@ -114,6 +228,72 @@ extension ClockTheme {
                               borderColor: s.accentColor, borderOpacity: s.borderOpacity,
                               shadowOpacity: s.shadowStrength,
                               useNeonGlow: false, glowColor: .clear)
+
+        case .weather:
+            return ThemeStyle(useVibrancy: false, useGlass: false,
+                              bgColor: .clear, bgOpacity: 0,
+                              textColor: .white, cornerRadius: 0,
+                              borderColor: .clear, borderOpacity: 0,
+                              shadowOpacity: 0.6,
+                              useNeonGlow: false, glowColor: .clear)
+
+        // ── Pop Culture Themes ──────────────────────────────────
+
+        case .toyStory:
+            return ThemeStyle(useVibrancy: false, useGlass: false,
+                              bgColor: Color(hex: "1E1031"), bgOpacity: 0.90,
+                              textColor: Color(hex: "FFD659"), cornerRadius: cr,
+                              borderColor: Color(hex: "72E327"), borderOpacity: 0.6,
+                              shadowOpacity: 0,
+                              useNeonGlow: true, glowColor: Color(hex: "5CF115"))
+
+        case .f1:
+            return ThemeStyle(useVibrancy: false, useGlass: false,
+                              bgColor: Color(hex: "1A1C20"), bgOpacity: 0.90,
+                              textColor: Color(hex: "FFCC00"), cornerRadius: cr,
+                              borderColor: Color(hex: "E10600"), borderOpacity: 0.7,
+                              shadowOpacity: 0,
+                              useNeonGlow: true, glowColor: Color(hex: "FF3333"))
+
+        case .naruto:
+            return ThemeStyle(useVibrancy: false, useGlass: false,
+                              bgColor: Color(hex: "0D1117"), bgOpacity: 0.90,
+                              textColor: Color(hex: "F7F7F7"), cornerRadius: cr,
+                              borderColor: Color(hex: "FF7B00"), borderOpacity: 0.7,
+                              shadowOpacity: 0,
+                              useNeonGlow: true, glowColor: Color(hex: "53A6FD"))
+
+        case .weatheringYou:
+            return ThemeStyle(useVibrancy: false, useGlass: false,
+                              bgColor: Color(hex: "161F2E"), bgOpacity: 0.90,
+                              textColor: Color(hex: "FFEA8C"), cornerRadius: cr,
+                              borderColor: Color(hex: "4BA3E3"), borderOpacity: 0.6,
+                              shadowOpacity: 0,
+                              useNeonGlow: true, glowColor: Color(hex: "FFB732"))
+
+        case .yourName:
+            return ThemeStyle(useVibrancy: false, useGlass: false,
+                              bgColor: Color(hex: "161224"), bgOpacity: 0.90,
+                              textColor: Color(hex: "E0F7FA"), cornerRadius: cr,
+                              borderColor: Color(hex: "FF4D85"), borderOpacity: 0.6,
+                              shadowOpacity: 0,
+                              useNeonGlow: true, glowColor: Color(hex: "00E5FF"))
+
+        case .frozen:
+            return ThemeStyle(useVibrancy: false, useGlass: false,
+                              bgColor: Color(hex: "09142B"), bgOpacity: 0.90,
+                              textColor: .white, cornerRadius: cr,
+                              borderColor: Color(hex: "4DD0E1"), borderOpacity: 0.6,
+                              shadowOpacity: 0,
+                              useNeonGlow: true, glowColor: Color(hex: "81D4FA"))
+
+        case .onePiece:
+            return ThemeStyle(useVibrancy: false, useGlass: false,
+                              bgColor: Color(hex: "0A192F"), bgOpacity: 0.90,
+                              textColor: Color(hex: "FDE047"), cornerRadius: cr,
+                              borderColor: Color(hex: "DC2626"), borderOpacity: 0.7,
+                              shadowOpacity: 0,
+                              useNeonGlow: true, glowColor: Color(hex: "FBBF24"))
         }
     }
 }
@@ -345,5 +525,23 @@ enum ClockAlignment: String, CaseIterable, Identifiable {
         case .bottomCenter: return .bottom
         case .bottomRight:  return .bottomTrailing
         }
+    }
+}
+
+// MARK: - Hex Color Helper
+
+extension Color {
+    init(hex: String) {
+        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
+        let r, g, b: UInt64
+        switch hex.count {
+        case 6:
+            (r, g, b) = (int >> 16, int >> 8 & 0xFF, int & 0xFF)
+        default:
+            (r, g, b) = (0, 0, 0)
+        }
+        self.init(.sRGB, red: Double(r) / 255, green: Double(g) / 255, blue: Double(b) / 255)
     }
 }

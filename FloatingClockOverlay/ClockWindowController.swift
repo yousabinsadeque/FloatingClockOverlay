@@ -68,6 +68,11 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
         guard let window = window else { return }
         if s.windowX >= 0 && s.windowY >= 0 {
             window.setFrameOrigin(NSPoint(x: s.windowX, y: s.windowY))
+            // Ensure the window is actually visible on a current screen
+            let onScreen = NSScreen.screens.contains { $0.visibleFrame.intersects(window.frame) }
+            if !onScreen {
+                moveToPreset(.topRight)
+            }
         } else {
             moveToPreset(.topRight)
         }
