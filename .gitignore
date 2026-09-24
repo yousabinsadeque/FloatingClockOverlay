@@ -14,3 +14,8 @@ DerivedData/
 
 # Environment
 .env
+
+# .NET / Windows build output
+FloatingClockOverlay-Windows/**/bin/
+FloatingClockOverlay-Windows/**/obj/
+FloatingClockOverlay-Windows/publish/
