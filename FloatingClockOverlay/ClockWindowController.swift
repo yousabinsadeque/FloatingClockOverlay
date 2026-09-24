@@ -9,7 +9,7 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
     private var savedFrameBeforeFullscreen: NSRect?
     private var burnInTimer: Timer?
     private var burnInDirection: Int = 1  // alternates drift direction
-    private var dvdDisplayLink: CVDisplayLink?
+    private var dvdTimer: Timer?
     private var dvdVelocity: CGPoint = CGPoint(x: 0.4, y: 0.3)
     private var dvdPosition: CGPoint = .zero
     private var dvdLastTimestamp: TimeInterval = 0
@@ -329,71 +329,106 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
         let speed = s.dvdBounceSpeed
         let angle = Double.random(in: 0.3...1.2)
         dvdVelocity = CGPoint(x: speed * cos(angle), y: speed * sin(angle))
-        dvdLastTimestamp = CACurrentMediaTime()
+        dvdLastTimestamp = 0
 
-        var link: CVDisplayLink?
-        CVDisplayLinkCreateWithActiveCGDisplays(&link)
-        guard let displayLink = link else { return }
-
-        let callback: CVDisplayLinkOutputCallback = { _, inNow, _, _, _, userInfo -> CVReturn in
-            let controller = Unmanaged<ClockWindowController>.fromOpaque(userInfo!).takeUnretainedValue()
-            let now = Double(inNow.pointee.videoTime) / Double(inNow.pointee.videoTimeScale)
-            DispatchQueue.main.async { controller.dvdTick(timestamp: now) }
-            return kCVReturnSuccess
+        let timer = Timer(timeInterval: 1.0 / 120.0, repeats: true) { [weak self] _ in
+            self?.dvdTick()
         }
-
-        let pointer = Unmanaged.passUnretained(self).toOpaque()
-        CVDisplayLinkSetOutputCallback(displayLink, callback, pointer)
-        CVDisplayLinkStart(displayLink)
-        dvdDisplayLink = displayLink
+        RunLoop.main.add(timer, forMode: .common)
+        dvdTimer = timer
     }
 
     private func stopDVDBounce() {
-        if let link = dvdDisplayLink {
-            CVDisplayLinkStop(link)
-            dvdDisplayLink = nil
-        }
+        dvdTimer?.invalidate()
+        dvdTimer = nil
     }
 
-    private func dvdTick(timestamp: TimeInterval) {
+    private func dvdTick() {
         guard let window = window, !s.isFullScreen else { return }
+        let now = CACurrentMediaTime()
         let dt: CGFloat
-        if dvdLastTimestamp > 0 && timestamp > dvdLastTimestamp {
-            dt = min(CGFloat(timestamp - dvdLastTimestamp), 0.05) * 60.0
+        if dvdLastTimestamp > 0 {
+            dt = min(CGFloat(now - dvdLastTimestamp), 0.05) * 60.0
         } else {
             dt = 1.0
         }
-        dvdLastTimestamp = timestamp
-
-        // Use the combined visible frame of all screens
-        var vf = NSScreen.screens.first?.visibleFrame ?? .zero
-        for screen in NSScreen.screens.dropFirst() {
-            vf = vf.union(screen.visibleFrame)
-        }
+        dvdLastTimestamp = now
 
         let w = window.frame.width
         let h = window.frame.height
 
-        dvdPosition.x += dvdVelocity.x * dt
-        dvdPosition.y += dvdVelocity.y * dt
+        var newX = dvdPosition.x + dvdVelocity.x * dt
+        var newY = dvdPosition.y + dvdVelocity.y * dt
 
-        if dvdPosition.x <= vf.minX {
-            dvdPosition.x = vf.minX
+        let clockRect = NSRect(x: newX, y: newY, width: w, height: h)
+
+        // Find which screen the clock center is on (or nearest)
+        let center = CGPoint(x: clockRect.midX, y: clockRect.midY)
+        let currentScreen = screenContaining(center) ?? nearestScreen(to: center)
+        guard let screen = currentScreen else { return }
+        let vf = screen.visibleFrame
+
+        // Bounce off edges of the current screen
+        if newX < vf.minX {
+            newX = vf.minX
             dvdVelocity.x = abs(dvdVelocity.x)
-        } else if dvdPosition.x + w >= vf.maxX {
-            dvdPosition.x = vf.maxX - w
-            dvdVelocity.x = -abs(dvdVelocity.x)
+        } else if newX + w > vf.maxX {
+            // Allow crossing to an adjacent screen
+            let nextCenter = CGPoint(x: newX + w / 2, y: center.y)
+            if let nextScreen = screenContaining(nextCenter), nextScreen != screen {
+                // Moving onto another screen — don't bounce
+            } else {
+                newX = vf.maxX - w
+                dvdVelocity.x = -abs(dvdVelocity.x)
+            }
         }
 
-        if dvdPosition.y <= vf.minY {
-            dvdPosition.y = vf.minY
+        if newX < vf.minX {
+            let nextCenter = CGPoint(x: newX + w / 2, y: center.y)
+            if let nextScreen = screenContaining(nextCenter), nextScreen != screen {
+                // Moving onto another screen — don't bounce
+            } else {
+                newX = vf.minX
+                dvdVelocity.x = abs(dvdVelocity.x)
+            }
+        }
+
+        if newY < vf.minY {
+            newY = vf.minY
             dvdVelocity.y = abs(dvdVelocity.y)
-        } else if dvdPosition.y + h >= vf.maxY {
-            dvdPosition.y = vf.maxY - h
+        } else if newY + h > vf.maxY {
+            newY = vf.maxY - h
             dvdVelocity.y = -abs(dvdVelocity.y)
         }
 
+        // Safety: clamp to nearest screen so the clock never lands in a dead zone
+        let finalCenter = CGPoint(x: newX + w / 2, y: newY + h / 2)
+        if screenContaining(finalCenter) == nil {
+            if let nearest = nearestScreen(to: finalCenter) {
+                let sf = nearest.visibleFrame
+                newX = min(max(newX, sf.minX), sf.maxX - w)
+                newY = min(max(newY, sf.minY), sf.maxY - h)
+            }
+        }
+
+        dvdPosition = CGPoint(x: newX, y: newY)
         window.setFrameOrigin(dvdPosition)
+    }
+
+    private func screenContaining(_ point: CGPoint) -> NSScreen? {
+        NSScreen.screens.first { $0.visibleFrame.contains(point) }
+    }
+
+    private func nearestScreen(to point: CGPoint) -> NSScreen? {
+        NSScreen.screens.min(by: { distanceSq(point, $0.visibleFrame) < distanceSq(point, $1.visibleFrame) })
+    }
+
+    private func distanceSq(_ point: CGPoint, _ rect: NSRect) -> CGFloat {
+        let cx = max(rect.minX, min(point.x, rect.maxX))
+        let cy = max(rect.minY, min(point.y, rect.maxY))
+        let dx = point.x - cx
+        let dy = point.y - cy
+        return dx * dx + dy * dy
     }
 
     // MARK: - Persistence

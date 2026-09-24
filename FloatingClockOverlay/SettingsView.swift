@@ -337,6 +337,15 @@ struct SettingsView: View {
                     .buttonStyle(.plain)
                     .foregroundStyle(.secondary)
 
+                    Button {
+                        UpdateChecker.checkForUpdate()
+                    } label: {
+                        Label("Check for Updates", systemImage: "arrow.triangle.2.circlepath")
+                            .font(.caption)
+                    }
+                    .buttonStyle(.plain)
+                    .foregroundStyle(.secondary)
+
                     Spacer()
                 }
                 HStack {

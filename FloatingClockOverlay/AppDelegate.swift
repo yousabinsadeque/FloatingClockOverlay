@@ -294,3 +294,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
     }
 }
+
+// MARK: - Update Checker
+
+enum UpdateChecker {
+    static func checkForUpdate() {
+        if let url = URL(string: "https://github.com/yousabinsadeque/FloatingClockOverlay/releases/latest") {
+            NSWorkspace.shared.open(url)
+        }
+    }
+}
