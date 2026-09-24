@@ -120,75 +120,91 @@ extension ClockTheme {
 
 // MARK: - iOS 26 Liquid Glass Card
 //
-// Replicates the layered glass material Apple uses in iOS 26 / visionOS:
+// Replicates the layered glass material from iOS 26 / macOS 27:
 //
-//  Layer 1 – NSVisualEffectView (real-time blur of whatever is behind the window)
-//  Layer 2 – Subtle white tint   (~6 % opacity)  ← "glass body"
-//  Layer 3 – Top specular glare  (bright→clear gradient from top edge)
-//  Layer 4 – Inner rim highlight (bright stroke just inside the outer edge)
-//  Layer 5 – Outer hairline border (gradient: light top, darker bottom)
+//  Layer 1 – Ultra-thin blur of the desktop behind the window
+//  Layer 2 – Subtle color-matched tint that picks up the wallpaper
+//  Layer 3 – Top specular glare (bright edge catch)
+//  Layer 4 – Inner rim highlight
+//  Layer 5 – Outer hairline border with gradient
 //
-// The result matches the frosted, luminous quality of iOS 26 widgets.
+// The result is a transparent, frosted pane that blends with any wallpaper.
 
 struct iOSGlassCard: View {
     var cornerRadius: Double
 
     @Environment(\.colorScheme) private var colorScheme
 
-    // Adapt brightness to the current appearance
     private var isDark: Bool { colorScheme == .dark }
 
     var body: some View {
         let cr = max(8, cornerRadius)
 
         ZStack {
-            // ── 1. Real blur of background content ───────────────────────────
-            VisualEffectBackground(material: .hudWindow, blending: .behindWindow)
+            // ── 1. Ultra-thin real blur — lets the wallpaper show through ────
+            VisualEffectBackground(material: .underPageBackground, blending: .behindWindow)
                 .clipShape(RoundedRectangle(cornerRadius: cr, style: .continuous))
 
-            // ── 2. Glass body tint ────────────────────────────────────────────
-            // Dark mode: almost no tint. Light mode: slightly more white.
-            RoundedRectangle(cornerRadius: cr, style: .continuous)
-                .fill(Color.white.opacity(isDark ? 0.05 : 0.12))
-
-            // ── 3. Top specular glare ─────────────────────────────────────────
-            // Bright gradient from top edge to ~60 % of the height, then clear.
-            // Clipped to the top half so the bottom stays clean.
+            // ── 2. Very subtle tint — almost invisible, just adds body ───────
             RoundedRectangle(cornerRadius: cr, style: .continuous)
                 .fill(
                     LinearGradient(
                         stops: [
-                            .init(color: Color.white.opacity(isDark ? 0.28 : 0.45), location: 0.00),
-                            .init(color: Color.white.opacity(isDark ? 0.10 : 0.18), location: 0.30),
-                            .init(color: Color.white.opacity(0.03),                 location: 0.55),
-                            .init(color: Color.clear,                               location: 0.80),
+                            .init(color: Color.white.opacity(isDark ? 0.08 : 0.15), location: 0.0),
+                            .init(color: Color.white.opacity(isDark ? 0.02 : 0.05), location: 1.0),
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
+
+            // ── 3. Top specular glare — soft light catch at the top edge ─────
+            RoundedRectangle(cornerRadius: cr, style: .continuous)
+                .fill(
+                    LinearGradient(
+                        stops: [
+                            .init(color: Color.white.opacity(isDark ? 0.20 : 0.35), location: 0.00),
+                            .init(color: Color.white.opacity(isDark ? 0.06 : 0.12), location: 0.25),
+                            .init(color: Color.clear,                               location: 0.50),
                         ],
                         startPoint: .top,
                         endPoint:   .bottom
                     )
                 )
+                .clipShape(RoundedRectangle(cornerRadius: cr, style: .continuous))
                 .padding(.horizontal, 1)
                 .padding(.top, 1)
 
-            // ── 4. Inner rim (bright highlight just inside the shape edge) ────
-            RoundedRectangle(cornerRadius: cr, style: .continuous)
+            // ── 4. Inner rim — subtle highlight just inside the edge ─────────
+            RoundedRectangle(cornerRadius: cr - 0.5, style: .continuous)
                 .strokeBorder(
                     LinearGradient(
                         stops: [
-                            .init(color: Color.white.opacity(isDark ? 0.35 : 0.55), location: 0.0),
-                            .init(color: Color.white.opacity(isDark ? 0.08 : 0.15), location: 0.5),
-                            .init(color: Color.white.opacity(0.04),                 location: 1.0),
+                            .init(color: Color.white.opacity(isDark ? 0.30 : 0.50), location: 0.0),
+                            .init(color: Color.white.opacity(isDark ? 0.05 : 0.10), location: 0.4),
+                            .init(color: Color.white.opacity(0.02),                 location: 1.0),
                         ],
                         startPoint: .top,
                         endPoint:   .bottom
                     ),
-                    lineWidth: 1.5
+                    lineWidth: 1.0
                 )
+                .padding(0.5)
 
-            // ── 5. Outer hairline border ──────────────────────────────────────
-            // 0.5 pt, very subtle — adds depth without looking painted.
+            // ── 5. Outer hairline border — gradient: bright top, subtle bottom
             RoundedRectangle(cornerRadius: cr, style: .continuous)
-                .strokeBorder(Color.white.opacity(isDark ? 0.12 : 0.22), lineWidth: 0.5)
+                .strokeBorder(
+                    LinearGradient(
+                        stops: [
+                            .init(color: Color.white.opacity(isDark ? 0.18 : 0.30), location: 0.0),
+                            .init(color: Color.white.opacity(isDark ? 0.06 : 0.10), location: 0.5),
+                            .init(color: Color.white.opacity(0.03),                 location: 1.0),
+                        ],
+                        startPoint: .top,
+                        endPoint:   .bottom
+                    ),
+                    lineWidth: 0.5
+                )
         }
     }
 }
