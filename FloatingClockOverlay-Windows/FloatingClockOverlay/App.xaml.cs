@@ -3,7 +3,7 @@ using Forms = System.Windows.Forms;
 
 namespace FloatingClockOverlay;
 
-public partial class App : Application
+public partial class App : System.Windows.Application
 {
     private Forms.NotifyIcon? _trayIcon;
     private ClockWindow? _clockWindow;
