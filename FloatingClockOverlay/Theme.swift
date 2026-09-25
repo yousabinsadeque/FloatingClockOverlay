@@ -181,18 +181,17 @@ extension ClockTheme {
                               useNeonGlow: false, glowColor: .clear)
 
         case .glass:
-            // Routed to iOSGlassCard — all the visual work happens there.
             return ThemeStyle(useVibrancy: true, useGlass: true,
                               bgColor: .clear, bgOpacity: 0,
-                              textColor: .white, cornerRadius: cr,
-                              borderColor: .white, borderOpacity: 0,  // glass handles its own border
+                              textColor: s.textColor, cornerRadius: cr,
+                              borderColor: .white, borderOpacity: 0,
                               shadowOpacity: 0.25,
                               useNeonGlow: false, glowColor: .clear)
 
         case .dark:
             return ThemeStyle(useVibrancy: false, useGlass: false,
                               bgColor: Color(white: 0.08), bgOpacity: 0.92,
-                              textColor: .white, cornerRadius: cr,
+                              textColor: s.textColor, cornerRadius: cr,
                               borderColor: .white, borderOpacity: 0.12,
                               shadowOpacity: 0.7,
                               useNeonGlow: false, glowColor: .clear)
@@ -200,7 +199,7 @@ extension ClockTheme {
         case .light:
             return ThemeStyle(useVibrancy: false, useGlass: false,
                               bgColor: Color(white: 0.97), bgOpacity: 0.93,
-                              textColor: Color(white: 0.08), cornerRadius: cr,
+                              textColor: s.textColor, cornerRadius: cr,
                               borderColor: Color(white: 0.5), borderOpacity: 0.12,
                               shadowOpacity: 0.15,
                               useNeonGlow: false, glowColor: .clear)
@@ -232,7 +231,7 @@ extension ClockTheme {
         case .weather:
             return ThemeStyle(useVibrancy: false, useGlass: false,
                               bgColor: .clear, bgOpacity: 0,
-                              textColor: .white, cornerRadius: 0,
+                              textColor: s.textColor, cornerRadius: 0,
                               borderColor: .clear, borderOpacity: 0,
                               shadowOpacity: 0.6,
                               useNeonGlow: false, glowColor: .clear)
