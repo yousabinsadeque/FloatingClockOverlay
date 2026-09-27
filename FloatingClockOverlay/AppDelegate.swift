@@ -288,8 +288,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private func setupGlobalKeyboardShortcut() {
         globalMonitor = NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { [weak self] event in
             let flags = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
-            if flags == [.command, .option] && event.keyCode == 8 { // 8 = C
+            if flags == [.command, .option] && event.keyCode == 8 { // ⌘⌥C = toggle click-through
                 DispatchQueue.main.async { self?.toggleClickThrough() }
+            } else if flags == [.command, .option] && event.keyCode == 4 { // ⌘⌥H = show/hide overlay
+                DispatchQueue.main.async { self?.toggleVisibility() }
             }
         }
     }

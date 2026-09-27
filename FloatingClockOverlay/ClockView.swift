@@ -103,6 +103,14 @@ struct ClockView: View {
                     x: 0, y: style.useNeonGlow ? 0 : 4
                 )
 
+            if s.showDayOfWeek && s.overlayMode == .clock {
+                Text(dayOfWeekString)
+                    .font(.system(size: max(9, s.fontSize * 0.22),
+                                  weight: .medium, design: s.fontFamily.design))
+                    .foregroundStyle(activeTextColor(style).opacity(0.6))
+                    .shadow(color: .black.opacity(0.3), radius: 2, y: 1)
+            }
+
             if s.selectedTheme == .weather {
                 WeatherTemperatureLabel()
             }
@@ -191,6 +199,12 @@ struct ClockView: View {
                 .replacingOccurrences(of: " PM", with: " pm")
         }
         return result
+    }
+
+    private var dayOfWeekString: String {
+        let f = DateFormatter()
+        f.dateFormat = "EEEE"
+        return f.string(from: clockTime)
     }
 
     private func activeTextColor(_ style: ThemeStyle) -> Color {

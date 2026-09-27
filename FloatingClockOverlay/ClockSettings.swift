@@ -46,6 +46,7 @@ final class ClockSettings: ObservableObject {
     @Published var showSeconds:     Bool
     @Published var showAmPm:        Bool
     @Published var amPmUppercase:   Bool
+    @Published var showDayOfWeek:   Bool
 
     // MARK: - Timer Duration (saved)
     @Published var timerHours:      Int
@@ -108,6 +109,7 @@ final class ClockSettings: ObservableObject {
         showSeconds       = bool("showSeconds",      default: true)
         showAmPm          = bool("showAmPm",         default: true)
         amPmUppercase     = bool("amPmUppercase",    default: true)
+        showDayOfWeek     = bool("showDayOfWeek",    default: false)
         timerHours        = int("timerHours",        default: 0)
         timerMinutes      = int("timerMinutes",      default: 5)
         timerSeconds      = int("timerSeconds",      default: 0)
@@ -158,6 +160,7 @@ final class ClockSettings: ObservableObject {
         $showSeconds      .dropFirst().sink { d.set($0, forKey: "showSeconds")      }.store(in: &cancellables)
         $showAmPm         .dropFirst().sink { d.set($0, forKey: "showAmPm")         }.store(in: &cancellables)
         $amPmUppercase    .dropFirst().sink { d.set($0, forKey: "amPmUppercase")    }.store(in: &cancellables)
+        $showDayOfWeek    .dropFirst().sink { d.set($0, forKey: "showDayOfWeek")    }.store(in: &cancellables)
         $timerHours       .dropFirst().sink { d.set($0, forKey: "timerHours")       }.store(in: &cancellables)
         $timerMinutes     .dropFirst().sink { d.set($0, forKey: "timerMinutes")     }.store(in: &cancellables)
         $timerSeconds     .dropFirst().sink { d.set($0, forKey: "timerSeconds")     }.store(in: &cancellables)

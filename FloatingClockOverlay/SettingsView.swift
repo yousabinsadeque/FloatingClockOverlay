@@ -269,6 +269,8 @@ struct SettingsView: View {
                         }
                     }
                 }
+                SettingsDivider()
+                ToggleRow(icon: "calendar", label: "Show Day of Week", value: $s.showDayOfWeek)
             }
         }
     }
