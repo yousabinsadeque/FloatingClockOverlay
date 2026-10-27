@@ -12,6 +12,7 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
     private var dvdTimer: Timer?
     private var dvdVelocity: CGPoint = CGPoint(x: 0.4, y: 0.3)
     private var dvdPosition: CGPoint = .zero
+    private var isDVDBouncing = false
     private var dvdLastTimestamp: TimeInterval = 0
 
     init() {
@@ -330,6 +331,8 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
     private func startDVDBounce() {
         stopDVDBounce()
         guard let window = window else { return }
+        savePosition()
+        isDVDBouncing = true
         dvdPosition = CGPoint(x: window.frame.origin.x, y: window.frame.origin.y)
         let speed = s.dvdBounceSpeed
         let angle = Double.random(in: 0.3...1.2)
@@ -346,6 +349,7 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
     private func stopDVDBounce() {
         dvdTimer?.invalidate()
         dvdTimer = nil
+        isDVDBouncing = false
     }
 
     private func dvdTick() {
@@ -456,7 +460,9 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
     }
 
     func windowDidMove(_ notification: Notification) {
-        savePosition()
+        if !isDVDBouncing {
+            savePosition()
+        }
     }
 }
 
