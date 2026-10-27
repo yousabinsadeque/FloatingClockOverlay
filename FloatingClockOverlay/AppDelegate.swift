@@ -37,6 +37,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         setupStatusBar()
         setupGlobalKeyboardShortcut()
         setupMirrorObserver()
+        InstallTracker.trackFirstLaunchIfNeeded()
 
         // Allow the Settings quit button to trigger a real quit via notification.
         NotificationCenter.default.addObserver(

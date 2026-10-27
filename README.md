@@ -9,7 +9,7 @@ A polished, transparent always-on-top clock overlay for macOS — built with Swi
 
 **Created by Yousa Bin Sadeque**
 
-> **Screenshot placeholder** — add a screenshot of your setup here.
+![Floating Clock Overlay](screenshot.png)
 
 ---
 

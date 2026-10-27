@@ -1,0 +1,12 @@
+{
+  "rules": {
+    "installs": {
+      "$installId": {
+        ".write": true,
+        ".read": false
+      }
+    },
+    ".read": false,
+    ".write": false
+  }
+}
