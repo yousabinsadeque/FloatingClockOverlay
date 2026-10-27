@@ -3,15 +3,17 @@ import CoreGraphics
 
 enum ScreenSampler {
     static var clockWindowNumber: CGWindowID = 0
+    static weak var clockWindow: NSWindow?
 
     static func averageBrightnessUnderClock() -> CGFloat {
-        let s = ClockSettings.shared
-        let x = s.windowX
-        let y = s.windowY
-        let w = s.customWidth
-        let h = s.customHeight
+        guard let window = clockWindow else { return -1 }
+        let frame = window.frame
+        let x = frame.origin.x
+        let y = frame.origin.y
+        let w = frame.width
+        let h = frame.height
 
-        guard x >= 0, y >= 0, w > 0, h > 0 else { return -1 }
+        guard w > 0, h > 0 else { return -1 }
 
         let mainH = NSScreen.screens.map { $0.frame.maxY }.max() ?? 0
         let cgRect = CGRect(x: x, y: mainH - y - h, width: w, height: h)

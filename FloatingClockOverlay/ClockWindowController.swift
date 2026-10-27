@@ -64,6 +64,8 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
         isRestoringPosition = false
 
         if s.isVisible { window.orderFrontRegardless() }
+        ScreenSampler.clockWindowNumber = CGWindowID(window.windowNumber)
+        ScreenSampler.clockWindow = window
         setupBurnInPrevention()
         setupDVDBounce()
     }

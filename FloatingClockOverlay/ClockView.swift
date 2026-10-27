@@ -11,7 +11,7 @@ struct ClockView: View {
 
     private let clockTimer = Timer.publish(every: 1.0,  on: .main, in: .common).autoconnect()
     private let flashTimer = Timer.publish(every: 0.45, on: .main, in: .common).autoconnect()
-    private let colorSampleTimer = Timer.publish(every: 2.0, on: .main, in: .common).autoconnect()
+    private let colorSampleTimer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
 
     var body: some View {
         Group {
@@ -34,9 +34,9 @@ struct ClockView: View {
             guard s.adaptiveColor else { return }
             sampledBrightness = ScreenSampler.averageBrightnessUnderClock()
             guard sampledBrightness >= 0 else { return }
-            if useWhiteText && sampledBrightness > 0.6 {
+            if useWhiteText && sampledBrightness > 0.55 {
                 useWhiteText = false
-            } else if !useWhiteText && sampledBrightness < 0.4 {
+            } else if !useWhiteText && sampledBrightness < 0.45 {
                 useWhiteText = true
             }
         }
