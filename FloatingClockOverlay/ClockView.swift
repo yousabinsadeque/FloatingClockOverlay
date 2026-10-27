@@ -33,6 +33,7 @@ struct ClockView: View {
         .onReceive(colorSampleTimer) { _ in
             guard s.adaptiveColor else { return }
             sampledBrightness = ScreenSampler.averageBrightnessUnderClock()
+            guard sampledBrightness >= 0 else { return }
             if useWhiteText && sampledBrightness > 0.6 {
                 useWhiteText = false
             } else if !useWhiteText && sampledBrightness < 0.4 {
