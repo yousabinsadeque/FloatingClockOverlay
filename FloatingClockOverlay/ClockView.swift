@@ -7,7 +7,7 @@ struct ClockView: View {
     @State private var clockTime = Date()
     @State private var flashOn   = true
     @State private var sampledBrightness: CGFloat = 0.0
-    @State private var adaptiveIsLight: Bool = true
+    @State private var useWhiteText: Bool = true
 
     private let clockTimer = Timer.publish(every: 1.0,  on: .main, in: .common).autoconnect()
     private let flashTimer = Timer.publish(every: 0.45, on: .main, in: .common).autoconnect()
@@ -33,10 +33,10 @@ struct ClockView: View {
         .onReceive(colorSampleTimer) { _ in
             guard s.adaptiveColor else { return }
             sampledBrightness = ScreenSampler.averageBrightnessUnderClock()
-            if adaptiveIsLight && sampledBrightness > 0.6 {
-                adaptiveIsLight = false
-            } else if !adaptiveIsLight && sampledBrightness < 0.4 {
-                adaptiveIsLight = true
+            if useWhiteText && sampledBrightness > 0.6 {
+                useWhiteText = false
+            } else if !useWhiteText && sampledBrightness < 0.4 {
+                useWhiteText = true
             }
         }
         .onReceive(flashTimer) { _ in
@@ -209,6 +209,7 @@ struct ClockView: View {
 
     private var dayOfWeekString: String {
         let f = DateFormatter()
+        f.locale = Locale.current
         f.dateFormat = "EEEE"
         return f.string(from: clockTime)
     }
@@ -224,7 +225,7 @@ struct ClockView: View {
     }
 
     private var adaptiveTextColor: Color {
-        adaptiveIsLight ? .white : .black
+        useWhiteText ? .white : .black
     }
 
     private func glowOrShadow(_ style: ThemeStyle, opacity: Double) -> Color {
