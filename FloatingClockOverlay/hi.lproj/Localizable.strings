@@ -1,0 +1,116 @@
+/* Header */
+"Floating Clock Overlay" = "फ़्लोटिंग क्लॉक ओवरले";
+"A transparent always-on-top clock for macOS" = "macOS के लिए एक पारदर्शी हमेशा-शीर्ष पर दिखने वाली घड़ी";
+
+/* General */
+"GENERAL" = "सामान्य";
+"Show Overlay" = "ओवरले दिखाएं";
+"Click-Through" = "क्लिक-थ्रू";
+"Clicks pass to apps below" = "क्लिक नीचे के ऐप्स तक पहुंचते हैं";
+"Drag mode active" = "ड्रैग मोड सक्रिय";
+"Show in Dock" = "डॉक में दिखाएं";
+"Launch at Login" = "लॉगिन पर खोलें";
+"Requires app in /Applications folder" = "ऐप /Applications फ़ोल्डर में होना चाहिए";
+
+/* Mode */
+"MODE" = "मोड";
+"Clock" = "घड़ी";
+"Timer" = "टाइमर";
+"Stopwatch" = "स्टॉपवॉच";
+
+/* Appearance */
+"APPEARANCE" = "दिखावट";
+"Theme" = "थीम";
+"Pop Culture" = "पॉप कल्चर";
+"F1 Team" = "F1 टीम";
+"Window Opacity" = "विंडो अपारदर्शिता";
+"Accent / Glow Color" = "एक्सेंट / ग्लो रंग";
+"Background Color" = "पृष्ठभूमि रंग";
+"Background Opacity" = "पृष्ठभूमि अपारदर्शिता";
+"Corner Radius" = "कोने की त्रिज्या";
+"Border Opacity" = "बॉर्डर अपारदर्शिता";
+"Shadow Strength" = "छाया की तीव्रता";
+
+/* Typography */
+"TYPOGRAPHY" = "टाइपोग्राफी";
+"Font" = "फ़ॉन्ट";
+"Weight" = "मोटाई";
+"Font Size" = "फ़ॉन्ट आकार";
+"Letter Spacing" = "अक्षर अंतराल";
+"Text Color" = "टेक्स्ट रंग";
+"Hour Format" = "घंटे का प्रारूप";
+"12-hour" = "12 घंटे";
+"24-hour" = "24 घंटे";
+"Show Seconds" = "सेकंड दिखाएं";
+"Show AM/PM" = "AM/PM दिखाएं";
+"AM/PM Style" = "AM/PM शैली";
+"Show Day of Week" = "सप्ताह का दिन दिखाएं";
+
+/* Window */
+"WINDOW" = "विंडो";
+"Size" = "आकार";
+"Adaptive Color" = "अनुकूली रंग";
+"Auto-adjust text color to match background" = "पृष्ठभूमि के अनुसार टेक्स्ट रंग स्वतः समायोजित करें";
+"Burn-in Prevention" = "बर्न-इन रोकथाम";
+"Slowly drifts the clock to protect your display" = "आपकी स्क्रीन की सुरक्षा के लिए घड़ी को धीरे-धीरे हिलाता है";
+"Drift Interval" = "ड्रिफ़्ट अंतराल";
+"DVD Bounce" = "DVD बाउंस";
+"Clock floats around the screen bouncing off edges" = "घड़ी स्क्रीन पर किनारों से उछलती है";
+"Bounce Speed" = "बाउंस गति";
+"Show on All Displays" = "सभी डिस्प्ले पर दिखाएं";
+"Mirror the clock to every connected monitor" = "हर जुड़े मॉनिटर पर घड़ी दिखाएं";
+"Reset Size & Position" = "आकार और स्थिति रीसेट करें";
+
+/* About */
+"ABOUT" = "बारे में";
+"Created by **Yousa Bin Sadeque**" = "**Yousa Bin Sadeque** द्वारा निर्मित";
+"Free for personal and educational use." = "व्यक्तिगत और शैक्षिक उपयोग के लिए मुफ़्त।";
+"Commercial, business, corporate, resale, SaaS, paid redistribution, internal company use, client work, contract work, monetized use, or use as a feature inside another app/product/service requires prior written permission from Yousa Bin Sadeque." = "व्यावसायिक, कॉर्पोरेट, पुनर्विक्रय, SaaS, सशुल्क वितरण, आंतरिक कंपनी उपयोग, ग्राहक कार्य, अनुबंध कार्य, मुद्रीकृत उपयोग, या किसी अन्य ऐप/उत्पाद/सेवा के अंदर सुविधा के रूप में उपयोग के लिए Yousa Bin Sadeque से पूर्व लिखित अनुमति आवश्यक है।";
+"Feedback" = "प्रतिक्रिया";
+"GitHub" = "GitHub";
+"Check for Updates" = "अपडेट की जांच करें";
+"Copyright © 2026 Yousa Bin Sadeque. All rights reserved." = "कॉपीराइट © 2026 Yousa Bin Sadeque। सर्वाधिकार सुरक्षित।";
+"Quit Floating Clock Overlay" = "फ़्लोटिंग क्लॉक बंद करें";
+
+/* Timer/Stopwatch */
+"Hours" = "घंटे";
+"Minutes" = "मिनट";
+"Seconds" = "सेकंड";
+"Start" = "शुरू";
+"Pause" = "रोकें";
+"Resume" = "फिर शुरू";
+"Reset" = "रीसेट";
+"Restart" = "पुनः आरंभ";
+"Lap" = "लैप";
+"Lap %d" = "लैप %d";
+"Timer finished!" = "टाइमर समाप्त!";
+
+/* Menu Bar */
+"Open Settings" = "सेटिंग्स खोलें";
+"Hide Overlay" = "ओवरले छुपाएं";
+"Click-Through: ON ✓" = "क्लिक-थ्रू: चालू ✓";
+"Click-Through: OFF" = "क्लिक-थ्रू: बंद";
+"Reset Position" = "स्थिति रीसेट करें";
+
+/* Size Presets */
+"Small" = "छोटा";
+"Medium" = "मध्यम";
+"Large" = "बड़ा";
+"Extra Large" = "बहुत बड़ा";
+
+/* Timer Menu */
+"Timer: Start" = "टाइमर: शुरू";
+"Timer: Pause" = "टाइमर: रोकें";
+"Timer: Resume" = "टाइमर: फिर शुरू";
+"Timer: Restart" = "टाइमर: पुनः आरंभ";
+"Timer: Reset" = "टाइमर: रीसेट";
+"Stopwatch: Start" = "स्टॉपवॉच: शुरू";
+"Stopwatch: Pause" = "स्टॉपवॉच: रोकें";
+"Stopwatch: Resume" = "स्टॉपवॉच: फिर शुरू";
+"Stopwatch: Lap" = "स्टॉपवॉच: लैप";
+"Stopwatch: Reset" = "स्टॉपवॉच: रीसेट";
+
+/* Language */
+"LANGUAGE" = "भाषा";
+"Clock Language" = "घड़ी की भाषा";
+"System Default" = "सिस्टम डिफ़ॉल्ट";

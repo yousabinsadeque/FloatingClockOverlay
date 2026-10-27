@@ -190,8 +190,21 @@ struct ClockView: View {
         }
     }
 
+    private static let nativeNumberingSystems: [String: String] = [
+        "ar": "arab",
+        "hi": "deva",
+        "bn": "beng",
+        "fa": "arabext",
+        "th": "thai",
+        "my": "mymr",
+    ]
+
     private var clockLocale: Locale {
-        s.clockLanguage.isEmpty ? Locale.current : Locale(identifier: s.clockLanguage)
+        if s.clockLanguage.isEmpty { return Locale.current }
+        if let ns = Self.nativeNumberingSystems[s.clockLanguage] {
+            return Locale(identifier: "\(s.clockLanguage)@numbers=\(ns)")
+        }
+        return Locale(identifier: s.clockLanguage)
     }
 
     private var clockTimeString: String {

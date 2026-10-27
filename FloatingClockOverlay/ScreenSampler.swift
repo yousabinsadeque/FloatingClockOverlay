@@ -29,6 +29,7 @@ enum ScreenSampler {
                 cgRect, listOption, windowID,
                 [.boundsIgnoreFraming, .nominalResolution]
             ) {
+                let b = brightnessOfImage(image)
                 return brightnessOfImage(image)
             }
         }
@@ -84,7 +85,9 @@ enum ScreenSampler {
                         [.boundsIgnoreFraming, .nominalResolution]) {
                         return brightnessOfImage(img)
                     }
-                    return nil
+                    // No capture permission — use system appearance as heuristic
+                    let isDark = NSApp.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+                    return isDark ? 0.15 : 0.85
                 }
             }
         }

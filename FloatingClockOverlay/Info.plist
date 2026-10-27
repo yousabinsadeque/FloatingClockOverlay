@@ -9,6 +9,7 @@
         <string>en</string>
         <string>es</string>
         <string>ar</string>
+        <string>hi</string>
     </array>
     <key>CFBundleExecutable</key>
     <string>$(EXECUTABLE_NAME)</string>

@@ -50,6 +50,7 @@
 		CC00000000000000000001BB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CC00000000000000000002BB /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CC00000000000000000003BB /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CC00000000000000000004BB /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = hi.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +115,7 @@
 				CC00000000000000000001BB /* en */,
 				CC00000000000000000002BB /* es */,
 				CC00000000000000000003BB /* ar */,
+				CC00000000000000000004BB /* hi */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -161,6 +163,7 @@
 				en,
 				es,
 				ar,
+				hi,
 				Base,
 			);
 			mainGroup = AA000000000000000000001A;
