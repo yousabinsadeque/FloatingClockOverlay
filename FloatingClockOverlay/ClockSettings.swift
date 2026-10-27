@@ -67,6 +67,9 @@ final class ClockSettings: ObservableObject {
     @Published var dvdBounce:       Bool
     @Published var dvdBounceSpeed:  Double   // points per tick
 
+    // MARK: - Language
+    @Published var clockLanguage:   String   // "" = system default, or locale identifier like "es", "ar"
+
     // MARK: - Position
     @Published var windowX:         Double
     @Published var windowY:         Double
@@ -133,6 +136,7 @@ final class ClockSettings: ObservableObject {
         windowScreenOffsetY = dbl("windowScreenOffsetY", default: 0)
         windowScreenName    = str("windowScreenName") ?? ""
         mirrorToAllDisplays = bool("mirrorToAllDisplays", default: false)
+        clockLanguage       = str("clockLanguage") ?? ""
 
         setupPersistence()
     }
@@ -188,6 +192,7 @@ final class ClockSettings: ObservableObject {
         $windowScreenOffsetY .dropFirst().sink { d.set($0, forKey: "windowScreenOffsetY") }.store(in: &cancellables)
         $windowScreenName    .dropFirst().sink { d.set($0, forKey: "windowScreenName")    }.store(in: &cancellables)
         $mirrorToAllDisplays .dropFirst().sink { d.set($0, forKey: "mirrorToAllDisplays") }.store(in: &cancellables)
+        $clockLanguage       .dropFirst().sink { d.set($0, forKey: "clockLanguage")      }.store(in: &cancellables)
     }
 
     // MARK: - Computed Color Helpers

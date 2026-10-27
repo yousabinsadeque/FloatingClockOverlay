@@ -1,0 +1,116 @@
+/* Header */
+"Floating Clock Overlay" = "Reloj Flotante";
+"A transparent always-on-top clock for macOS" = "Un reloj transparente siempre visible para macOS";
+
+/* General */
+"GENERAL" = "GENERAL";
+"Show Overlay" = "Mostrar reloj";
+"Click-Through" = "Clic transparente";
+"Clicks pass to apps below" = "Los clics pasan a las apps de abajo";
+"Drag mode active" = "Modo arrastrar activo";
+"Show in Dock" = "Mostrar en el Dock";
+"Launch at Login" = "Abrir al iniciar sesión";
+"Requires app in /Applications folder" = "Requiere la app en la carpeta /Aplicaciones";
+
+/* Mode */
+"MODE" = "MODO";
+"Clock" = "Reloj";
+"Timer" = "Temporizador";
+"Stopwatch" = "Cronómetro";
+
+/* Appearance */
+"APPEARANCE" = "APARIENCIA";
+"Theme" = "Tema";
+"Pop Culture" = "Cultura Pop";
+"F1 Team" = "Equipo F1";
+"Window Opacity" = "Opacidad de ventana";
+"Accent / Glow Color" = "Color de acento / brillo";
+"Background Color" = "Color de fondo";
+"Background Opacity" = "Opacidad de fondo";
+"Corner Radius" = "Radio de esquina";
+"Border Opacity" = "Opacidad del borde";
+"Shadow Strength" = "Intensidad de sombra";
+
+/* Typography */
+"TYPOGRAPHY" = "TIPOGRAFÍA";
+"Font" = "Fuente";
+"Weight" = "Grosor";
+"Font Size" = "Tamaño de fuente";
+"Letter Spacing" = "Espaciado";
+"Text Color" = "Color del texto";
+"Hour Format" = "Formato de hora";
+"12-hour" = "12 horas";
+"24-hour" = "24 horas";
+"Show Seconds" = "Mostrar segundos";
+"Show AM/PM" = "Mostrar AM/PM";
+"AM/PM Style" = "Estilo AM/PM";
+"Show Day of Week" = "Mostrar día de la semana";
+
+/* Window */
+"WINDOW" = "VENTANA";
+"Size" = "Tamaño";
+"Adaptive Color" = "Color adaptativo";
+"Auto-adjust text color to match background" = "Ajustar color del texto según el fondo";
+"Burn-in Prevention" = "Prevención de quemado";
+"Slowly drifts the clock to protect your display" = "Mueve el reloj lentamente para proteger tu pantalla";
+"Drift Interval" = "Intervalo de movimiento";
+"DVD Bounce" = "Rebote DVD";
+"Clock floats around the screen bouncing off edges" = "El reloj rebota por la pantalla";
+"Bounce Speed" = "Velocidad de rebote";
+"Show on All Displays" = "Mostrar en todas las pantallas";
+"Mirror the clock to every connected monitor" = "Duplicar el reloj en cada monitor conectado";
+"Reset Size & Position" = "Restablecer tamaño y posición";
+
+/* About */
+"ABOUT" = "ACERCA DE";
+"Created by **Yousa Bin Sadeque**" = "Creado por **Yousa Bin Sadeque**";
+"Free for personal and educational use." = "Gratis para uso personal y educativo.";
+"Commercial, business, corporate, resale, SaaS, paid redistribution, internal company use, client work, contract work, monetized use, or use as a feature inside another app/product/service requires prior written permission from Yousa Bin Sadeque." = "El uso comercial, empresarial, corporativo, reventa, SaaS, redistribución paga, uso interno de empresa, trabajo para clientes, trabajo por contrato, uso monetizado, o uso como función dentro de otra app/producto/servicio requiere permiso previo por escrito de Yousa Bin Sadeque.";
+"Feedback" = "Comentarios";
+"GitHub" = "GitHub";
+"Check for Updates" = "Buscar actualizaciones";
+"Copyright © 2026 Yousa Bin Sadeque. All rights reserved." = "Copyright © 2026 Yousa Bin Sadeque. Todos los derechos reservados.";
+"Quit Floating Clock Overlay" = "Salir de Reloj Flotante";
+
+/* Timer/Stopwatch */
+"Hours" = "Horas";
+"Minutes" = "Minutos";
+"Seconds" = "Segundos";
+"Start" = "Iniciar";
+"Pause" = "Pausar";
+"Resume" = "Reanudar";
+"Reset" = "Reiniciar";
+"Restart" = "Reiniciar";
+"Lap" = "Vuelta";
+"Lap %d" = "Vuelta %d";
+"Timer finished!" = "¡Temporizador terminado!";
+
+/* Menu Bar */
+"Open Settings" = "Abrir Ajustes";
+"Hide Overlay" = "Ocultar reloj";
+"Click-Through: ON ✓" = "Clic transparente: SÍ ✓";
+"Click-Through: OFF" = "Clic transparente: NO";
+"Reset Position" = "Restablecer posición";
+
+/* Size Presets */
+"Small" = "Pequeño";
+"Medium" = "Mediano";
+"Large" = "Grande";
+"Extra Large" = "Extra Grande";
+
+/* Timer Menu */
+"Timer: Start" = "Temporizador: Iniciar";
+"Timer: Pause" = "Temporizador: Pausar";
+"Timer: Resume" = "Temporizador: Reanudar";
+"Timer: Restart" = "Temporizador: Reiniciar";
+"Timer: Reset" = "Temporizador: Reiniciar";
+"Stopwatch: Start" = "Cronómetro: Iniciar";
+"Stopwatch: Pause" = "Cronómetro: Pausar";
+"Stopwatch: Resume" = "Cronómetro: Reanudar";
+"Stopwatch: Lap" = "Cronómetro: Vuelta";
+"Stopwatch: Reset" = "Cronómetro: Reiniciar";
+
+/* Language */
+"LANGUAGE" = "IDIOMA";
+"Clock Language" = "Idioma del reloj";
+"System Default" = "Predeterminado del sistema";

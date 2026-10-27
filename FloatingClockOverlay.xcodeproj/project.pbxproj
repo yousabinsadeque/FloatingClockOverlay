@@ -24,6 +24,7 @@
 		BB0000000000000000000001 /* AnimatedThemeBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000000002 /* AnimatedThemeBackground.swift */; };
 		BB0000000000000000000003 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000000004 /* WeatherService.swift */; };
 		AA0000000000000000000D1A /* Assets.xcassets in Resources */      = {isa = PBXBuildFile; fileRef = AA0000000000000000000E1A /* Assets.xcassets */; };
+		CC00000000000000000001AA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CC00000000000000000004AA /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,9 @@
 		BB0000000000000000000004 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
 		AA0000000000000000000E1A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog;   path = Assets.xcassets;  sourceTree = "<group>"; };
 		AA000000000000000000015A /* FloatingClockOverlay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FloatingClockOverlay.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC00000000000000000001BB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CC00000000000000000002BB /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CC00000000000000000003BB /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +92,7 @@
 				AA0000000000000000000C1A /* TimeController.swift */,
 				AA0000000000000000000C2A /* TimerStopwatchControlsView.swift */,
 				AA000000000000000000014A /* Info.plist */,
+				CC00000000000000000004AA /* Localizable.strings */,
 			);
 			path = FloatingClockOverlay;
 			sourceTree = "<group>";
@@ -101,6 +106,19 @@
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
+
+/* Begin PBXVariantGroup section */
+		CC00000000000000000004AA /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CC00000000000000000001BB /* en */,
+				CC00000000000000000002BB /* es */,
+				CC00000000000000000003BB /* ar */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin PBXNativeTarget section */
 		AA000000000000000000030A /* FloatingClockOverlay */ = {
@@ -141,6 +159,8 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				es,
+				ar,
 				Base,
 			);
 			mainGroup = AA000000000000000000001A;
@@ -159,6 +179,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA0000000000000000000D1A /* Assets.xcassets in Resources */,
+				CC00000000000000000001AA /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

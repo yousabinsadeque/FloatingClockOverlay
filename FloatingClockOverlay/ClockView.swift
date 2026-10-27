@@ -190,8 +190,13 @@ struct ClockView: View {
         }
     }
 
+    private var clockLocale: Locale {
+        s.clockLanguage.isEmpty ? Locale.current : Locale(identifier: s.clockLanguage)
+    }
+
     private var clockTimeString: String {
         let f = DateFormatter()
+        f.locale = clockLocale
         if s.use24Hour {
             f.dateFormat = s.showSeconds ? "HH:mm:ss" : "HH:mm"
         } else if s.showAmPm {
@@ -210,7 +215,7 @@ struct ClockView: View {
 
     private var dayOfWeekString: String {
         let f = DateFormatter()
-        f.locale = Locale.current
+        f.locale = clockLocale
         f.dateFormat = "EEEE"
         return f.string(from: clockTime)
     }

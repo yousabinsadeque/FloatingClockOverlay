@@ -1,0 +1,116 @@
+/* Header */
+"Floating Clock Overlay" = "Floating Clock Overlay";
+"A transparent always-on-top clock for macOS" = "A transparent always-on-top clock for macOS";
+
+/* General */
+"GENERAL" = "GENERAL";
+"Show Overlay" = "Show Overlay";
+"Click-Through" = "Click-Through";
+"Clicks pass to apps below" = "Clicks pass to apps below";
+"Drag mode active" = "Drag mode active";
+"Show in Dock" = "Show in Dock";
+"Launch at Login" = "Launch at Login";
+"Requires app in /Applications folder" = "Requires app in /Applications folder";
+
+/* Mode */
+"MODE" = "MODE";
+"Clock" = "Clock";
+"Timer" = "Timer";
+"Stopwatch" = "Stopwatch";
+
+/* Appearance */
+"APPEARANCE" = "APPEARANCE";
+"Theme" = "Theme";
+"Pop Culture" = "Pop Culture";
+"F1 Team" = "F1 Team";
+"Window Opacity" = "Window Opacity";
+"Accent / Glow Color" = "Accent / Glow Color";
+"Background Color" = "Background Color";
+"Background Opacity" = "Background Opacity";
+"Corner Radius" = "Corner Radius";
+"Border Opacity" = "Border Opacity";
+"Shadow Strength" = "Shadow Strength";
+
+/* Typography */
+"TYPOGRAPHY" = "TYPOGRAPHY";
+"Font" = "Font";
+"Weight" = "Weight";
+"Font Size" = "Font Size";
+"Letter Spacing" = "Letter Spacing";
+"Text Color" = "Text Color";
+"Hour Format" = "Hour Format";
+"12-hour" = "12-hour";
+"24-hour" = "24-hour";
+"Show Seconds" = "Show Seconds";
+"Show AM/PM" = "Show AM/PM";
+"AM/PM Style" = "AM/PM Style";
+"Show Day of Week" = "Show Day of Week";
+
+/* Window */
+"WINDOW" = "WINDOW";
+"Size" = "Size";
+"Adaptive Color" = "Adaptive Color";
+"Auto-adjust text color to match background" = "Auto-adjust text color to match background";
+"Burn-in Prevention" = "Burn-in Prevention";
+"Slowly drifts the clock to protect your display" = "Slowly drifts the clock to protect your display";
+"Drift Interval" = "Drift Interval";
+"DVD Bounce" = "DVD Bounce";
+"Clock floats around the screen bouncing off edges" = "Clock floats around the screen bouncing off edges";
+"Bounce Speed" = "Bounce Speed";
+"Show on All Displays" = "Show on All Displays";
+"Mirror the clock to every connected monitor" = "Mirror the clock to every connected monitor";
+"Reset Size & Position" = "Reset Size & Position";
+
+/* About */
+"ABOUT" = "ABOUT";
+"Created by **Yousa Bin Sadeque**" = "Created by **Yousa Bin Sadeque**";
+"Free for personal and educational use." = "Free for personal and educational use.";
+"Commercial, business, corporate, resale, SaaS, paid redistribution, internal company use, client work, contract work, monetized use, or use as a feature inside another app/product/service requires prior written permission from Yousa Bin Sadeque." = "Commercial, business, corporate, resale, SaaS, paid redistribution, internal company use, client work, contract work, monetized use, or use as a feature inside another app/product/service requires prior written permission from Yousa Bin Sadeque.";
+"Feedback" = "Feedback";
+"GitHub" = "GitHub";
+"Check for Updates" = "Check for Updates";
+"Copyright © 2026 Yousa Bin Sadeque. All rights reserved." = "Copyright © 2026 Yousa Bin Sadeque. All rights reserved.";
+"Quit Floating Clock Overlay" = "Quit Floating Clock Overlay";
+
+/* Timer/Stopwatch */
+"Hours" = "Hours";
+"Minutes" = "Minutes";
+"Seconds" = "Seconds";
+"Start" = "Start";
+"Pause" = "Pause";
+"Resume" = "Resume";
+"Reset" = "Reset";
+"Restart" = "Restart";
+"Lap" = "Lap";
+"Lap %d" = "Lap %d";
+"Timer finished!" = "Timer finished!";
+
+/* Menu Bar */
+"Open Settings" = "Open Settings";
+"Hide Overlay" = "Hide Overlay";
+"Click-Through: ON ✓" = "Click-Through: ON ✓";
+"Click-Through: OFF" = "Click-Through: OFF";
+"Reset Position" = "Reset Position";
+
+/* Size Presets */
+"Small" = "Small";
+"Medium" = "Medium";
+"Large" = "Large";
+"Extra Large" = "Extra Large";
+
+/* Timer Menu */
+"Timer: Start" = "Timer: Start";
+"Timer: Pause" = "Timer: Pause";
+"Timer: Resume" = "Timer: Resume";
+"Timer: Restart" = "Timer: Restart";
+"Timer: Reset" = "Timer: Reset";
+"Stopwatch: Start" = "Stopwatch: Start";
+"Stopwatch: Pause" = "Stopwatch: Pause";
+"Stopwatch: Resume" = "Stopwatch: Resume";
+"Stopwatch: Lap" = "Stopwatch: Lap";
+"Stopwatch: Reset" = "Stopwatch: Reset";
+
+/* Language */
+"LANGUAGE" = "LANGUAGE";
+"Clock Language" = "Clock Language";
+"System Default" = "System Default";

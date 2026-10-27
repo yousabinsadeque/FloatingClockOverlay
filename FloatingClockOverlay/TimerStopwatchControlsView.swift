@@ -163,7 +163,7 @@ struct TimerStopwatchControlsView: View {
 // MARK: - Duration Input Field
 
 struct DurationField: View {
-    let label:  String
+    let label:  LocalizedStringKey
     @Binding var value: Int
     let range:  ClosedRange<Int>
 

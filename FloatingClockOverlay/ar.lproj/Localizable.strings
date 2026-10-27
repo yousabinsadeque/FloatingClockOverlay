@@ -1,0 +1,116 @@
+/* Header */
+"Floating Clock Overlay" = "ساعة عائمة";
+"A transparent always-on-top clock for macOS" = "ساعة شفافة دائمة الظهور لنظام macOS";
+
+/* General */
+"GENERAL" = "عام";
+"Show Overlay" = "إظهار الساعة";
+"Click-Through" = "النقر العابر";
+"Clicks pass to apps below" = "النقرات تمر للتطبيقات أدناه";
+"Drag mode active" = "وضع السحب نشط";
+"Show in Dock" = "إظهار في الـ Dock";
+"Launch at Login" = "فتح عند تسجيل الدخول";
+"Requires app in /Applications folder" = "يتطلب التطبيق في مجلد التطبيقات";
+
+/* Mode */
+"MODE" = "الوضع";
+"Clock" = "ساعة";
+"Timer" = "مؤقت";
+"Stopwatch" = "ساعة إيقاف";
+
+/* Appearance */
+"APPEARANCE" = "المظهر";
+"Theme" = "السمة";
+"Pop Culture" = "ثقافة شعبية";
+"F1 Team" = "فريق F1";
+"Window Opacity" = "شفافية النافذة";
+"Accent / Glow Color" = "لون التمييز / التوهج";
+"Background Color" = "لون الخلفية";
+"Background Opacity" = "شفافية الخلفية";
+"Corner Radius" = "نصف قطر الزاوية";
+"Border Opacity" = "شفافية الحدود";
+"Shadow Strength" = "قوة الظل";
+
+/* Typography */
+"TYPOGRAPHY" = "الخط";
+"Font" = "الخط";
+"Weight" = "السمك";
+"Font Size" = "حجم الخط";
+"Letter Spacing" = "تباعد الأحرف";
+"Text Color" = "لون النص";
+"Hour Format" = "صيغة الساعة";
+"12-hour" = "١٢ ساعة";
+"24-hour" = "٢٤ ساعة";
+"Show Seconds" = "إظهار الثواني";
+"Show AM/PM" = "إظهار ص/م";
+"AM/PM Style" = "نمط ص/م";
+"Show Day of Week" = "إظهار يوم الأسبوع";
+
+/* Window */
+"WINDOW" = "النافذة";
+"Size" = "الحجم";
+"Adaptive Color" = "لون متكيف";
+"Auto-adjust text color to match background" = "ضبط لون النص تلقائياً حسب الخلفية";
+"Burn-in Prevention" = "منع الاحتراق";
+"Slowly drifts the clock to protect your display" = "تحريك الساعة ببطء لحماية شاشتك";
+"Drift Interval" = "فترة التحريك";
+"DVD Bounce" = "ارتداد DVD";
+"Clock floats around the screen bouncing off edges" = "الساعة ترتد عن حواف الشاشة";
+"Bounce Speed" = "سرعة الارتداد";
+"Show on All Displays" = "إظهار على جميع الشاشات";
+"Mirror the clock to every connected monitor" = "عرض الساعة على كل شاشة متصلة";
+"Reset Size & Position" = "إعادة تعيين الحجم والموضع";
+
+/* About */
+"ABOUT" = "حول";
+"Created by **Yousa Bin Sadeque**" = "من تطوير **Yousa Bin Sadeque**";
+"Free for personal and educational use." = "مجاني للاستخدام الشخصي والتعليمي.";
+"Commercial, business, corporate, resale, SaaS, paid redistribution, internal company use, client work, contract work, monetized use, or use as a feature inside another app/product/service requires prior written permission from Yousa Bin Sadeque." = "الاستخدام التجاري أو المؤسسي أو إعادة البيع أو SaaS أو التوزيع المدفوع أو الاستخدام الداخلي للشركة أو العمل للعملاء أو العمل التعاقدي أو الاستخدام المربح أو كميزة داخل تطبيق/منتج/خدمة أخرى يتطلب إذناً كتابياً مسبقاً من Yousa Bin Sadeque.";
+"Feedback" = "ملاحظات";
+"GitHub" = "GitHub";
+"Check for Updates" = "التحقق من التحديثات";
+"Copyright © 2026 Yousa Bin Sadeque. All rights reserved." = "حقوق النشر © ٢٠٢٦ Yousa Bin Sadeque. جميع الحقوق محفوظة.";
+"Quit Floating Clock Overlay" = "إنهاء الساعة العائمة";
+
+/* Timer/Stopwatch */
+"Hours" = "ساعات";
+"Minutes" = "دقائق";
+"Seconds" = "ثوانٍ";
+"Start" = "بدء";
+"Pause" = "إيقاف مؤقت";
+"Resume" = "استئناف";
+"Reset" = "إعادة تعيين";
+"Restart" = "إعادة تشغيل";
+"Lap" = "لفة";
+"Lap %d" = "لفة %d";
+"Timer finished!" = "!انتهى المؤقت";
+
+/* Menu Bar */
+"Open Settings" = "فتح الإعدادات";
+"Hide Overlay" = "إخفاء الساعة";
+"Click-Through: ON ✓" = "النقر العابر: مفعّل ✓";
+"Click-Through: OFF" = "النقر العابر: معطّل";
+"Reset Position" = "إعادة تعيين الموضع";
+
+/* Size Presets */
+"Small" = "صغير";
+"Medium" = "متوسط";
+"Large" = "كبير";
+"Extra Large" = "كبير جداً";
+
+/* Timer Menu */
+"Timer: Start" = "مؤقت: بدء";
+"Timer: Pause" = "مؤقت: إيقاف";
+"Timer: Resume" = "مؤقت: استئناف";
+"Timer: Restart" = "مؤقت: إعادة";
+"Timer: Reset" = "مؤقت: تعيين";
+"Stopwatch: Start" = "ساعة إيقاف: بدء";
+"Stopwatch: Pause" = "ساعة إيقاف: إيقاف";
+"Stopwatch: Resume" = "ساعة إيقاف: استئناف";
+"Stopwatch: Lap" = "ساعة إيقاف: لفة";
+"Stopwatch: Reset" = "ساعة إيقاف: تعيين";
+
+/* Language */
+"LANGUAGE" = "اللغة";
+"Clock Language" = "لغة الساعة";
+"System Default" = "افتراضي النظام";

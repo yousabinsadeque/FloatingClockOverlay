@@ -63,19 +63,14 @@ enum ScreenSampler {
             let windowNum = info[kCGWindowNumber as String] as? Int ?? 0
             let layer = info[kCGWindowLayer as String] as? Int ?? 0
 
-            // Skip our own window
             if CGWindowID(windowNum) == clockWindowNumber {
                 foundOurWindow = true
                 continue
             }
 
-            // Only consider windows below ours (after ours in the z-order list)
             if !foundOurWindow { continue }
-
-            // Skip very high-level windows (menu bar, etc.)
             if layer > 20 { continue }
 
-            // Check if window bounds contain our point
             if let boundsDict = info[kCGWindowBounds as String] as? [String: Any],
                let wx = boundsDict["X"] as? CGFloat,
                let wy = boundsDict["Y"] as? CGFloat,
@@ -83,21 +78,13 @@ enum ScreenSampler {
                let wh = boundsDict["Height"] as? CGFloat {
                 let windowRect = CGRect(x: wx, y: wy, width: ww, height: wh)
                 if windowRect.contains(point) {
-                    // Found a window below us at this point
-                    // Check the owning app's appearance
-                    if let ownerPID = info[kCGWindowOwnerPID as String] as? Int32 {
-                        let app = NSRunningApplication(processIdentifier: ownerPID)
-                        // Most apps follow the system appearance
-                        // Check if the app has an effective appearance set
-                        if let appName = app?.localizedName {
-                            // Use NSAppearance to detect dark mode for the app
-                            let isDark = NSApp.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
-                            return isDark ? 0.2 : 0.8
-                        }
+                    // Try capturing this specific window's image
+                    if let img = CGWindowListCreateImage(
+                        .null, .optionIncludingWindow, CGWindowID(windowNum),
+                        [.boundsIgnoreFraming, .nominalResolution]) {
+                        return brightnessOfImage(img)
                     }
-                    // Default: assume the window follows system appearance
-                    let isDark = NSApp.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
-                    return isDark ? 0.2 : 0.8
+                    return nil
                 }
             }
         }

@@ -50,7 +50,7 @@ struct SettingsView: View {
             SettingsDivider()
             ToggleRow(icon: "cursorarrow.rays", label: "Click-Through",
                       value: $s.isClickThrough,
-                      hint: s.isClickThrough ? "Clicks pass to apps below" : "Drag mode active")
+                      hint: s.isClickThrough ? LocalizedStringKey("Clicks pass to apps below") : LocalizedStringKey("Drag mode active"))
             SettingsDivider()
             ToggleRow(icon: "dock.rectangle", label: "Show in Dock",
                       value: Binding(get: { s.showInDock },
@@ -271,6 +271,28 @@ struct SettingsView: View {
                 }
                 SettingsDivider()
                 ToggleRow(icon: "calendar", label: "Show Day of Week", value: $s.showDayOfWeek)
+                SettingsDivider()
+                SettingsRow(icon: "globe", label: "Clock Language") {
+                    Picker("", selection: $s.clockLanguage) {
+                        Text(NSLocalizedString("System Default", comment: "")).tag("")
+                        Text("English").tag("en")
+                        Text("Español").tag("es")
+                        Text("العربية").tag("ar")
+                        Text("বাংলা").tag("bn")
+                        Text("Français").tag("fr")
+                        Text("Deutsch").tag("de")
+                        Text("日本語").tag("ja")
+                        Text("中文").tag("zh")
+                        Text("한국어").tag("ko")
+                        Text("Português").tag("pt")
+                        Text("Русский").tag("ru")
+                        Text("हिन्दी").tag("hi")
+                        Text("Türkçe").tag("tr")
+                        Text("Italiano").tag("it")
+                    }
+                    .labelsHidden()
+                    .frame(width: 140)
+                }
             }
         }
     }
@@ -565,7 +587,7 @@ struct ThemeCard: View {
 // MARK: - Reusable Components
 
 struct SettingsCard<Content: View>: View {
-    let label: String
+    let label: LocalizedStringKey
     let icon:  String
     @ViewBuilder let content: () -> Content
 
@@ -588,7 +610,7 @@ struct SettingsCard<Content: View>: View {
 }
 
 struct SettingsRow<Control: View>: View {
-    let icon: String; let label: String
+    let icon: String; let label: LocalizedStringKey
     @ViewBuilder let control: () -> Control
 
     var body: some View {
@@ -603,9 +625,9 @@ struct SettingsRow<Control: View>: View {
 }
 
 struct ToggleRow: View {
-    let icon: String; let label: String
+    let icon: String; let label: LocalizedStringKey
     @Binding var value: Bool
-    var hint: String? = nil
+    var hint: LocalizedStringKey? = nil
 
     var body: some View {
         HStack(spacing: 10) {
@@ -622,7 +644,7 @@ struct ToggleRow: View {
 }
 
 struct SliderRow: View {
-    let icon: String; let label: String
+    let icon: String; let label: LocalizedStringKey
     @Binding var value: Double
     let range: ClosedRange<Double>
     let display: (Double) -> String
