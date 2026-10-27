@@ -3,9 +3,11 @@ import AppKit
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     private var clockWindowController:    ClockWindowController?
+    private var mirrorControllers:        [String: ClockWindowController] = [:]
     private var settingsWindowController: SettingsWindowController?
     private var statusItem:               NSStatusItem?
     private var globalMonitor:            Any?
+    private var mirrorCancellable:        Any?
 
     // Set to true only by the explicit "Quit" menu action.
     // Every other termination path is blocked.
@@ -34,6 +36,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         clockWindowController = ClockWindowController()
         setupStatusBar()
         setupGlobalKeyboardShortcut()
+        setupMirrorObserver()
 
         // Allow the Settings quit button to trigger a real quit via notification.
         NotificationCenter.default.addObserver(
@@ -69,6 +72,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @objc private func quitApp() {
         clockWindowController?.savePosition()
+        removeMirrorWindows()
         allowQuit = true
         NSApp.terminate(nil)
     }
@@ -282,6 +286,80 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     @objc private func swLap()   { TimeController.shared.stopwatchLap() }
     @objc private func swReset() { TimeController.shared.stopwatchReset() }
+
+    // MARK: - Mirror to All Displays
+
+    private func setupMirrorObserver() {
+        let s = ClockSettings.shared
+        mirrorCancellable = s.$mirrorToAllDisplays
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] enabled in
+                if enabled {
+                    self?.createMirrorWindows()
+                } else {
+                    self?.removeMirrorWindows()
+                }
+            }
+
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(screensChanged),
+            name: NSApplication.didChangeScreenParametersNotification, object: nil
+        )
+    }
+
+    @objc private func screensChanged() {
+        if ClockSettings.shared.mirrorToAllDisplays {
+            createMirrorWindows()
+        }
+    }
+
+    private func createMirrorWindows() {
+        removeMirrorWindows()
+        guard let mainWindow = clockWindowController?.window else { return }
+        let mainScreen = mainWindow.screen ?? NSScreen.main
+
+        for screen in NSScreen.screens {
+            if screen == mainScreen { continue }
+            let name = screen.localizedName
+            let controller = ClockWindowController()
+
+            // Position the mirror at the saved offset for this screen, or center-top
+            let d = UserDefaults.standard
+            let key = "mirror_\(name)"
+            let ox = d.double(forKey: "\(key)_offsetX")
+            let oy = d.double(forKey: "\(key)_offsetY")
+            if ox != 0 || oy != 0 {
+                let origin = NSPoint(x: screen.frame.origin.x + ox,
+                                     y: screen.frame.origin.y + oy)
+                controller.window?.setFrameOrigin(origin)
+            } else {
+                let sf = screen.visibleFrame
+                let wf = controller.window?.frame ?? .zero
+                let origin = NSPoint(x: sf.midX - wf.width / 2,
+                                     y: sf.maxY - wf.height - 20)
+                controller.window?.setFrameOrigin(origin)
+            }
+
+            controller.window?.orderFrontRegardless()
+            mirrorControllers[name] = controller
+        }
+    }
+
+    private func removeMirrorWindows() {
+        // Save positions before removing
+        for (name, controller) in mirrorControllers {
+            if let origin = controller.window?.frame.origin,
+               let screen = controller.window?.screen {
+                let key = "mirror_\(name)"
+                let d = UserDefaults.standard
+                d.set(origin.x - screen.frame.origin.x, forKey: "\(key)_offsetX")
+                d.set(origin.y - screen.frame.origin.y, forKey: "\(key)_offsetY")
+            }
+            controller.window?.close()
+        }
+        mirrorControllers.removeAll()
+        UserDefaults.standard.synchronize()
+    }
 
     // MARK: - Global Keyboard Shortcut — ⌘⌥C (toggle click-through)
 

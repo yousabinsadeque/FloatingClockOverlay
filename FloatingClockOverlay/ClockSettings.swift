@@ -70,6 +70,10 @@ final class ClockSettings: ObservableObject {
     // MARK: - Position
     @Published var windowX:         Double
     @Published var windowY:         Double
+    @Published var windowScreenOffsetX: Double
+    @Published var windowScreenOffsetY: Double
+    @Published var windowScreenName:    String
+    @Published var mirrorToAllDisplays: Bool
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -125,6 +129,10 @@ final class ClockSettings: ObservableObject {
         dvdBounceSpeed    = dbl("dvdBounceSpeed",    default: 0.7)
         windowX           = dbl("windowX",           default: -1)
         windowY           = dbl("windowY",           default: -1)
+        windowScreenOffsetX = dbl("windowScreenOffsetX", default: 0)
+        windowScreenOffsetY = dbl("windowScreenOffsetY", default: 0)
+        windowScreenName    = str("windowScreenName") ?? ""
+        mirrorToAllDisplays = bool("mirrorToAllDisplays", default: false)
 
         setupPersistence()
     }
@@ -176,6 +184,10 @@ final class ClockSettings: ObservableObject {
         $dvdBounceSpeed   .dropFirst().sink { d.set($0, forKey: "dvdBounceSpeed")   }.store(in: &cancellables)
         $windowX          .dropFirst().sink { d.set($0, forKey: "windowX")          }.store(in: &cancellables)
         $windowY          .dropFirst().sink { d.set($0, forKey: "windowY")          }.store(in: &cancellables)
+        $windowScreenOffsetX .dropFirst().sink { d.set($0, forKey: "windowScreenOffsetX") }.store(in: &cancellables)
+        $windowScreenOffsetY .dropFirst().sink { d.set($0, forKey: "windowScreenOffsetY") }.store(in: &cancellables)
+        $windowScreenName    .dropFirst().sink { d.set($0, forKey: "windowScreenName")    }.store(in: &cancellables)
+        $mirrorToAllDisplays .dropFirst().sink { d.set($0, forKey: "mirrorToAllDisplays") }.store(in: &cancellables)
     }
 
     // MARK: - Computed Color Helpers

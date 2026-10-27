@@ -70,16 +70,52 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
 
     private func restorePosition() {
         guard let window = window else { return }
-        if s.windowX >= 0 && s.windowY >= 0 {
-            window.setFrameOrigin(NSPoint(x: s.windowX, y: s.windowY))
-            // Ensure the window is actually visible on a current screen
-            let onScreen = NSScreen.screens.contains { $0.visibleFrame.intersects(window.frame) }
-            if !onScreen {
-                moveToPreset(.topRight)
+
+        if tryRestoreToScreen(window) { return }
+
+        // Target screen not found yet — external monitors may appear after boot.
+        // Schedule retries for up to 10 seconds.
+        if !s.windowScreenName.isEmpty {
+            var attempts = 0
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
+                guard let self = self, let window = self.window else { timer.invalidate(); return }
+                attempts += 1
+                if self.tryRestoreToScreen(window) || attempts >= 10 {
+                    timer.invalidate()
+                }
             }
-        } else {
-            moveToPreset(.topRight)
         }
+    }
+
+    private func tryRestoreToScreen(_ window: NSWindow) -> Bool {
+        // Try screen-relative restore first
+        if !s.windowScreenName.isEmpty {
+            if let targetScreen = NSScreen.screens.first(where: { $0.localizedName == s.windowScreenName }) {
+                let origin = NSPoint(
+                    x: targetScreen.frame.origin.x + s.windowScreenOffsetX,
+                    y: targetScreen.frame.origin.y + s.windowScreenOffsetY
+                )
+                isRestoringPosition = true
+                window.setFrameOrigin(origin)
+                isRestoringPosition = false
+                if targetScreen.visibleFrame.intersects(window.frame) {
+                    return true
+                }
+            }
+        }
+
+        // Fall back to absolute coordinates
+        if s.windowX >= 0 && s.windowY >= 0 {
+            isRestoringPosition = true
+            window.setFrameOrigin(NSPoint(x: s.windowX, y: s.windowY))
+            isRestoringPosition = false
+            let onScreen = NSScreen.screens.contains { $0.visibleFrame.intersects(window.frame) }
+            if onScreen { return true }
+        }
+
+        // No valid position found — use default
+        moveToPreset(.topRight)
+        return true
     }
 
     // MARK: - Always On Top (across every app switch)
@@ -208,13 +244,16 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
         }
 
         window.setContentSize(size)
-        if let screen = NSScreen.main {
-            var frame = window.frame
-            frame.origin.x = min(frame.origin.x, screen.visibleFrame.maxX - frame.width)
-            frame.origin.y = min(frame.origin.y, screen.visibleFrame.maxY - frame.height)
-            frame.origin.x = max(frame.origin.x, screen.visibleFrame.minX)
-            frame.origin.y = max(frame.origin.y, screen.visibleFrame.minY)
-            window.setFrameOrigin(frame.origin)
+        if !isRestoringPosition {
+            let center = CGPoint(x: window.frame.midX, y: window.frame.midY)
+            if let screen = screenContaining(center) ?? nearestScreen(to: center) ?? NSScreen.main {
+                var frame = window.frame
+                frame.origin.x = min(frame.origin.x, screen.visibleFrame.maxX - frame.width)
+                frame.origin.y = min(frame.origin.y, screen.visibleFrame.maxY - frame.height)
+                frame.origin.x = max(frame.origin.x, screen.visibleFrame.minX)
+                frame.origin.y = max(frame.origin.y, screen.visibleFrame.minY)
+                window.setFrameOrigin(frame.origin)
+            }
         }
     }
 
@@ -446,9 +485,19 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
     // MARK: - Persistence
 
     func savePosition() {
-        guard let origin = window?.frame.origin else { return }
+        guard let window = window else { return }
+        let origin = window.frame.origin
         s.windowX = origin.x
         s.windowY = origin.y
+
+        // Save position relative to the screen the clock is on
+        let center = CGPoint(x: window.frame.midX, y: window.frame.midY)
+        if let screen = screenContaining(center) ?? nearestScreen(to: center) {
+            let sf = screen.frame
+            s.windowScreenOffsetX = origin.x - sf.origin.x
+            s.windowScreenOffsetY = origin.y - sf.origin.y
+            s.windowScreenName = screen.localizedName
+        }
         UserDefaults.standard.synchronize()
     }
 

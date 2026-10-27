@@ -330,6 +330,11 @@ struct SettingsView: View {
                 }
 
                 SettingsDivider()
+                ToggleRow(icon: "display.2", label: "Show on All Displays",
+                          value: $s.mirrorToAllDisplays,
+                          hint: "Mirror the clock to every connected monitor")
+
+                SettingsDivider()
 
                 // Reset
                 HStack {

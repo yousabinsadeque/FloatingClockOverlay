@@ -4,6 +4,8 @@ import CoreGraphics
 enum ScreenSampler {
 
     static func averageBrightnessUnderClock() -> CGFloat {
+        // Check screen recording permission silently — avoid triggering the prompt
+        if !CGPreflightScreenCaptureAccess() { return 0.5 }
         guard let screen = NSScreen.main else { return 0.0 }
 
         let s = ClockSettings.shared

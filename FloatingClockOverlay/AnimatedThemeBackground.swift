@@ -39,7 +39,11 @@ struct LiveWeatherAnimation: View {
                     drawRain(ctx: ctx, size: size, t: t, p: p)
                     drawLightning(ctx: ctx, size: size, t: t, p: p)
                 case .hot:
-                    drawSunRays(ctx: ctx, size: size, t: t, p: p, intense: true)
+                    if ws.timeOfDay == .night {
+                        drawStars(ctx: ctx, size: size, t: t, p: p)
+                    } else {
+                        drawSunRays(ctx: ctx, size: size, t: t, p: p, intense: true)
+                    }
                 case .clear:
                     if ws.timeOfDay == .night {
                         drawStars(ctx: ctx, size: size, t: t, p: p)
