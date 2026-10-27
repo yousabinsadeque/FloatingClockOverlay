@@ -38,6 +38,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         setupGlobalKeyboardShortcut()
         setupMirrorObserver()
         InstallTracker.trackFirstLaunchIfNeeded()
+        if ClockSettings.shared.adaptiveColor {
+            ScreenSampler.requestPermissionIfNeeded()
+        }
 
         // Allow the Settings quit button to trigger a real quit via notification.
         NotificationCenter.default.addObserver(

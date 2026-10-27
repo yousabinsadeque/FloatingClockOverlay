@@ -305,6 +305,9 @@ struct SettingsView: View {
                 ToggleRow(icon: "eye.trianglebadge.exclamationmark", label: "Adaptive Color",
                           value: $s.adaptiveColor,
                           hint: "Auto-adjust text color to match background")
+                    .onChange(of: s.adaptiveColor) { enabled in
+                        if enabled { ScreenSampler.requestPermissionIfNeeded() }
+                    }
                 SettingsDivider()
                 ToggleRow(icon: "arrow.triangle.2.circlepath", label: "Burn-in Prevention",
                           value: $s.burnInPrevention,
