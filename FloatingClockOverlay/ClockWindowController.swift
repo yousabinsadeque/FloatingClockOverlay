@@ -13,6 +13,7 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
     private var dvdVelocity: CGPoint = CGPoint(x: 0.4, y: 0.3)
     private var dvdPosition: CGPoint = .zero
     private var isDVDBouncing = false
+    private var isRestoringPosition = true
     private var dvdLastTimestamp: TimeInterval = 0
 
     init() {
@@ -53,12 +54,14 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
 
         window.contentView = NSHostingView(rootView: ClockView())
 
+        isRestoringPosition = true
         if s.isFullScreen {
             applyFullScreen(true, animate: false)
         } else {
             applyPreset(s.sizePreset, animate: false)
             restorePosition()
         }
+        isRestoringPosition = false
 
         if s.isVisible { window.orderFrontRegardless() }
         setupBurnInPrevention()
@@ -446,6 +449,7 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
         guard let origin = window?.frame.origin else { return }
         s.windowX = origin.x
         s.windowY = origin.y
+        UserDefaults.standard.synchronize()
     }
 
     // MARK: - NSWindowDelegate
@@ -460,7 +464,7 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
     }
 
     func windowDidMove(_ notification: Notification) {
-        if !isDVDBouncing {
+        if !isDVDBouncing && !isRestoringPosition {
             savePosition()
         }
     }
