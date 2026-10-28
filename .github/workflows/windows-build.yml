@@ -28,6 +28,7 @@ jobs:
       - name: Smoke test (launch and check it stays running)
         shell: pwsh
         run: |
+          $env:FCO_ALLOW_CAPTURE = "1"
           $p = Start-Process publish/FloatingClockOverlay.exe -PassThru
           Start-Sleep -Seconds 10
           Add-Type -AssemblyName System.Windows.Forms,System.Drawing

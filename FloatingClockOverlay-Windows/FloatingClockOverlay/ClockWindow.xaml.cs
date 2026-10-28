@@ -84,7 +84,8 @@ public partial class ClockWindow : Window
         HwndSource.FromHwnd(_hwnd)?.AddHook(WndProc);
         RegisterHotKey(_hwnd, HOTKEY_ID, MOD_CONTROL | MOD_ALT, VK_C);
         // Hide our own window from screen captures so adaptive color samples what's behind it.
-        SetWindowDisplayAffinity(_hwnd, WDA_EXCLUDEFROMCAPTURE);
+        if (Environment.GetEnvironmentVariable("FCO_ALLOW_CAPTURE") != "1")
+            SetWindowDisplayAffinity(_hwnd, WDA_EXCLUDEFROMCAPTURE);
         if (Settings.ClickThrough) ApplyClickThrough();
     }
 
