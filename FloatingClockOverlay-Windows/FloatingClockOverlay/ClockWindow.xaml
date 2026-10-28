@@ -16,15 +16,24 @@
             CornerRadius="16"
             Padding="28,18"
             MouseLeftButtonDown="Border_MouseLeftButtonDown">
-        <TextBlock x:Name="ClockText"
-                   Text="12:00:00 PM"
-                   Foreground="White"
-                   FontFamily="Segoe UI"
-                   FontSize="48"
-                   FontWeight="Light">
-            <TextBlock.Effect>
+        <StackPanel HorizontalAlignment="Center">
+            <StackPanel.Effect>
                 <DropShadowEffect Color="Black" Direction="270" ShadowDepth="2" BlurRadius="12" Opacity="0.5" />
-            </TextBlock.Effect>
-        </TextBlock>
+            </StackPanel.Effect>
+            <TextBlock x:Name="ClockText"
+                       Text="12:00:00 PM"
+                       Foreground="White"
+                       FontFamily="Segoe UI"
+                       FontSize="48"
+                       FontWeight="Light"
+                       HorizontalAlignment="Center" />
+            <TextBlock x:Name="DayText"
+                       Foreground="White"
+                       Opacity="0.7"
+                       FontFamily="Segoe UI"
+                       FontSize="16"
+                       HorizontalAlignment="Center"
+                       Visibility="Collapsed" />
+        </StackPanel>
     </Border>
 </Window>
