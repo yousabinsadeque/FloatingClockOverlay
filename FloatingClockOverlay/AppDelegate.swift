@@ -25,6 +25,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var swStartItem:       NSMenuItem?
     private var swLapItem:         NSMenuItem?
     private var swResetItem:       NSMenuItem?
+    private var themeMenuItem:     NSMenuItem?
+    private var sizeMenuItem:      NSMenuItem?
 
     // MARK: - Lifecycle
 
@@ -94,13 +96,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.delegate = self
 
         // ── Primary actions ───────────────────────────────────────────────
-        menu.addItem(NSMenuItem(title: "Open Settings",
+        menu.addItem(NSMenuItem(title: NSLocalizedString("Open Settings", comment: ""),
                                 action: #selector(openSettings), keyEquivalent: ","))
         menu.addItem(.separator())
 
-        let show = NSMenuItem(title: "Show Overlay",
+        let show = NSMenuItem(title: NSLocalizedString("Show Overlay", comment: ""),
                               action: #selector(toggleVisibility), keyEquivalent: "")
-        let ct   = NSMenuItem(title: "Click-Through: ON ✓",
+        let ct   = NSMenuItem(title: NSLocalizedString("Click-Through: ON ✓", comment: ""),
                               action: #selector(toggleClickThrough), keyEquivalent: "")
         showHideItem = show; clickThroughItem = ct
         menu.addItem(show)
@@ -108,49 +110,51 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(.separator())
 
         // ── Launch at Login ───────────────────────────────────────────────
-        let loginItem = NSMenuItem(title: "Launch at Login",
+        let loginItem = NSMenuItem(title: NSLocalizedString("Launch at Login", comment: ""),
                                    action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
         launchAtLoginItem = loginItem
         menu.addItem(loginItem)
         menu.addItem(.separator())
 
         // ── Theme submenu ─────────────────────────────────────────────────
-        let themeItem = NSMenuItem(title: "Theme", action: nil, keyEquivalent: "")
+        let themeItem = NSMenuItem(title: NSLocalizedString("Theme", comment: ""), action: nil, keyEquivalent: "")
         themeItem.submenu = buildThemeMenu()
+        themeMenuItem = themeItem
         menu.addItem(themeItem)
 
         // ── Size submenu ──────────────────────────────────────────────────
-        let sizeItem = NSMenuItem(title: "Size", action: nil, keyEquivalent: "")
+        let sizeItem = NSMenuItem(title: NSLocalizedString("Size", comment: ""), action: nil, keyEquivalent: "")
         sizeItem.submenu = buildSizeMenu()
+        sizeMenuItem = sizeItem
         menu.addItem(sizeItem)
 
         // ── Mode submenu ──────────────────────────────────────────────────
-        let modeItem = NSMenuItem(title: "Mode", action: nil, keyEquivalent: "")
+        let modeItem = NSMenuItem(title: NSLocalizedString("Mode", comment: ""), action: nil, keyEquivalent: "")
         modeItem.submenu = buildModeMenu()
         menu.addItem(modeItem)
         menu.addItem(.separator())
 
         // ── Timer quick controls ──────────────────────────────────────────
-        let tStart = NSMenuItem(title: "Timer: Start", action: #selector(timerStartPause), keyEquivalent: "")
-        let tReset = NSMenuItem(title: "Timer: Reset", action: #selector(timerReset),      keyEquivalent: "")
+        let tStart = NSMenuItem(title: NSLocalizedString("Timer: Start", comment: ""), action: #selector(timerStartPause), keyEquivalent: "")
+        let tReset = NSMenuItem(title: NSLocalizedString("Timer: Reset", comment: ""), action: #selector(timerReset),      keyEquivalent: "")
         timerStartItem = tStart; timerResetItem = tReset
         menu.addItem(tStart); menu.addItem(tReset)
         menu.addItem(.separator())
 
         // ── Stopwatch quick controls ──────────────────────────────────────
-        let swStart = NSMenuItem(title: "Stopwatch: Start", action: #selector(swStartPause), keyEquivalent: "")
-        let swLap   = NSMenuItem(title: "Stopwatch: Lap",   action: #selector(swLap),        keyEquivalent: "")
-        let swReset = NSMenuItem(title: "Stopwatch: Reset", action: #selector(swReset),      keyEquivalent: "")
+        let swStart = NSMenuItem(title: NSLocalizedString("Stopwatch: Start", comment: ""), action: #selector(swStartPause), keyEquivalent: "")
+        let swLap   = NSMenuItem(title: NSLocalizedString("Stopwatch: Lap", comment: ""),   action: #selector(swLap),        keyEquivalent: "")
+        let swReset = NSMenuItem(title: NSLocalizedString("Stopwatch: Reset", comment: ""), action: #selector(swReset),      keyEquivalent: "")
         swStartItem = swStart; swLapItem = swLap; swResetItem = swReset
         menu.addItem(swStart); menu.addItem(swLap); menu.addItem(swReset)
         menu.addItem(.separator())
 
-        menu.addItem(NSMenuItem(title: "Reset Position",
+        menu.addItem(NSMenuItem(title: NSLocalizedString("Reset Position", comment: ""),
                                 action: #selector(resetPosition), keyEquivalent: ""))
         menu.addItem(.separator())
 
         // ── The ONLY real quit path ───────────────────────────────────────
-        menu.addItem(NSMenuItem(title: "Quit Floating Clock Overlay",
+        menu.addItem(NSMenuItem(title: NSLocalizedString("Quit Floating Clock Overlay", comment: ""),
                                 action: #selector(quitApp), keyEquivalent: "q"))
 
         statusItem?.menu = menu
@@ -182,9 +186,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     private func buildModeMenu() -> NSMenu {
         let m = NSMenu()
-        let ci = NSMenuItem(title: "Clock",     action: #selector(setModeClock),     keyEquivalent: "")
-        let ti = NSMenuItem(title: "Timer",     action: #selector(setModeTimer),     keyEquivalent: "")
-        let si = NSMenuItem(title: "Stopwatch", action: #selector(setModeStopwatch), keyEquivalent: "")
+        let ci = NSMenuItem(title: NSLocalizedString("Clock", comment: ""),     action: #selector(setModeClock),     keyEquivalent: "")
+        let ti = NSMenuItem(title: NSLocalizedString("Timer", comment: ""),     action: #selector(setModeTimer),     keyEquivalent: "")
+        let si = NSMenuItem(title: NSLocalizedString("Stopwatch", comment: ""), action: #selector(setModeStopwatch), keyEquivalent: "")
         clockModeItem = ci; timerModeItem = ti; stopwatchModeItem = si
         m.addItem(ci); m.addItem(ti); m.addItem(si)
         return m
@@ -196,8 +200,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let s  = ClockSettings.shared
         let tc = TimeController.shared
 
-        showHideItem?.title      = s.isVisible      ? "Hide Overlay"         : "Show Overlay"
-        clickThroughItem?.title  = s.isClickThrough ? "Click-Through: ON ✓" : "Click-Through: OFF"
+        showHideItem?.title      = s.isVisible      ? NSLocalizedString("Hide Overlay", comment: "") : NSLocalizedString("Show Overlay", comment: "")
+        clickThroughItem?.title  = s.isClickThrough ? NSLocalizedString("Click-Through: ON ✓", comment: "") : NSLocalizedString("Click-Through: OFF", comment: "")
         launchAtLoginItem?.state = s.launchAtLogin  ? .on                   : .off
 
         clockModeItem?.state     = s.overlayMode == .clock     ? .on : .off
@@ -208,10 +212,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         timerStartItem?.isEnabled = inTimer
         timerResetItem?.isEnabled = inTimer
         switch tc.timerState {
-        case .idle:     timerStartItem?.title = "Timer: Start"
-        case .running:  timerStartItem?.title = "Timer: Pause"
-        case .paused:   timerStartItem?.title = "Timer: Resume"
-        case .finished: timerStartItem?.title = "Timer: Restart"
+        case .idle:     timerStartItem?.title = NSLocalizedString("Timer: Start", comment: "")
+        case .running:  timerStartItem?.title = NSLocalizedString("Timer: Pause", comment: "")
+        case .paused:   timerStartItem?.title = NSLocalizedString("Timer: Resume", comment: "")
+        case .finished: timerStartItem?.title = NSLocalizedString("Timer: Restart", comment: "")
         }
 
         let inSW = s.overlayMode == .stopwatch
@@ -219,22 +223,20 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         swLapItem?.isEnabled   = inSW && tc.stopwatchState == .running
         swResetItem?.isEnabled = inSW
         switch tc.stopwatchState {
-        case .idle:    swStartItem?.title = "Stopwatch: Start"
-        case .running: swStartItem?.title = "Stopwatch: Pause"
-        case .paused:  swStartItem?.title = "Stopwatch: Resume"
+        case .idle:    swStartItem?.title = NSLocalizedString("Stopwatch: Start", comment: "")
+        case .running: swStartItem?.title = NSLocalizedString("Stopwatch: Pause", comment: "")
+        case .paused:  swStartItem?.title = NSLocalizedString("Stopwatch: Resume", comment: "")
         }
 
         // Checkmarks for theme and size submenus
-        for item in menu.items {
-            if item.title == "Theme", let sub = item.submenu {
-                for i in sub.items {
-                    i.state = (i.representedObject as? String) == s.selectedTheme.rawValue ? .on : .off
-                }
+        if let sub = themeMenuItem?.submenu {
+            for i in sub.items {
+                i.state = (i.representedObject as? String) == s.selectedTheme.rawValue ? .on : .off
             }
-            if item.title == "Size", let sub = item.submenu {
-                for i in sub.items {
-                    i.state = (i.representedObject as? String) == s.sizePreset.rawValue ? .on : .off
-                }
+        }
+        if let sub = sizeMenuItem?.submenu {
+            for i in sub.items {
+                i.state = (i.representedObject as? String) == s.sizePreset.rawValue ? .on : .off
             }
         }
     }

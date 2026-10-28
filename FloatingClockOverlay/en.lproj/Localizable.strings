@@ -97,6 +97,9 @@
 "Medium" = "Medium";
 "Large" = "Large";
 "Extra Large" = "Extra Large";
+"Full Screen" = "Full Screen";
+"Custom" = "Custom";
+"Mode" = "Mode";
 
 /* Timer Menu */
 "Timer: Start" = "Timer: Start";

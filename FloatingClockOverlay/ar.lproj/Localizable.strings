@@ -97,6 +97,9 @@
 "Medium" = "متوسط";
 "Large" = "كبير";
 "Extra Large" = "كبير جداً";
+"Full Screen" = "ملء الشاشة";
+"Custom" = "مخصص";
+"Mode" = "الوضع";
 
 /* Timer Menu */
 "Timer: Start" = "مؤقت: بدء";

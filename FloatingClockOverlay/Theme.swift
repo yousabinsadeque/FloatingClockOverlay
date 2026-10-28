@@ -466,12 +466,12 @@ enum SizePreset: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     var label: String {
         switch self {
-        case .small:      return "Small"
-        case .medium:     return "Medium"
-        case .large:      return "Large"
-        case .extraLarge: return "Extra Large"
-        case .fullScreen: return "Full Screen"
-        case .custom:     return "Custom"
+        case .small:      return NSLocalizedString("Small", comment: "")
+        case .medium:     return NSLocalizedString("Medium", comment: "")
+        case .large:      return NSLocalizedString("Large", comment: "")
+        case .extraLarge: return NSLocalizedString("Extra Large", comment: "")
+        case .fullScreen: return NSLocalizedString("Full Screen", comment: "")
+        case .custom:     return NSLocalizedString("Custom", comment: "")
         }
     }
     var contentSize: NSSize? {
