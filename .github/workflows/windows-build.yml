@@ -25,6 +25,27 @@ jobs:
           -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
           -o publish
 
+      - name: Smoke test (launch and check it stays running)
+        shell: pwsh
+        run: |
+          $p = Start-Process publish/FloatingClockOverlay.exe -PassThru
+          Start-Sleep -Seconds 10
+          Add-Type -AssemblyName System.Windows.Forms,System.Drawing
+          $b = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
+          $bmp = New-Object System.Drawing.Bitmap $b.Width, $b.Height
+          [System.Drawing.Graphics]::FromImage($bmp).CopyFromScreen($b.Location, [System.Drawing.Point]::Empty, $b.Size)
+          $bmp.Save("smoke.png")
+          $log = "$env:APPDATA/FloatingClockOverlay/crash.log"
+          if (Test-Path $log) { Get-Content $log; Write-Error "App crashed"; exit 1 }
+          if ($p.HasExited) { Write-Error "App exited with code $($p.ExitCode)"; exit 1 }
+          Stop-Process $p
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smoke-screenshot
+          path: smoke.png
+
       - uses: actions/upload-artifact@v4
         with:
           name: FloatingClockOverlay-Windows

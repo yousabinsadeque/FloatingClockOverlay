@@ -1,3 +1,4 @@
+using System.IO;
 using System.Windows;
 using Forms = System.Windows.Forms;
 using static FloatingClockOverlay.Strings;
@@ -21,6 +22,40 @@ public partial class App : System.Windows.Application
     {
         base.OnStartup(e);
 
+        DispatcherUnhandledException += (_, ex) =>
+        {
+            ReportCrash(ex.Exception);
+            ex.Handled = true;
+            Shutdown(1);
+        };
+        AppDomain.CurrentDomain.UnhandledException += (_, ex) => ReportCrash(ex.ExceptionObject as Exception);
+
+        try
+        {
+            Start();
+        }
+        catch (Exception ex)
+        {
+            ReportCrash(ex);
+            Shutdown(1);
+        }
+    }
+
+    private static void ReportCrash(Exception? ex)
+    {
+        var text = ex?.ToString() ?? "Unknown error";
+        try
+        {
+            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FloatingClockOverlay");
+            Directory.CreateDirectory(dir);
+            File.WriteAllText(Path.Combine(dir, "crash.log"), text);
+        }
+        catch { }
+        System.Windows.MessageBox.Show(text, "Floating Clock Overlay crashed", MessageBoxButton.OK, MessageBoxImage.Error);
+    }
+
+    private void Start()
+    {
         _clockWindow = new ClockWindow();
         _clockWindow.Show();
         var s = _clockWindow.Settings;
