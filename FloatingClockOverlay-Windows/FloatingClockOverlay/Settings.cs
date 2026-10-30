@@ -13,6 +13,8 @@ public class Settings
     public bool AdaptiveColor { get; set; } = true;
     public bool ClickThrough { get; set; }
     public string ClockLanguage { get; set; } = "";
+    public bool AutoCheckUpdates { get; set; } = true;
+    public string SkippedVersion { get; set; } = "";
 
     private static readonly string Dir = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FloatingClockOverlay");

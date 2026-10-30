@@ -120,3 +120,35 @@
 
 /* Adaptive Color */
 "Screen Recording is off, so colors are only approximate." = "تسجيل الشاشة متوقف، لذا الألوان تقريبية فقط.";
+
+/* Updates */
+"Automatically Check for Updates" = "التحقق من التحديثات تلقائيًا";
+"Shows a small pop-up when a new version is available" = "يعرض نافذة صغيرة عند توفر إصدار جديد";
+"Update available" = "يتوفر تحديث";
+"Version %@ is ready to install." = "الإصدار %@ جاهز للتثبيت.";
+"Skip This Version" = "تخطي هذا الإصدار";
+"Later" = "لاحقًا";
+"Update Now" = "التحديث الآن";
+"Downloading…" = "جارٍ التنزيل…";
+"Restarting…" = "جارٍ إعادة التشغيل…";
+"Download failed." = "فشل التنزيل.";
+"Couldn't check for updates. Please try again later." = "تعذر التحقق من التحديثات. حاول مرة أخرى لاحقًا.";
+"You're up to date (v%@)." = "لديك أحدث إصدار (v%@).";
+"The download is damaged. Please try again." = "التنزيل تالف. حاول مرة أخرى.";
+"Couldn't open the update." = "تعذر فتح التحديث.";
+"The update isn't signed correctly, so it wasn't installed." = "التحديث غير موقّع بشكل صحيح، لذا لم يتم تثبيته.";
+"Couldn't prepare the update." = "تعذر تجهيز التحديث.";
+
+/* Settings tabs */
+"Look" = "المظهر";
+"Window" = "النافذة";
+"General" = "عام";
+"TIME FORMAT" = "تنسيق الوقت";
+"THEME" = "السمة";
+"TEXT & COLORS" = "النص والألوان";
+"More Options" = "خيارات إضافية";
+"SIZE & POSITION" = "الحجم والموضع";
+"BEHAVIOR" = "السلوك";
+"MOVEMENT" = "الحركة";
+"Show" = "إظهار";
+"Adaptive" = "تكيفي";

@@ -56,6 +56,7 @@ public partial class App : System.Windows.Application
 
     private void Start()
     {
+        Updater.CleanUpPreviousUpdate();
         _clockWindow = new ClockWindow();
         _clockWindow.Show();
         var s = _clockWindow.Settings;
@@ -103,6 +104,12 @@ public partial class App : System.Windows.Application
 
         menu.Items.Add(new Forms.ToolStripSeparator());
 
+        var autoUpdate = Toggle(T("Automatically Check for Updates"), () => s.AutoCheckUpdates, v => s.AutoCheckUpdates = v);
+        var checkNow = new Forms.ToolStripMenuItem(T("Check for Updates"));
+        checkNow.Click += async (_, _) => await Updater.Check(s, userInitiated: true);
+        menu.Items.Add(checkNow);
+        menu.Items.Add(autoUpdate);
+
         var reset = new Forms.ToolStripMenuItem(T("Reset Position"));
         reset.Click += (_, _) => _clockWindow?.ResetPosition();
         menu.Items.Add(reset);
@@ -118,11 +125,13 @@ public partial class App : System.Windows.Application
             seconds.Checked = s.ShowSeconds;
             day.Checked = s.ShowDayOfWeek;
             adaptive.Checked = s.AdaptiveColor;
+            autoUpdate.Checked = s.AutoCheckUpdates;
             foreach (var li in langItems) li.Checked = (string)li.Tag! == s.ClockLanguage;
         };
 
         _trayIcon.ContextMenuStrip = menu;
         _trayIcon.DoubleClick += (_, _) => _clockWindow?.ToggleVisibility();
+        Updater.StartAutomaticChecks(s);
     }
 
     private Forms.ToolStripMenuItem Toggle(string label, Func<bool> get, Action<bool> set)

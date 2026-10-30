@@ -373,7 +373,7 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
     }
 
     private func startDVDBounce() {
-        stopDVDBounce()
+        stopDVDBounce(returnHome: false)
         guard let window = window else { return }
         savePosition()
         isDVDBouncing = true
@@ -390,10 +390,20 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
         dvdTimer = timer
     }
 
-    private func stopDVDBounce() {
+    private func stopDVDBounce(returnHome: Bool = true) {
+        let wasBouncing = isDVDBouncing
         dvdTimer?.invalidate()
         dvdTimer = nil
         isDVDBouncing = false
+        // Glide back to where the clock sat before bouncing began.
+        guard returnHome, wasBouncing, let window = window, !s.isFullScreen,
+              s.windowX >= 0, s.windowY >= 0 else { return }
+        let home = NSRect(origin: NSPoint(x: s.windowX, y: s.windowY), size: window.frame.size)
+        NSAnimationContext.runAnimationGroup { ctx in
+            ctx.duration = 0.45
+            ctx.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            window.animator().setFrame(home, display: true)
+        }
     }
 
     private func dvdTick() {
@@ -487,7 +497,8 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
     // MARK: - Persistence
 
     func savePosition() {
-        guard let window = window else { return }
+        // While bouncing, keep the pre-bounce spot as the saved position.
+        guard let window = window, !isDVDBouncing else { return }
         let origin = window.frame.origin
         s.windowX = origin.x
         s.windowY = origin.y

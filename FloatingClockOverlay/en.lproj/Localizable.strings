@@ -120,3 +120,35 @@
 
 /* Adaptive Color */
 "Screen Recording is off, so colors are only approximate." = "Screen Recording is off, so colors are only approximate.";
+
+/* Updates */
+"Automatically Check for Updates" = "Automatically Check for Updates";
+"Shows a small pop-up when a new version is available" = "Shows a small pop-up when a new version is available";
+"Update available" = "Update available";
+"Version %@ is ready to install." = "Version %@ is ready to install.";
+"Skip This Version" = "Skip This Version";
+"Later" = "Later";
+"Update Now" = "Update Now";
+"Downloading…" = "Downloading…";
+"Restarting…" = "Restarting…";
+"Download failed." = "Download failed.";
+"Couldn't check for updates. Please try again later." = "Couldn't check for updates. Please try again later.";
+"You're up to date (v%@)." = "You're up to date (v%@).";
+"The download is damaged. Please try again." = "The download is damaged. Please try again.";
+"Couldn't open the update." = "Couldn't open the update.";
+"The update isn't signed correctly, so it wasn't installed." = "The update isn't signed correctly, so it wasn't installed.";
+"Couldn't prepare the update." = "Couldn't prepare the update.";
+
+/* Settings tabs */
+"Look" = "Look";
+"Window" = "Window";
+"General" = "General";
+"TIME FORMAT" = "TIME FORMAT";
+"THEME" = "THEME";
+"TEXT & COLORS" = "TEXT & COLORS";
+"More Options" = "More Options";
+"SIZE & POSITION" = "SIZE & POSITION";
+"BEHAVIOR" = "BEHAVIOR";
+"MOVEMENT" = "MOVEMENT";
+"Show" = "Show";
+"Adaptive" = "Adaptive";

@@ -120,3 +120,35 @@
 
 /* Adaptive Color */
 "Screen Recording is off, so colors are only approximate." = "स्क्रीन रिकॉर्डिंग बंद है, इसलिए रंग केवल अनुमानित हैं।";
+
+/* Updates */
+"Automatically Check for Updates" = "अपडेट अपने-आप जांचें";
+"Shows a small pop-up when a new version is available" = "नया संस्करण उपलब्ध होने पर छोटा पॉप-अप दिखाता है";
+"Update available" = "अपडेट उपलब्ध है";
+"Version %@ is ready to install." = "संस्करण %@ इंस्टॉल के लिए तैयार है।";
+"Skip This Version" = "यह संस्करण छोड़ें";
+"Later" = "बाद में";
+"Update Now" = "अभी अपडेट करें";
+"Downloading…" = "डाउनलोड हो रहा है…";
+"Restarting…" = "फिर से शुरू हो रहा है…";
+"Download failed." = "डाउनलोड विफल रहा।";
+"Couldn't check for updates. Please try again later." = "अपडेट जांच नहीं हो सकी। बाद में फिर कोशिश करें।";
+"You're up to date (v%@)." = "आपके पास नवीनतम संस्करण है (v%@)।";
+"The download is damaged. Please try again." = "डाउनलोड खराब है। फिर से कोशिश करें।";
+"Couldn't open the update." = "अपडेट खोला नहीं जा सका।";
+"The update isn't signed correctly, so it wasn't installed." = "अपडेट सही तरीके से साइन नहीं है, इसलिए इंस्टॉल नहीं किया गया।";
+"Couldn't prepare the update." = "अपडेट तैयार नहीं हो सका।";
+
+/* Settings tabs */
+"Look" = "रूप";
+"Window" = "विंडो";
+"General" = "सामान्य";
+"TIME FORMAT" = "समय प्रारूप";
+"THEME" = "थीम";
+"TEXT & COLORS" = "टेक्स्ट और रंग";
+"More Options" = "और विकल्प";
+"SIZE & POSITION" = "आकार और स्थिति";
+"BEHAVIOR" = "व्यवहार";
+"MOVEMENT" = "गति";
+"Show" = "दिखाएं";
+"Adaptive" = "अनुकूली";

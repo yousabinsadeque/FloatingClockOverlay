@@ -40,6 +40,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         setupGlobalKeyboardShortcut()
         setupMirrorObserver()
         InstallTracker.trackFirstLaunchIfNeeded()
+        UpdateChecker.startAutomaticChecks()
         if ClockSettings.shared.adaptiveColor {
             ScreenSampler.requestPermissionIfNeeded()
         }
@@ -381,12 +382,3 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 }
 
-// MARK: - Update Checker
-
-enum UpdateChecker {
-    static func checkForUpdate() {
-        if let url = URL(string: "https://github.com/yousabinsadeque/FloatingClockOverlay/releases/latest") {
-            NSWorkspace.shared.open(url)
-        }
-    }
-}

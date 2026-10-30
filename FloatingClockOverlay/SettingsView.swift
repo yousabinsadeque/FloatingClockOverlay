@@ -4,66 +4,125 @@ import SwiftUI
 
 struct SettingsView: View {
     @ObservedObject private var s = ClockSettings.shared
+    @AppStorage(UpdateChecker.autoCheckKey) private var autoCheckUpdates = true
+
+    private enum Tab: String, CaseIterable, Identifiable {
+        case clock, look, window, general
+        var id: String { rawValue }
+        var title: LocalizedStringKey {
+            switch self {
+            case .clock:   return "Clock"
+            case .look:    return "Look"
+            case .window:  return "Window"
+            case .general: return "General"
+            }
+        }
+        var icon: String {
+            switch self {
+            case .clock:   return "clock"
+            case .look:    return "paintpalette"
+            case .window:  return "macwindow"
+            case .general: return "gearshape"
+            }
+        }
+    }
+
+    @AppStorage("settings.selectedTab") private var tab: Tab = .clock
+    @State private var showMoreLook = false
 
     var body: some View {
-        ScrollView(.vertical, showsIndicators: true) {
-            VStack(alignment: .leading, spacing: 20) {
-                headerSection
-                generalSection
-                modeSection
-                appearanceSection
-                typographySection
-                windowSection
-                aboutSection
-                quitButton
+        VStack(spacing: 0) {
+            quickBar
+            tabBar
+            Divider()
+            ScrollView(.vertical, showsIndicators: true) {
+                VStack(alignment: .leading, spacing: 16) {
+                    switch tab {
+                    case .clock:
+                        modeSection
+                        timeSection
+                    case .look:
+                        themeSection
+                        textSection
+                    case .window:
+                        sizeSection
+                        behaviorSection
+                        movementSection
+                    case .general:
+                        generalSection
+                        aboutSection
+                        quitButton
+                    }
+                }
+                .padding(20)
             }
-            .padding(24)
         }
         .frame(width: 460)
         .background(Color(NSColor.windowBackgroundColor))
     }
 
-    // MARK: Header
+    // MARK: Quick bar
 
-    private var headerSection: some View {
+    private var quickBar: some View {
         VStack(spacing: 10) {
-            Image(systemName: "clock.fill")
-                .font(.system(size: 48, weight: .light))
-                .foregroundStyle(.blue)
-                .symbolRenderingMode(.hierarchical)
-            Text("Floating Clock Overlay")
-                .font(.title2.bold())
-            Text("A transparent always-on-top clock for macOS")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
+            HStack(spacing: 8) {
+                QuickToggle(icon: s.isVisible ? "eye" : "eye.slash", label: "Show",
+                            isOn: $s.isVisible)
+                QuickToggle(icon: "cursorarrow.rays", label: "Click-Through",
+                            isOn: $s.isClickThrough)
+                QuickToggle(icon: "circle.lefthalf.filled", label: "Adaptive",
+                            isOn: Binding(get: { s.adaptiveColor }, set: {
+                                s.adaptiveColor = $0
+                                if $0 { ScreenSampler.requestPermissionIfNeeded() }
+                            }))
+                QuickToggle(icon: "24.circle", label: "24-hour", isOn: $s.use24Hour)
+                QuickToggle(icon: "timer", label: "Seconds", isOn: $s.showSeconds)
+            }
+            HStack(spacing: 8) {
+                Picker("", selection: Binding(get: { s.isFullScreen ? nil : s.sizePreset },
+                                              set: { if let p = $0 { s.isFullScreen = false; s.sizePreset = p } })) {
+                    ForEach([SizePreset.small, .medium, .large, .extraLarge], id: \.self) { p in
+                        Text(p.label).tag(Optional(p))
+                    }
+                }
+                .pickerStyle(.segmented).labelsHidden()
+                Picker("", selection: $s.selectedTheme) {
+                    ForEach(ClockTheme.allCases) { t in Text(t.label).tag(t) }
+                }
+                .labelsHidden().frame(width: 120)
+            }
+            .controlSize(.small)
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 6)
+        .padding(.horizontal, 16)
+        .padding(.top, 14)
+        .padding(.bottom, 4)
     }
 
-    // MARK: General
+    // MARK: Tab bar
 
-    private var generalSection: some View {
-        SettingsCard(label: "GENERAL", icon: "gearshape") {
-            ToggleRow(icon: "eye",            label: "Show Overlay",     value: $s.isVisible)
-            SettingsDivider()
-            ToggleRow(icon: "cursorarrow.rays", label: "Click-Through",
-                      value: $s.isClickThrough,
-                      hint: s.isClickThrough ? LocalizedStringKey("Clicks pass to apps below") : LocalizedStringKey("Drag mode active"))
-            SettingsDivider()
-            ToggleRow(icon: "dock.rectangle", label: "Show in Dock",
-                      value: Binding(get: { s.showInDock },
-                                     set: { s.showInDock = $0; s.applyDockVisibility($0) }))
-            SettingsDivider()
-            ToggleRow(icon: "power.circle",   label: "Launch at Login",
-                      value: Binding(get: { s.launchAtLogin },
-                                     set: { s.launchAtLogin = $0; s.applyLaunchAtLogin($0) }),
-                      hint: "Requires app in /Applications folder")
+    private var tabBar: some View {
+        HStack(spacing: 4) {
+            ForEach(Tab.allCases) { t in
+                Button { tab = t } label: {
+                    VStack(spacing: 3) {
+                        Image(systemName: t.icon).font(.system(size: 17))
+                        Text(t.title).font(.caption)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 7)
+                    .background(RoundedRectangle(cornerRadius: 8)
+                        .fill(tab == t ? Color.accentColor.opacity(0.15) : .clear))
+                    .foregroundStyle(tab == t ? Color.accentColor : .secondary)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+            }
         }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
     }
 
-    // MARK: Mode
+    // MARK: Clock tab
 
     private var modeSection: some View {
         SettingsCard(label: "MODE", icon: "square.3.layers.3d") {
@@ -86,10 +145,64 @@ struct SettingsView: View {
         }
     }
 
-    // MARK: Appearance
+    private var timeSection: some View {
+        SettingsCard(label: "TIME FORMAT", icon: "clock.badge") {
+            VStack(spacing: 0) {
+                SettingsRow(icon: "clock.badge", label: "Hour Format") {
+                    Picker("", selection: $s.use24Hour) {
+                        Text("12-hour").tag(false)
+                        Text("24-hour").tag(true)
+                    }
+                    .pickerStyle(.segmented).labelsHidden().frame(width: 130)
+                }
+                SettingsDivider()
+                ToggleRow(icon: "timer", label: "Show Seconds", value: $s.showSeconds)
+                if !s.use24Hour {
+                    SettingsDivider()
+                    ToggleRow(icon: "a.magnify", label: "Show AM/PM", value: $s.showAmPm)
+                    if s.showAmPm {
+                        SettingsDivider()
+                        SettingsRow(icon: "textformat.abc", label: "AM/PM Style") {
+                            Picker("", selection: $s.amPmUppercase) {
+                                Text("AM / PM").tag(true)
+                                Text("am / pm").tag(false)
+                            }
+                            .pickerStyle(.segmented).labelsHidden().frame(width: 130)
+                        }
+                    }
+                }
+                SettingsDivider()
+                ToggleRow(icon: "calendar", label: "Show Day of Week", value: $s.showDayOfWeek)
+                SettingsDivider()
+                SettingsRow(icon: "globe", label: "Clock Language") {
+                    Picker("", selection: $s.clockLanguage) {
+                        Text(NSLocalizedString("System Default", comment: "")).tag("")
+                        Text("English").tag("en")
+                        Text("Español").tag("es")
+                        Text("العربية").tag("ar")
+                        Text("বাংলা").tag("bn")
+                        Text("Français").tag("fr")
+                        Text("Deutsch").tag("de")
+                        Text("日本語").tag("ja")
+                        Text("中文").tag("zh")
+                        Text("한국어").tag("ko")
+                        Text("Português").tag("pt")
+                        Text("Русский").tag("ru")
+                        Text("हिन्दी").tag("hi")
+                        Text("Türkçe").tag("tr")
+                        Text("Italiano").tag("it")
+                    }
+                    .labelsHidden()
+                    .frame(width: 140)
+                }
+            }
+        }
+    }
 
-    private var appearanceSection: some View {
-        SettingsCard(label: "APPEARANCE", icon: "paintpalette") {
+    // MARK: Look tab
+
+    private var themeSection: some View {
+        SettingsCard(label: "THEME", icon: "theatermasks") {
             VStack(spacing: 0) {
                 // Theme picker
                 VStack(alignment: .leading, spacing: 8) {
@@ -164,57 +277,12 @@ struct SettingsView: View {
                     }
                 }
 
-                Divider()
-
-                SliderRow(icon: "circle.lefthalf.filled", label: "Window Opacity",
-                          value: $s.windowOpacity, range: 0.1...1.0,
-                          display: { "\(Int($0 * 100))%" })
-
-                SettingsDivider()
-
-                // Accent / Glow color (used by Neon + Custom)
-                SettingsRow(icon: "bolt.fill", label: "Accent / Glow Color") {
-                    ColorPicker("", selection: s.accentColorBinding).labelsHidden().frame(width: 28)
-                }
-
-                // Custom-theme extras
-                if s.selectedTheme == .custom {
-                    SettingsDivider()
-                    SettingsRow(icon: "rectangle.fill", label: "Background Color") {
-                        ColorPicker("", selection: s.bgColorBinding).labelsHidden().frame(width: 28)
-                    }
-                    SettingsDivider()
-                    SliderRow(icon: "square.fill.on.square", label: "Background Opacity",
-                              value: $s.backgroundOpacity, range: 0.0...1.0,
-                              display: { "\(Int($0 * 100))%" })
-                    SettingsDivider()
-                    SliderRow(icon: "rectangle.roundedtop", label: "Corner Radius",
-                              value: $s.cornerRadius, range: 0...32,
-                              display: { "\(Int($0))pt" })
-                    SettingsDivider()
-                    SliderRow(icon: "rectangle.and.pencil.and.ellipsis", label: "Border Opacity",
-                              value: $s.borderOpacity, range: 0.0...1.0,
-                              display: { "\(Int($0 * 100))%" })
-                    SettingsDivider()
-                    SliderRow(icon: "shadow", label: "Shadow Strength",
-                              value: $s.shadowStrength, range: 0.0...1.0,
-                              display: { "\(Int($0 * 100))%" })
-                }
-
-                if s.selectedTheme == .transparent || s.selectedTheme == .minimal {
-                    SettingsDivider()
-                    SliderRow(icon: "square.fill.on.square", label: "Background Opacity",
-                              value: $s.backgroundOpacity, range: 0.0...1.0,
-                              display: { "\(Int($0 * 100))%" })
-                }
             }
         }
     }
 
-    // MARK: Typography
-
-    private var typographySection: some View {
-        SettingsCard(label: "TYPOGRAPHY", icon: "textformat") {
+    private var textSection: some View {
+        SettingsCard(label: "TEXT & COLORS", icon: "textformat") {
             VStack(spacing: 0) {
                 SettingsRow(icon: "character.textbox", label: "Font") {
                     Picker("", selection: $s.fontFamily) {
@@ -236,71 +304,64 @@ struct SettingsView: View {
                           value: $s.fontSize, range: 16...80,
                           display: { "\(Int($0))pt" })
                 SettingsDivider()
-                SliderRow(icon: "arrow.left.and.right.text.vertical", label: "Letter Spacing",
-                          value: $s.letterSpacing, range: -4...20,
-                          display: { "\(Int($0))pt" })
-                SettingsDivider()
-                SettingsRow(icon: "textformat.alt", label: "Text Color") {
-                    ColorPicker("", selection: s.textColorBinding).labelsHidden().frame(width: 28)
-                }
-
-                // Time format
-                Divider().padding(.vertical, 4)
-                SettingsRow(icon: "clock.badge", label: "Hour Format") {
-                    Picker("", selection: $s.use24Hour) {
-                        Text("12-hour").tag(false)
-                        Text("24-hour").tag(true)
-                    }
-                    .pickerStyle(.segmented).labelsHidden().frame(width: 130)
-                }
-                SettingsDivider()
-                ToggleRow(icon: "timer", label: "Show Seconds", value: $s.showSeconds)
-                if !s.use24Hour {
-                    SettingsDivider()
-                    ToggleRow(icon: "a.magnify", label: "Show AM/PM", value: $s.showAmPm)
-                    if s.showAmPm {
+                DisclosureGroup(isExpanded: $showMoreLook) {
+                    VStack(spacing: 0) {
                         SettingsDivider()
-                        SettingsRow(icon: "textformat.abc", label: "AM/PM Style") {
-                            Picker("", selection: $s.amPmUppercase) {
-                                Text("AM / PM").tag(true)
-                                Text("am / pm").tag(false)
+                        SliderRow(icon: "arrow.left.and.right.text.vertical", label: "Letter Spacing",
+                                  value: $s.letterSpacing, range: -4...20,
+                                  display: { "\(Int($0))pt" })
+                        SettingsDivider()
+                        SliderRow(icon: "circle.lefthalf.filled", label: "Window Opacity",
+                                  value: $s.windowOpacity, range: 0.1...1.0,
+                                  display: { "\(Int($0 * 100))%" })
+                        SettingsDivider()
+                        SettingsRow(icon: "bolt.fill", label: "Accent / Glow Color") {
+                            ColorPicker("", selection: s.accentColorBinding).labelsHidden().frame(width: 28)
+                        }
+                        // Custom-theme extras
+                        if s.selectedTheme == .custom {
+                            SettingsDivider()
+                            SettingsRow(icon: "rectangle.fill", label: "Background Color") {
+                                ColorPicker("", selection: s.bgColorBinding).labelsHidden().frame(width: 28)
                             }
-                            .pickerStyle(.segmented).labelsHidden().frame(width: 130)
+                            SettingsDivider()
+                            SliderRow(icon: "square.fill.on.square", label: "Background Opacity",
+                                      value: $s.backgroundOpacity, range: 0.0...1.0,
+                                      display: { "\(Int($0 * 100))%" })
+                            SettingsDivider()
+                            SliderRow(icon: "rectangle.roundedtop", label: "Corner Radius",
+                                      value: $s.cornerRadius, range: 0...32,
+                                      display: { "\(Int($0))pt" })
+                            SettingsDivider()
+                            SliderRow(icon: "rectangle.and.pencil.and.ellipsis", label: "Border Opacity",
+                                      value: $s.borderOpacity, range: 0.0...1.0,
+                                      display: { "\(Int($0 * 100))%" })
+                            SettingsDivider()
+                            SliderRow(icon: "shadow", label: "Shadow Strength",
+                                      value: $s.shadowStrength, range: 0.0...1.0,
+                                      display: { "\(Int($0 * 100))%" })
+                        }
+
+                        if s.selectedTheme == .transparent || s.selectedTheme == .minimal {
+                            SettingsDivider()
+                            SliderRow(icon: "square.fill.on.square", label: "Background Opacity",
+                                      value: $s.backgroundOpacity, range: 0.0...1.0,
+                                      display: { "\(Int($0 * 100))%" })
                         }
                     }
+                } label: {
+                    Text("More Options").font(.callout)
                 }
-                SettingsDivider()
-                ToggleRow(icon: "calendar", label: "Show Day of Week", value: $s.showDayOfWeek)
-                SettingsDivider()
-                SettingsRow(icon: "globe", label: "Clock Language") {
-                    Picker("", selection: $s.clockLanguage) {
-                        Text(NSLocalizedString("System Default", comment: "")).tag("")
-                        Text("English").tag("en")
-                        Text("Español").tag("es")
-                        Text("العربية").tag("ar")
-                        Text("বাংলা").tag("bn")
-                        Text("Français").tag("fr")
-                        Text("Deutsch").tag("de")
-                        Text("日本語").tag("ja")
-                        Text("中文").tag("zh")
-                        Text("한국어").tag("ko")
-                        Text("Português").tag("pt")
-                        Text("Русский").tag("ru")
-                        Text("हिन्दी").tag("hi")
-                        Text("Türkçe").tag("tr")
-                        Text("Italiano").tag("it")
-                    }
-                    .labelsHidden()
-                    .frame(width: 140)
-                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
             }
         }
     }
 
-    // MARK: Window
+    // MARK: Window tab
 
-    private var windowSection: some View {
-        SettingsCard(label: "WINDOW", icon: "macwindow") {
+    private var sizeSection: some View {
+        SettingsCard(label: "SIZE & POSITION", icon: "arrow.up.left.and.arrow.down.right") {
             VStack(spacing: 0) {
                 // Size buttons
                 VStack(alignment: .leading, spacing: 8) {
@@ -323,7 +384,30 @@ struct SettingsView: View {
                 .padding(12)
 
                 SettingsDivider()
+                // Reset
+                HStack {
+                    Button {
+                        s.isFullScreen = false
+                        s.sizePreset = .medium
+                        NotificationCenter.default.post(name: .moveToPreset, object: ClockSettings.PositionPreset.reset)
+                    } label: {
+                        Label("Reset Size & Position", systemImage: "arrow.counterclockwise")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                }
+                .padding(12)
+            }
+        }
+    }
 
+    private var behaviorSection: some View {
+        SettingsCard(label: "BEHAVIOR", icon: "cursorarrow.rays") {
+            VStack(spacing: 0) {
+                ToggleRow(icon: "cursorarrow.rays", label: "Click-Through",
+                          value: $s.isClickThrough,
+                          hint: s.isClickThrough ? LocalizedStringKey("Clicks pass to apps below") : LocalizedStringKey("Drag mode active"))
+                SettingsDivider()
                 ToggleRow(icon: "eye.trianglebadge.exclamationmark", label: "Adaptive Color",
                           value: $s.adaptiveColor,
                           hint: "Auto-adjust text color to match background")
@@ -332,6 +416,16 @@ struct SettingsView: View {
                     }
                 if s.adaptiveColor { ScreenRecordingWarning() }
                 SettingsDivider()
+                ToggleRow(icon: "display.2", label: "Show on All Displays",
+                          value: $s.mirrorToAllDisplays,
+                          hint: "Mirror the clock to every connected monitor")
+            }
+        }
+    }
+
+    private var movementSection: some View {
+        SettingsCard(label: "MOVEMENT", icon: "move.3d") {
+            VStack(spacing: 0) {
                 ToggleRow(icon: "arrow.triangle.2.circlepath", label: "Burn-in Prevention",
                           value: $s.burnInPrevention,
                           hint: "Slowly drifts the clock to protect your display")
@@ -355,27 +449,28 @@ struct SettingsView: View {
                               display: { String(format: "%.1f", $0) })
                 }
 
-                SettingsDivider()
-                ToggleRow(icon: "display.2", label: "Show on All Displays",
-                          value: $s.mirrorToAllDisplays,
-                          hint: "Mirror the clock to every connected monitor")
-
-                SettingsDivider()
-
-                // Reset
-                HStack {
-                    Button {
-                        s.isFullScreen = false
-                        s.sizePreset = .medium
-                        NotificationCenter.default.post(name: .moveToPreset, object: ClockSettings.PositionPreset.reset)
-                    } label: {
-                        Label("Reset Size & Position", systemImage: "arrow.counterclockwise")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.bordered)
-                }
-                .padding(12)
             }
+        }
+    }
+
+    // MARK: General tab
+
+    private var generalSection: some View {
+        SettingsCard(label: "GENERAL", icon: "gearshape") {
+            ToggleRow(icon: "eye",            label: "Show Overlay",     value: $s.isVisible)
+            SettingsDivider()
+            ToggleRow(icon: "dock.rectangle", label: "Show in Dock",
+                      value: Binding(get: { s.showInDock },
+                                     set: { s.showInDock = $0; s.applyDockVisibility($0) }))
+            SettingsDivider()
+            ToggleRow(icon: "power.circle",   label: "Launch at Login",
+                      value: Binding(get: { s.launchAtLogin },
+                                     set: { s.launchAtLogin = $0; s.applyLaunchAtLogin($0) }),
+                      hint: "Requires app in /Applications folder")
+            SettingsDivider()
+            ToggleRow(icon: "arrow.down.circle", label: "Automatically Check for Updates",
+                      value: $autoCheckUpdates,
+                      hint: "Shows a small pop-up when a new version is available")
         }
     }
 
@@ -648,6 +743,28 @@ struct ScreenRecordingWarning: View {
             Color.clear.frame(height: 0)
                 .onReceive(poll) { _ in granted = ScreenSampler.hasCapturePermission }
         }
+    }
+}
+
+struct QuickToggle: View {
+    let icon: String
+    let label: LocalizedStringKey
+    @Binding var isOn: Bool
+
+    var body: some View {
+        Button { isOn.toggle() } label: {
+            VStack(spacing: 4) {
+                Image(systemName: icon).font(.system(size: 15, weight: .medium))
+                Text(label).font(.system(size: 10)).lineLimit(1).minimumScaleFactor(0.8)
+            }
+            .frame(maxWidth: .infinity, minHeight: 46)
+            .background(RoundedRectangle(cornerRadius: 10)
+                .fill(isOn ? Color.accentColor : Color(NSColor.separatorColor).opacity(0.25)))
+            .foregroundStyle(isOn ? Color.white : Color.primary)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .help(Text(label))
     }
 }
 

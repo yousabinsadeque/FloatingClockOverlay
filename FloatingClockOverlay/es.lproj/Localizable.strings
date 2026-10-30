@@ -120,3 +120,35 @@
 
 /* Adaptive Color */
 "Screen Recording is off, so colors are only approximate." = "La grabación de pantalla está desactivada, así que los colores son solo aproximados.";
+
+/* Updates */
+"Automatically Check for Updates" = "Buscar actualizaciones automáticamente";
+"Shows a small pop-up when a new version is available" = "Muestra un pequeño aviso cuando hay una nueva versión";
+"Update available" = "Actualización disponible";
+"Version %@ is ready to install." = "La versión %@ está lista para instalarse.";
+"Skip This Version" = "Omitir esta versión";
+"Later" = "Más tarde";
+"Update Now" = "Actualizar ahora";
+"Downloading…" = "Descargando…";
+"Restarting…" = "Reiniciando…";
+"Download failed." = "La descarga falló.";
+"Couldn't check for updates. Please try again later." = "No se pudo buscar actualizaciones. Inténtalo más tarde.";
+"You're up to date (v%@)." = "Tienes la última versión (v%@).";
+"The download is damaged. Please try again." = "La descarga está dañada. Inténtalo de nuevo.";
+"Couldn't open the update." = "No se pudo abrir la actualización.";
+"The update isn't signed correctly, so it wasn't installed." = "La actualización no está firmada correctamente, así que no se instaló.";
+"Couldn't prepare the update." = "No se pudo preparar la actualización.";
+
+/* Settings tabs */
+"Look" = "Aspecto";
+"Window" = "Ventana";
+"General" = "General";
+"TIME FORMAT" = "FORMATO DE HORA";
+"THEME" = "TEMA";
+"TEXT & COLORS" = "TEXTO Y COLORES";
+"More Options" = "Más opciones";
+"SIZE & POSITION" = "TAMAÑO Y POSICIÓN";
+"BEHAVIOR" = "COMPORTAMIENTO";
+"MOVEMENT" = "MOVIMIENTO";
+"Show" = "Mostrar";
+"Adaptive" = "Adaptativo";
