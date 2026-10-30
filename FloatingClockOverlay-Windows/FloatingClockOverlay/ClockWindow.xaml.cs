@@ -82,11 +82,19 @@ public partial class ClockWindow : Window
         base.OnSourceInitialized(e);
         _hwnd = new WindowInteropHelper(this).Handle;
         HwndSource.FromHwnd(_hwnd)?.AddHook(WndProc);
-        RegisterHotKey(_hwnd, HOTKEY_ID, MOD_CONTROL | MOD_ALT, VK_C);
+        RegisterHotKeyWithRetry(5);
         // Hide our own window from screen captures so adaptive color samples what's behind it.
         if (Environment.GetEnvironmentVariable("FCO_ALLOW_CAPTURE") != "1")
             SetWindowDisplayAffinity(_hwnd, WDA_EXCLUDEFROMCAPTURE);
         if (Settings.ClickThrough) ApplyClickThrough();
+    }
+
+    private void RegisterHotKeyWithRetry(int attemptsLeft)
+    {
+        if (RegisterHotKey(_hwnd, HOTKEY_ID, MOD_CONTROL | MOD_ALT, VK_C) || attemptsLeft <= 0) return;
+        var retry = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        retry.Tick += (_, _) => { retry.Stop(); RegisterHotKeyWithRetry(attemptsLeft - 1); };
+        retry.Start();
     }
 
     protected override void OnClosed(EventArgs e)

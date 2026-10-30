@@ -54,11 +54,11 @@ enum UpdateChecker {
         URLSession.shared.dataTask(with: request) { data, _, _ in
             let manifest = data.flatMap { try? JSONDecoder().decode(UpdateManifest.self, from: $0) }
             DispatchQueue.main.async {
-                UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: lastCheckKey)
                 guard let mac = manifest?.mac else {
                     if userInitiated { info(NSLocalizedString("Couldn't check for updates. Please try again later.", comment: "")) }
                     return
                 }
+                UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: lastCheckKey)
                 let newer = isVersion(mac.version, newerThan: currentVersion)
                 let skipped = UserDefaults.standard.string(forKey: skippedKey) == mac.version
                 if newer && (userInitiated || !skipped) {
@@ -119,6 +119,10 @@ enum UpdateChecker {
     fileprivate static func install(_ update: UpdateManifest.Platform,
                                     progress: @escaping (String) -> Void,
                                     failed: @escaping (String) -> Void) {
+        let folder = Bundle.main.bundleURL.deletingLastPathComponent().path
+        guard FileManager.default.isWritableFile(atPath: folder) else {
+            return failed(NSLocalizedString("Can't update the app in this folder. Please download the new version from the website.", comment: ""))
+        }
         progress(NSLocalizedString("Downloading…", comment: ""))
         URLSession.shared.downloadTask(with: update.url) { tmp, _, error in
             guard let tmp, error == nil else {
@@ -156,12 +160,11 @@ enum UpdateChecker {
         }
         defer { _ = run("/usr/bin/hdiutil", ["detach", mount.path, "-force"]) }
 
-        let appName = Bundle.main.bundleURL.lastPathComponent
-        let mountedApp = mount.appendingPathComponent(appName)
+        let mountedApp = mount.appendingPathComponent("FloatingClockOverlay.app")
         guard FileManager.default.fileExists(atPath: mountedApp.path), isSignedLikeMe(mountedApp) else {
             throw UpdateError("The update isn't signed correctly, so it wasn't installed.")
         }
-        let staged = work.appendingPathComponent(appName)
+        let staged = work.appendingPathComponent("FloatingClockOverlay.app")
         guard run("/usr/bin/ditto", [mountedApp.path, staged.path]) else { throw UpdateError("Couldn't prepare the update.") }
         return staged
     }
@@ -184,7 +187,12 @@ enum UpdateChecker {
         let target = Bundle.main.bundleURL.path
         let script = """
         while kill -0 \(ProcessInfo.processInfo.processIdentifier) 2>/dev/null; do sleep 0.3; done
-        rm -rf "$1" && /usr/bin/ditto "$2" "$1" && /usr/bin/xattr -dr com.apple.quarantine "$1" 2>/dev/null
+        if /usr/bin/ditto "$2" "$1.updating"; then
+          rm -rf "$1.previous" && mv "$1" "$1.previous" && mv "$1.updating" "$1" && rm -rf "$1.previous" \
+            || { rm -rf "$1"; mv "$1.previous" "$1"; }
+          /usr/bin/xattr -dr com.apple.quarantine "$1" 2>/dev/null
+        fi
+        rm -rf "$1.updating"
         /usr/bin/open "$1"
         rm -rf "$(dirname "$2")"
         """

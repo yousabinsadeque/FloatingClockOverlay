@@ -160,10 +160,19 @@ public static class Updater
             var old = current + ".old";
             if (File.Exists(old)) File.Delete(old);
             File.Move(current, old);
-            File.Move(downloaded, current);
+            try
+            {
+                File.Move(downloaded, current);
+            }
+            catch
+            {
+                File.Move(old, current);
+                throw;
+            }
         }
         catch
         {
+            try { if (File.Exists(downloaded)) File.Delete(downloaded); } catch { }
             throw new Exception(T("Couldn't prepare the update."));
         }
 

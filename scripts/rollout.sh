@@ -13,7 +13,7 @@ TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
 
 gh release download "$TAG" -R $REPO -p FloatingClockOverlay.dmg -p FloatingClockOverlay.exe -D "$TMP"
-NOTES=$(gh release view "$TAG" -R $REPO --json body -q .body | head -c 300)
+NOTES=$(gh release view "$TAG" -R $REPO --json body -q .body)
 [ -f "build/release-$VERSION/notes.txt" ] && NOTES=$(cat "build/release-$VERSION/notes.txt")
 
 python3 - "$VERSION" "$TAG" "$NOTES" "$TMP" <<'EOF'
@@ -22,7 +22,7 @@ version, tag, notes, tmp = sys.argv[1:]
 base = f"https://github.com/yousabinsadeque/FloatingClockOverlay/releases/download/{tag}/"
 def entry(name):
     sha = hashlib.sha256(open(f"{tmp}/{name}", "rb").read()).hexdigest()
-    return {"version": version, "url": base + name, "sha256": sha, "notes": notes}
+    return {"version": version, "url": base + name, "sha256": sha, "notes": notes[:300]}
 json.dump({"mac": entry("FloatingClockOverlay.dmg"), "windows": entry("FloatingClockOverlay.exe")},
           open("firebase-public/update.json", "w"), indent=2, ensure_ascii=False)
 EOF
