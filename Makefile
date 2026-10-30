@@ -4,8 +4,14 @@ SCHEME    = FloatingClockOverlay
 BUILD_DIR = build
 APP_DIR   = $(BUILD_DIR)/Build/Products/Debug
 APP_PATH  = $(APP_DIR)/$(APP_NAME).app
+ARCHIVE   = $(BUILD_DIR)/$(APP_NAME).xcarchive
 
-.PHONY: build run clean open-xcode icons install-local package package-dmg _embed-icon
+# A stable local certificate keeps macOS privacy grants (Screen Recording) across
+# rebuilds; ad-hoc signatures change every build and silently revoke them.
+SIGN_ID  := $(shell security find-identity -p codesigning 2>/dev/null | awk -F'"' '/FloatingClockOverlay Local Signing/{print $$2; exit}')
+SIGN_ID  := $(if $(SIGN_ID),$(SIGN_ID),-)
+
+.PHONY: build run clean open-xcode icons install-local install-release package package-dmg _embed-icon
 
 # ── Compile ───────────────────────────────────────────────────────────────────
 build:
@@ -53,11 +59,24 @@ install-local: build
 	@sudo rm -rf "/Applications/$(APP_NAME).app"
 	@sudo ditto "$(APP_PATH)" "/Applications/$(APP_NAME).app"
 	@sudo xattr -cr "/Applications/$(APP_NAME).app" 2>/dev/null || true
-	@sudo codesign --force --deep --sign - "/Applications/$(APP_NAME).app" 2>/dev/null || true
+	@sudo codesign --force --deep --sign "$(SIGN_ID)" "/Applications/$(APP_NAME).app" 2>/dev/null || true
 	@/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister \
 		-f "/Applications/$(APP_NAME).app" 2>/dev/null || true
 	@echo "✓ Installed: /Applications/$(APP_NAME).app"
 	@echo "  The icon will appear in Launchpad after the next Dock refresh."
+
+# ── Release build → /Applications, signed with the stable local certificate ───
+install-release:
+	xcodebuild archive -project $(PROJECT) -scheme $(SCHEME) -configuration Release \
+		-archivePath "$(ARCHIVE)" -quiet
+	@pkill -x $(APP_NAME) 2>/dev/null || true
+	@sleep 1
+	@rm -rf "/Applications/$(APP_NAME).app"
+	@cp -R "$(ARCHIVE)/Products/Applications/$(APP_NAME).app" /Applications/
+	@codesign --force --deep --preserve-metadata=entitlements,flags,identifier \
+		--sign "$(SIGN_ID)" "/Applications/$(APP_NAME).app"
+	@echo "✓ Installed release build, signed with: $(SIGN_ID)"
+	@open "/Applications/$(APP_NAME).app"
 
 # ── Create distributable ZIP (preserves macOS app bundle metadata) ────────────
 package: build

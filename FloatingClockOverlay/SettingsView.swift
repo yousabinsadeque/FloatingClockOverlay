@@ -330,6 +330,7 @@ struct SettingsView: View {
                     .onChange(of: s.adaptiveColor) { enabled in
                         if enabled { ScreenSampler.requestPermissionIfNeeded() }
                     }
+                if s.adaptiveColor { ScreenRecordingWarning() }
                 SettingsDivider()
                 ToggleRow(icon: "arrow.triangle.2.circlepath", label: "Burn-in Prevention",
                           value: $s.burnInPrevention,
@@ -621,6 +622,32 @@ struct SettingsRow<Control: View>: View {
             control()
         }
         .padding(.horizontal, 12).padding(.vertical, 10)
+    }
+}
+
+// Adaptive Color only reads the real pixels behind the clock with Screen Recording
+// permission. Without it (including after an update re-signs the app) it falls back
+// to rough guesses, so say so instead of failing silently.
+struct ScreenRecordingWarning: View {
+    @State private var granted = ScreenSampler.hasCapturePermission
+    private let poll = Timer.publish(every: 2, on: .main, in: .common).autoconnect()
+
+    var body: some View {
+        if !granted {
+            HStack(spacing: 8) {
+                Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(.orange)
+                Text("Screen Recording is off, so colors are only approximate.")
+                    .font(.caption2).foregroundStyle(.secondary)
+                Spacer()
+                Button("Open Settings") { ScreenSampler.openScreenRecordingSettings() }
+                    .controlSize(.small)
+            }
+            .padding(.horizontal, 12).padding(.vertical, 6)
+            .onReceive(poll) { _ in granted = ScreenSampler.hasCapturePermission }
+        } else {
+            Color.clear.frame(height: 0)
+                .onReceive(poll) { _ in granted = ScreenSampler.hasCapturePermission }
+        }
     }
 }
 

@@ -31,9 +31,10 @@ struct ClockView: View {
         }
         .onReceive(clockTimer) { clockTime = $0 }
         .onReceive(colorSampleTimer) { _ in
-            guard s.adaptiveColor else { return }
-            sampledBrightness = ScreenSampler.averageBrightnessUnderClock()
-            guard sampledBrightness >= 0 else { return }
+            guard adaptiveApplies else { return }
+            let screenBrightness = ScreenSampler.averageBrightnessUnderClock()
+            guard screenBrightness >= 0 else { return }
+            sampledBrightness = effectiveBrightness(overScreen: screenBrightness)
             if useWhiteText && sampledBrightness > 0.55 {
                 useWhiteText = false
             } else if !useWhiteText && sampledBrightness < 0.45 {
@@ -63,6 +64,15 @@ struct ClockView: View {
             borderLayer(style)
             if !s.isClickThrough { resizeHandles }
         }
+        // Tell the sampler where the card actually sits inside the window; in
+        // full-screen mode the window is the whole display but the card is small.
+        .background(
+            GeometryReader { geo in
+                Color.clear
+                    .onAppear { ScreenSampler.cardRectInWindow = geo.frame(in: .global) }
+                    .onChange(of: geo.frame(in: .global)) { ScreenSampler.cardRectInWindow = $0 }
+            }
+        )
     }
 
     // MARK: - Background
@@ -237,7 +247,7 @@ struct ClockView: View {
         if s.overlayMode == .timer && tc.timerState == .finished {
             return flashOn ? .red : style.textColor
         }
-        if s.adaptiveColor {
+        if adaptiveApplies {
             return adaptiveTextColor
         }
         return style.textColor
@@ -245,6 +255,22 @@ struct ClockView: View {
 
     private var adaptiveTextColor: Color {
         useWhiteText ? .white : .black
+    }
+
+    // Pop-culture themes paint opaque artwork behind the text, so the desktop colour
+    // says nothing about the contrast actually seen. Weather is transparent, so it adapts.
+    private var adaptiveApplies: Bool {
+        s.adaptiveColor && !s.selectedTheme.isPopCulture
+    }
+
+    // The text is drawn on the theme's card, which is blended over the desktop.
+    // Judge contrast against that blend, not the bare desktop behind it.
+    private func effectiveBrightness(overScreen screen: CGFloat) -> CGFloat {
+        let style = s.selectedTheme.resolved(using: s)
+        guard !style.useGlass,
+              let cardLuma = ScreenSampler.luminance(of: NSColor(style.bgColor)) else { return screen }
+        let a = CGFloat(min(max(style.bgOpacity, 0), 1))
+        return a * cardLuma + (1 - a) * screen
     }
 
     private func glowOrShadow(_ style: ThemeStyle, opacity: Double) -> Color {
