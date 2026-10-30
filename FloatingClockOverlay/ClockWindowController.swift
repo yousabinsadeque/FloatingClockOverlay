@@ -70,54 +70,56 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
         setupDVDBounce()
     }
 
+    // Monitors left of or below the main display have negative coordinates, so
+    // "has a saved position" can't be judged by sign.
+    private var hasSavedPosition: Bool { UserDefaults.standard.object(forKey: "windowX") != nil }
+
     private func restorePosition() {
         guard let window = window else { return }
+        if restoreToSavedScreen(window) { return }
+        restoreFallback(window)
 
-        if tryRestoreToScreen(window) { return }
-
-        // Target screen not found yet — external monitors may appear after boot.
-        // Schedule retries for up to 10 seconds.
-        if !s.windowScreenName.isEmpty {
-            var attempts = 0
-            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
-                guard let self = self, let window = self.window else { timer.invalidate(); return }
-                attempts += 1
-                if self.tryRestoreToScreen(window) || attempts >= 10 {
-                    timer.invalidate()
-                }
+        // The saved monitor may connect a few seconds after login; keep trying for
+        // 10s unless the user has moved the clock in the meantime.
+        guard !s.windowScreenName.isEmpty else { return }
+        let placed = window.frame.origin
+        var attempts = 0
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
+            attempts += 1
+            guard let self = self, let window = self.window, window.frame.origin == placed, attempts <= 10 else {
+                timer.invalidate(); return
             }
+            if self.restoreToSavedScreen(window) { timer.invalidate() }
         }
     }
 
-    private func tryRestoreToScreen(_ window: NSWindow) -> Bool {
-        // Try screen-relative restore first
-        if !s.windowScreenName.isEmpty {
-            if let targetScreen = NSScreen.screens.first(where: { $0.localizedName == s.windowScreenName }) {
-                let origin = NSPoint(
-                    x: targetScreen.frame.origin.x + s.windowScreenOffsetX,
-                    y: targetScreen.frame.origin.y + s.windowScreenOffsetY
-                )
+    private func restoreToSavedScreen(_ window: NSWindow) -> Bool {
+        guard !s.windowScreenName.isEmpty,
+              let targetScreen = NSScreen.screens.first(where: { $0.localizedName == s.windowScreenName })
+        else { return false }
+        let origin = NSPoint(x: targetScreen.frame.origin.x + s.windowScreenOffsetX,
+                             y: targetScreen.frame.origin.y + s.windowScreenOffsetY)
+        guard targetScreen.visibleFrame.intersects(NSRect(origin: origin, size: window.frame.size)) else { return false }
+        isRestoringPosition = true
+        window.setFrameOrigin(origin)
+        isRestoringPosition = false
+        return true
+    }
+
+    private func restoreFallback(_ window: NSWindow) {
+        if hasSavedPosition {
+            let frame = NSRect(origin: NSPoint(x: s.windowX, y: s.windowY), size: window.frame.size)
+            if NSScreen.screens.contains(where: { $0.visibleFrame.intersects(frame) }) {
                 isRestoringPosition = true
-                window.setFrameOrigin(origin)
+                window.setFrameOrigin(frame.origin)
                 isRestoringPosition = false
-                if targetScreen.visibleFrame.intersects(window.frame) {
-                    return true
-                }
+                return
             }
         }
-
-        // Fall back to absolute coordinates
-        if s.windowX >= 0 && s.windowY >= 0 {
-            isRestoringPosition = true
-            window.setFrameOrigin(NSPoint(x: s.windowX, y: s.windowY))
-            isRestoringPosition = false
-            let onScreen = NSScreen.screens.contains { $0.visibleFrame.intersects(window.frame) }
-            if onScreen { return true }
-        }
-
-        // No valid position found — use default
-        moveToPreset(.topRight)
-        return true
+        // Temporary spot only: saving it would overwrite the monitor we retry for.
+        isRestoringPosition = true
+        moveToPreset(.topRight, save: false)
+        isRestoringPosition = false
     }
 
     // MARK: - Always On Top (across every app switch)
@@ -267,7 +269,7 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
         }
     }
 
-    func moveToPreset(_ preset: ClockSettings.PositionPreset) {
+    func moveToPreset(_ preset: ClockSettings.PositionPreset, save: Bool = true) {
         guard let window = window, let screen = NSScreen.main else { return }
         let f = screen.visibleFrame
         let w = window.frame.width
@@ -285,7 +287,7 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
         }
 
         window.setFrameOrigin(origin)
-        savePosition()
+        if save { savePosition() }
     }
 
     // MARK: - Burn-in Prevention
@@ -397,7 +399,7 @@ class ClockWindowController: NSWindowController, NSWindowDelegate {
         isDVDBouncing = false
         // Glide back to where the clock sat before bouncing began.
         guard returnHome, wasBouncing, let window = window, !s.isFullScreen,
-              s.windowX >= 0, s.windowY >= 0 else { return }
+              hasSavedPosition else { return }
         let home = NSRect(origin: NSPoint(x: s.windowX, y: s.windowY), size: window.frame.size)
         NSAnimationContext.runAnimationGroup { ctx in
             ctx.duration = 0.45

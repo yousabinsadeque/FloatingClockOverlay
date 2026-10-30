@@ -15,6 +15,7 @@ public partial class App : System.Windows.Application
         ("tr", "Türkçe"), ("it", "Italiano"),
     };
 
+    private static Mutex? _singleInstance;
     private Forms.NotifyIcon? _trayIcon;
     private ClockWindow? _clockWindow;
 
@@ -54,8 +55,23 @@ public partial class App : System.Windows.Application
         System.Windows.MessageBox.Show(text, "Floating Clock Overlay crashed", MessageBoxButton.OK, MessageBoxImage.Error);
     }
 
+    // One clock at a time. A copy started by the updater waits briefly for the old
+    // one to exit; a second manual launch gives up and leaves the running clock alone.
+    private static bool AcquireSingleInstance()
+    {
+        _singleInstance = new Mutex(true, "FloatingClockOverlay.SingleInstance", out bool created);
+        if (created) return true;
+        try { return _singleInstance.WaitOne(TimeSpan.FromSeconds(10)); }
+        catch (AbandonedMutexException) { return true; }
+    }
+
     private void Start()
     {
+        if (!AcquireSingleInstance())
+        {
+            Shutdown();
+            return;
+        }
         Updater.CleanUpPreviousUpdate();
         _clockWindow = new ClockWindow();
         _clockWindow.Show();
@@ -149,6 +165,7 @@ public partial class App : System.Windows.Application
     protected override void OnExit(ExitEventArgs e)
     {
         _trayIcon?.Dispose();
+        try { _singleInstance?.ReleaseMutex(); } catch { }
         base.OnExit(e);
     }
 }

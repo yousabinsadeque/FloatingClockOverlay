@@ -39,6 +39,11 @@ jobs:
           $log = "$env:APPDATA/FloatingClockOverlay/crash.log"
           if (Test-Path $log) { Get-Content $log; Write-Error "App crashed"; exit 1 }
           if ($p.HasExited) { Write-Error "App exited with code $($p.ExitCode)"; exit 1 }
+          $second = Start-Process publish/FloatingClockOverlay.exe -PassThru
+          $second.WaitForExit(20000) | Out-Null
+          $count = @(Get-Process FloatingClockOverlay -ErrorAction SilentlyContinue).Count
+          if (-not $second.HasExited -or $count -ne 1) { Write-Error "Second launch did not exit ($count running)"; exit 1 }
+          Write-Host "Single instance OK"
           Stop-Process $p
 
       - name: Updater test (fake 9.9.9 update, click Update Now)
