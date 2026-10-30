@@ -117,3 +117,6 @@
 "LANGUAGE" = "IDIOMA";
 "Clock Language" = "Idioma del reloj";
 "System Default" = "Predeterminado del sistema";
+
+/* Adaptive Color */
+"Screen Recording is off, so colors are only approximate." = "La grabación de pantalla está desactivada, así que los colores son solo aproximados.";

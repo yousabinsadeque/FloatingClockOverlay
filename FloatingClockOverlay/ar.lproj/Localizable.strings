@@ -117,3 +117,6 @@
 "LANGUAGE" = "اللغة";
 "Clock Language" = "لغة الساعة";
 "System Default" = "افتراضي النظام";
+
+/* Adaptive Color */
+"Screen Recording is off, so colors are only approximate." = "تسجيل الشاشة متوقف، لذا الألوان تقريبية فقط.";

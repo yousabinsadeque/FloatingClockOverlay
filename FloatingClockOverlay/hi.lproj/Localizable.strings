@@ -117,3 +117,6 @@
 "LANGUAGE" = "भाषा";
 "Clock Language" = "घड़ी की भाषा";
 "System Default" = "सिस्टम डिफ़ॉल्ट";
+
+/* Adaptive Color */
+"Screen Recording is off, so colors are only approximate." = "स्क्रीन रिकॉर्डिंग बंद है, इसलिए रंग केवल अनुमानित हैं।";

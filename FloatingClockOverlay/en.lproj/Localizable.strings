@@ -117,3 +117,6 @@
 "LANGUAGE" = "LANGUAGE";
 "Clock Language" = "Clock Language";
 "System Default" = "System Default";
+
+/* Adaptive Color */
+"Screen Recording is off, so colors are only approximate." = "Screen Recording is off, so colors are only approximate.";
