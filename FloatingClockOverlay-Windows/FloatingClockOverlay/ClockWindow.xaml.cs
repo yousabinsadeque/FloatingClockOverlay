@@ -37,6 +37,12 @@ public partial class ClockWindow : Window
     [DllImport("user32.dll")]
     private static extern bool SetWindowDisplayAffinity(IntPtr hWnd, uint dwAffinity);
 
+    [StructLayout(LayoutKind.Sequential)]
+    private struct RECT { public int Left, Top, Right, Bottom; }
+
+    [DllImport("user32.dll")]
+    private static extern bool GetWindowRect(IntPtr hWnd, out RECT rect);
+
     private static readonly Dictionary<string, char> NativeZero = new()
     {
         ["ar"] = '٠',
@@ -164,11 +170,12 @@ public partial class ClockWindow : Window
     {
         try
         {
-            var dpi = VisualTreeHelper.GetDpi(this);
-            int x = (int)(Left * dpi.DpiScaleX);
-            int y = (int)(Top * dpi.DpiScaleY);
-            int w = Math.Max(1, (int)(ActualWidth * dpi.DpiScaleX));
-            int h = Math.Max(1, (int)(ActualHeight * dpi.DpiScaleY));
+            // Ask Windows for the window's on-screen rectangle instead of scaling
+            // WPF units by hand, which goes wrong when monitors use different scaling.
+            if (!GetWindowRect(_hwnd, out var r)) return -1;
+            int x = r.Left, y = r.Top;
+            int w = Math.Max(1, r.Right - r.Left);
+            int h = Math.Max(1, r.Bottom - r.Top);
 
             using var bmp = new Bitmap(w, h);
             using (var g = Graphics.FromImage(bmp))

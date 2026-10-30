@@ -2,13 +2,10 @@ import AppKit
 import CoreGraphics
 
 enum ScreenSampler {
-    static var clockWindowNumber: CGWindowID = 0
-    static weak var clockWindow: NSWindow?
-    /// The clock card's frame in SwiftUI window coordinates (top-left origin).
-    static var cardRectInWindow: CGRect?
-
-    static func averageBrightnessUnderClock() -> CGFloat {
-        guard let window = clockWindow else { return -1 }
+    /// Brightness behind one clock window. `cardRect` is the card's frame in that
+    /// window's SwiftUI coordinates (top-left origin). Each mirror samples its own window.
+    static func averageBrightness(under window: NSWindow, cardRect: CGRect?) -> CGFloat {
+        let clockWindowNumber = CGWindowID(window.windowNumber)
         let frame = window.frame
         var x = frame.origin.x
         var y = frame.origin.y
@@ -17,7 +14,7 @@ enum ScreenSampler {
 
         // Sample only under the card (matters in full-screen mode, where the
         // window spans the whole display but the card is a small clock).
-        if let card = cardRectInWindow, card.width > 0, card.height > 0,
+        if let card = cardRect, card.width > 0, card.height > 0,
            card.width <= frame.width + 1, card.height <= frame.height + 1 {
             x = frame.minX + card.minX
             y = frame.maxY - card.maxY
@@ -50,7 +47,7 @@ enum ScreenSampler {
 
         // Method 2: Check window list below the clock for dark/light appearance
         let centerCG = CGPoint(x: x + w / 2, y: mainH - y - h / 2)
-        if let windowBrightness = brightnessFromWindowList(at: centerCG) {
+        if let windowBrightness = brightnessFromWindowList(at: centerCG, below: clockWindowNumber) {
             return windowBrightness
         }
 
@@ -93,7 +90,7 @@ enum ScreenSampler {
 
     // Use CGWindowListCopyWindowInfo to find windows below the clock and check
     // if they're likely light or dark based on their owner app's appearance
-    private static func brightnessFromWindowList(at point: CGPoint) -> CGFloat? {
+    private static func brightnessFromWindowList(at point: CGPoint, below clockWindowNumber: CGWindowID) -> CGFloat? {
         guard let windowList = CGWindowListCopyWindowInfo(
             [.optionOnScreenOnly, .excludeDesktopElements],
             kCGNullWindowID

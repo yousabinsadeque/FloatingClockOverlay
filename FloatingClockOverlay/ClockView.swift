@@ -8,6 +8,8 @@ struct ClockView: View {
     @State private var flashOn   = true
     @State private var sampledBrightness: CGFloat = 0.0
     @State private var useWhiteText: Bool = true
+    @State private var hostWindow: NSWindow?
+    @State private var cardRect: CGRect?
 
     private let clockTimer = Timer.publish(every: 1.0,  on: .main, in: .common).autoconnect()
     private let flashTimer = Timer.publish(every: 0.45, on: .main, in: .common).autoconnect()
@@ -32,7 +34,8 @@ struct ClockView: View {
         .onReceive(clockTimer) { clockTime = $0 }
         .onReceive(colorSampleTimer) { _ in
             guard adaptiveApplies else { return }
-            let screenBrightness = ScreenSampler.averageBrightnessUnderClock()
+            guard let hostWindow else { return }
+            let screenBrightness = ScreenSampler.averageBrightness(under: hostWindow, cardRect: cardRect)
             guard screenBrightness >= 0 else { return }
             sampledBrightness = effectiveBrightness(overScreen: screenBrightness)
             if useWhiteText && sampledBrightness > 0.55 {
@@ -69,10 +72,11 @@ struct ClockView: View {
         .background(
             GeometryReader { geo in
                 Color.clear
-                    .onAppear { ScreenSampler.cardRectInWindow = geo.frame(in: .global) }
-                    .onChange(of: geo.frame(in: .global)) { ScreenSampler.cardRectInWindow = $0 }
+                    .onAppear { cardRect = geo.frame(in: .global) }
+                    .onChange(of: geo.frame(in: .global)) { cardRect = $0 }
             }
         )
+        .background(WindowReader(window: $hostWindow))
     }
 
     // MARK: - Background
@@ -313,5 +317,19 @@ struct WeatherTemperatureLabel: View {
                 .shadow(color: p.glow.opacity(0.4), radius: 4)
                 .shadow(color: .black.opacity(0.5), radius: 2, y: 1)
         }
+    }
+}
+
+// Hands a SwiftUI view the NSWindow it lives in, so each clock (including the
+// mirrors on other displays) samples the screen behind its own window.
+private struct WindowReader: NSViewRepresentable {
+    @Binding var window: NSWindow?
+    func makeNSView(context: Context) -> NSView {
+        let v = NSView()
+        DispatchQueue.main.async { window = v.window }
+        return v
+    }
+    func updateNSView(_ v: NSView, context: Context) {
+        if v.window !== window { DispatchQueue.main.async { window = v.window } }
     }
 }
