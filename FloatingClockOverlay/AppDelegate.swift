@@ -67,7 +67,26 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     // This blocks accidental ⌘Q or any programmatic terminate unless it came
     // from our explicit quitApp() action.
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        return allowQuit ? .terminateNow : .terminateCancel
+        return allowQuit || isSystemQuit() ? .terminateNow : .terminateCancel
+    }
+
+    // Quits that must always work: log out / restart / shut down, and System Settings'
+    // "Quit & Reopen" after granting Screen Recording (blocking it made the grant
+    // look broken until the user restarted the app by hand).
+    private func isSystemQuit() -> Bool {
+        guard let event = NSAppleEventManager.shared().currentAppleEvent,
+              event.eventClass == kCoreEventClass, event.eventID == kAEQuitApplication else { return false }
+        if let reason = event.attributeDescriptor(forKeyword: kAEQuitReason)?.enumCodeValue,
+           [kAELogOut, kAEReallyLogOut, kAEShowRestartDialog, kAEShowShutdownDialog,
+            kAERestart, kAEShutDown].map({ OSType($0) }).contains(reason) {
+            return true
+        }
+        if let pid = event.attributeDescriptor(forKeyword: keySenderPIDAttr)?.int32Value,
+           let sender = NSRunningApplication(processIdentifier: pid_t(pid))?.bundleIdentifier,
+           sender == "com.apple.systempreferences" || sender == "com.apple.Settings" {
+            return true
+        }
+        return false
     }
 
     // Closing the last window (e.g. Settings) must never quit the app.

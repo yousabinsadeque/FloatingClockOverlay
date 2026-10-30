@@ -152,3 +152,8 @@
 "MOVEMENT" = "गति";
 "Show" = "दिखाएं";
 "Adaptive" = "अनुकूली";
+"Screen Recording is now on" = "स्क्रीन रिकॉर्डिंग अब चालू है";
+"Restart Floating Clock Overlay to finish turning on Adaptive Color." = "अनुकूली रंग चालू करना पूरा करने के लिए Floating Clock Overlay फिर से शुरू करें।";
+"Restart Now" = "अभी फिर से शुरू करें";
+"Screen Recording is on. Restart to apply it." = "स्क्रीन रिकॉर्डिंग चालू है। लागू करने के लिए फिर से शुरू करें।";
+"Already turned it on? macOS needs a restart to apply it." = "पहले ही चालू कर दिया? लागू करने के लिए macOS को ऐप फिर से शुरू करना होगा।";

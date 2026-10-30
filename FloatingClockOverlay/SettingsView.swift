@@ -737,7 +737,15 @@ struct ScreenRecordingWarning: View {
                 Button("Open Settings") { ScreenSampler.openScreenRecordingSettings() }
                     .controlSize(.small)
             }
-            .padding(.horizontal, 12).padding(.vertical, 6)
+            .padding(.horizontal, 12).padding(.top, 6)
+            HStack {
+                Text("Already turned it on? macOS needs a restart to apply it.")
+                    .font(.caption2).foregroundStyle(.secondary)
+                Spacer()
+                Button("Restart Now") { ScreenSampler.relaunch() }
+                    .controlSize(.small)
+            }
+            .padding(.horizontal, 12).padding(.bottom, 6)
             .onReceive(poll) { _ in granted = ScreenSampler.hasCapturePermission }
         } else {
             Color.clear.frame(height: 0)

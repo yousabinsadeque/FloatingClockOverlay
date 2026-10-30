@@ -69,6 +69,16 @@ enum ScreenSampler {
         }
     }
 
+    // A new Screen Recording grant only takes effect after the app restarts.
+    static func relaunch() {
+        let script = "while kill -0 \(ProcessInfo.processInfo.processIdentifier) 2>/dev/null; do sleep 0.2; done; /usr/bin/open \"$1\""
+        let p = Process()
+        p.executableURL = URL(fileURLWithPath: "/bin/sh")
+        p.arguments = ["-c", script, "sh", Bundle.main.bundleURL.path]
+        try? p.run()
+        NotificationCenter.default.post(name: .quitApp, object: nil)
+    }
+
     static func openScreenRecordingSettings() {
         if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture") {
             NSWorkspace.shared.open(url)

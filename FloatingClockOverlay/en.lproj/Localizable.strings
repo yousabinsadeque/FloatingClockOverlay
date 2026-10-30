@@ -152,3 +152,8 @@
 "MOVEMENT" = "MOVEMENT";
 "Show" = "Show";
 "Adaptive" = "Adaptive";
+"Screen Recording is now on" = "Screen Recording is now on";
+"Restart Floating Clock Overlay to finish turning on Adaptive Color." = "Restart Floating Clock Overlay to finish turning on Adaptive Color.";
+"Restart Now" = "Restart Now";
+"Screen Recording is on. Restart to apply it." = "Screen Recording is on. Restart to apply it.";
+"Already turned it on? macOS needs a restart to apply it." = "Already turned it on? macOS needs a restart to apply it.";
