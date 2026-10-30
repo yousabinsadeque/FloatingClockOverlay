@@ -41,11 +41,51 @@ jobs:
           if ($p.HasExited) { Write-Error "App exited with code $($p.ExitCode)"; exit 1 }
           Stop-Process $p
 
+      - name: Updater test (fake 9.9.9 update, click Update Now)
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force upd/srv, upd/app | Out-Null
+          Copy-Item publish/FloatingClockOverlay.exe upd/srv/FloatingClockOverlay.exe
+          Copy-Item publish/FloatingClockOverlay.exe upd/app/FloatingClockOverlay.exe
+          $sha = (Get-FileHash upd/srv/FloatingClockOverlay.exe -Algorithm SHA256).Hash.ToLower()
+          '{"windows":{"version":"9.9.9","url":"http://127.0.0.1:8799/FloatingClockOverlay.exe","sha256":"' + $sha + '","notes":"CI test"}}' | Set-Content upd/srv/update.json
+          $srv = Start-Process python -ArgumentList "-m","http.server","8799","--bind","127.0.0.1","--directory","upd/srv" -PassThru
+          Get-Process FloatingClockOverlay -ErrorAction SilentlyContinue | Stop-Process -Force
+          $env:FCO_UPDATE_MANIFEST = "http://127.0.0.1:8799/update.json"
+          $env:FCO_ALLOW_CAPTURE = "1"
+          $app = Start-Process (Resolve-Path upd/app/FloatingClockOverlay.exe) -PassThru
+          Add-Type -AssemblyName UIAutomationClient,UIAutomationTypes,System.Windows.Forms,System.Drawing
+          $root = [System.Windows.Automation.AutomationElement]::RootElement
+          $cond = New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::NameProperty, "Update Now")
+          $btn = $null
+          for ($i = 0; $i -lt 40 -and -not $btn; $i++) {
+            Start-Sleep -Seconds 1
+            $btn = $root.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $cond)
+          }
+          $b = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
+          $bmp = New-Object System.Drawing.Bitmap $b.Width, $b.Height
+          [System.Drawing.Graphics]::FromImage($bmp).CopyFromScreen($b.Location, [System.Drawing.Point]::Empty, $b.Size)
+          $bmp.Save("update-popup.png")
+          if (-not $btn) { Write-Error "Update pop-up never appeared"; exit 1 }
+          Write-Host "Pop-up found, clicking Update Now"
+          $btn.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke()
+          $app.WaitForExit(30000) | Out-Null
+          if (-not $app.HasExited) { Write-Error "Old version did not exit"; exit 1 }
+          Start-Sleep -Seconds 6
+          $new = Get-Process FloatingClockOverlay -ErrorAction SilentlyContinue
+          if (-not $new) { Write-Error "Updated app did not restart"; exit 1 }
+          if (Test-Path upd/app/FloatingClockOverlay.exe.old) { Write-Error "Old exe was not cleaned up"; exit 1 }
+          Write-Host "Update OK: old PID $($app.Id) exited, new PID $($new.Id) running"
+          $new | Stop-Process -Force
+          Stop-Process $srv -Force
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: smoke-screenshot
-          path: smoke.png
+          path: |
+            smoke.png
+            update-popup.png
 
       - uses: actions/upload-artifact@v4
         with:
